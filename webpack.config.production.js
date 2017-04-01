@@ -7,8 +7,6 @@ let cwd = __dirname ? __dirname : process.cwd();
 
 let DIST = path.join(cwd, '/client/dist/');
 
-config.devtool = '#source-map';
-
 config.output = {
     path: DIST,
     filename: 'javascript/[name].min.js'
