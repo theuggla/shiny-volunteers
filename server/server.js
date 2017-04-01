@@ -70,5 +70,5 @@ res.status(500).send({message: 'my fault. sorry. maybe try again later?'});
 
 //Start the server----------------------------------------------------------------------------------------------------
 server.listen(port, () => {
-    console.log('server up');
+    console.log('server up, I hope');
 });
