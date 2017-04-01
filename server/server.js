@@ -25,7 +25,6 @@ app.set('port', port);
 
 //Find static resources.
 app.use(express.static(path.join(cwd, '/../client/dist')));
-console.log(path.join(cwd + '/../client/dist'));
 
 //JSON support
 app.use(bodyParser.json());

@@ -1,10 +1,11 @@
 'use strict';
 
 let webpack = require('webpack');
+let path = require('path');
 let config = require('./webpack.config.base.js');
 let cwd = __dirname ? __dirname : process.cwd();
 
-let DIST = path.join(cwd, 'client/dist/');
+let DIST = path.join(cwd, '/client/dist/');
 
 
 config.bail = true;
