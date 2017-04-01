@@ -14,6 +14,7 @@ let csp = require('helmet-csp');
 let app = express();
 let server = http.createServer(app);
 let port = process.env.PORT || 8000;
+let cwd = __dirname ? __dirname : process.cwd();
 
 //Configurations----------------------------------------------------------------------------------------------------
 
@@ -23,7 +24,8 @@ app.set('port', port);
 //Middlewares-------------------------------------------------------------------------------------------------------
 
 //Find static resources.
-app.use(express.static(path.join(__dirname, '../client/dist')));
+app.use(express.static(path.join(cwd, '../client/dist')));
+console.log(cwd);
 
 //JSON support
 app.use(bodyParser.json());
