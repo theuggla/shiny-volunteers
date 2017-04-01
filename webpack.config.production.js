@@ -11,7 +11,7 @@ config.devtool = '#source-map';
 
 config.output = {
     path: DIST,
-    filename: 'javascript/[hash].min.js'
+    filename: 'javascript/[name].min.js'
 };
 
 config.plugins = config.plugins.concat([
