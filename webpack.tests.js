@@ -1,8 +1,2 @@
-var expect = require('expect');
-
-describe('tryTest', function() {
-
-    it('Should work', function() {
-        expect(1).toBe(1);
-    });
-});
+let context = require.context('.', true, /__tests__\/.+\.js$/);
+context.keys().forEach(context);
