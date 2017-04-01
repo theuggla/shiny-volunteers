@@ -7,7 +7,7 @@
     "node": "7.7.3"
   },
   "scripts": {
-    "build": "webpack -p",
+    "build": "webpack",
     "start": "node server/server.js",
     "watch": "nodemon /vagrant/server/server.js & webpack -w",
     "test": "karma start",
