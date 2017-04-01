@@ -4,8 +4,10 @@ let HTMLWebpackPlugin = require('html-webpack-plugin');
 let ExtractTextPlugin = require("extract-text-webpack-plugin");
 let CopyWebpackPlugin = require('copy-webpack-plugin');
 
-let DEV = path.join(__dirname, 'client/source/');
-let DEBUG = path.join(__dirname, 'client/debug/');
+let cwd = __dirname ? __dirname : process.cwd();
+
+let DEV = path.join(cwd, 'client/source/');
+let DEBUG = path.join(cwd, 'client/debug/');
 
 let config = {
     entry: [DEV + 'js/app.jsx'],

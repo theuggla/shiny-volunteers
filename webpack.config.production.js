@@ -2,8 +2,9 @@
 
 let webpack = require('webpack');
 let config = require('./webpack.config.base.js');
+let cwd = __dirname ? __dirname : process.cwd();
 
-let DIST = path.join(__dirname, 'client/dist/');
+let DIST = path.join(cwd, 'client/dist/');
 
 
 config.bail = true;
@@ -13,7 +14,7 @@ config.devtool = '#source-map';
 
 config.output = {
     path: DIST,
-    filename: 'javascript/bundle.[hash].min.js'
+    filename: 'javascript/[hash].min.js'
 };
 
 config.plugins = config.plugins.concat([

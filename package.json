@@ -7,11 +7,11 @@
     "node": "7.7.3"
   },
   "scripts": {
-    "postinstall": "npm build",
     "build": "webpack -p",
     "start": "node server/server.js",
     "watch": "nodemon /vagrant/server/server.js & webpack -w",
-    "test": "karma start"
+    "test": "karma start",
+    "heroku-postbuild": "npm build"
   },
   "repository": {
     "type": "git",
@@ -64,6 +64,5 @@
     "react-hot-loader": "^1.3.1",
     "style-loader": "^0.16.1",
     "url-loader": "^0.5.8",
-    "webpack-dev-server": "^2.4.2"
   }
 }
