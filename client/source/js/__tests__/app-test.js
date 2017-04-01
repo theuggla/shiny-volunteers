@@ -4,9 +4,9 @@ var HelloWorld = require('../App.jsx');
 var expect = require('expect');
 
 describe('getDiv', function() {
-    var d = document.querySelector('.show-grid');
+    var d = document.querySelector('#container');
 
     it('Should exist', function() {
-        expect(d.nodeName).toBe('ROW');
+        expect(d.nodeName).toBe('DIV');
     });
 });
