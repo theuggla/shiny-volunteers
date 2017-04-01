@@ -1,6 +1,6 @@
 //Failing test
 
-var HelloWorld = require('../App.jsx');
+var HelloWorld = require('../app.jsx');
 var expect = require('expect');
 
 describe('getDiv', function() {
