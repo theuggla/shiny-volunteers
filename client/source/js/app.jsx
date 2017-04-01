@@ -38,9 +38,13 @@ const gridInstance = (
 let HelloWorld = React.createClass({
     render: function() {
         return (
+            <div>
         <p>Hello, {this.props.greetTarget}!</p>
+        <Button bsStyle="info">Middle</Button>
+            </div>
         );
     }
 });
 
-module.exports = gridInstance;
+
+ReactDOM.render(<HelloWorld greetTarget="Batman" />, document.getElementById('container'));

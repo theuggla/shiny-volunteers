@@ -17,7 +17,7 @@ let server = http.createServer(app);
 //Configurations----------------------------------------------------------------------------------------------------
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-app.set('port', 8000);
+app.set('port', (process.env.PORT || 5000));
 
 //Middlewares-------------------------------------------------------------------------------------------------------
 
