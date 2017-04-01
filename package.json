@@ -4,8 +4,9 @@
   "description": "A web application to match volunteers against volunteer opportunities",
   "main": "server.js",
   "scripts": {
-    "build": "webpack -p",
-    "start": "node /vagrant/server/server.js",
+    "postinstall": "npm build",
+    "build": "NODE_ENV=production webpack -p",
+    "start": "node /server/server.js",
     "watch": "nodemon /vagrant/server/server.js & webpack -w",
     "test": "karma start"
   },
