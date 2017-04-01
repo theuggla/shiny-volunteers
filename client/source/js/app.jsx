@@ -47,4 +47,4 @@ let HelloWorld = React.createClass({
 });
 
 
-ReactDOM.render(<HelloWorld greetTarget="Wonder Woman" />, document.getElementById('container'));
+ReactDOM.render(<HelloWorld greetTarget="Pikachu" />, document.getElementById('container'));
