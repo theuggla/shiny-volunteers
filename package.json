@@ -11,7 +11,7 @@
     "start": "node server/server.js",
     "watch": "nodemon /vagrant/server/server.js & webpack -w",
     "test": "karma start",
-    "heroku-postbuild": "npm install --dev && DNODE_ENV=production webpack -p"
+    "heroku-postbuild": "npm install --dev && NODE_ENV=production webpack -p"
   },
   "repository": {
     "type": "git",

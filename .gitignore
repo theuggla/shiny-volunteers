@@ -5,3 +5,4 @@ provision.sh
 .editorconfig
 client/debug
 client/dist
+.idea

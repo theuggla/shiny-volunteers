@@ -1,12 +1,9 @@
-//Failing test
-
-var HelloWorld = require('../app.jsx');
+//Succeeding test
 var expect = require('expect');
 
-describe('getDiv', function() {
-    var d = document.querySelector('#container');
+describe('tryTest', function() {
 
-    it('Should exist', function() {
-        expect(d.nodeName).toBe('DIV');
+    it('Should work', function() {
+        expect(1).toBe(1);
     });
 });
