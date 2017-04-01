@@ -1,4 +1,3 @@
-//Babel presets for transformation.
 {
     "presets": ["react", "es2015"]
 }

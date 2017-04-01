@@ -1,5 +1,5 @@
 //Succeeding test
-var expect = require('expect');
+let expect = require('expect');
 
 describe('tryTest', function() {
 
