@@ -1,4 +1,4 @@
-let expect = require('expect');
+var expect = require('expect');
 
 describe('tryTest', function() {
 
