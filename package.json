@@ -3,10 +3,13 @@
   "version": "1.0.0",
   "description": "A web application to match volunteers against volunteer opportunities",
   "main": "server.js",
+  "engines": {
+    "node": "7.7.3"
+  },
   "scripts": {
     "postinstall": "npm build",
     "build": "NODE_ENV=production webpack -p",
-    "start": "node /server/server.js",
+    "start": "node server/server.js",
     "watch": "nodemon /vagrant/server/server.js & webpack -w",
     "test": "karma start"
   },
