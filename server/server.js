@@ -13,11 +13,12 @@ let csp = require('helmet-csp');
 
 let app = express();
 let server = http.createServer(app);
+let port = process.env.PORT || 8000;
 
 //Configurations----------------------------------------------------------------------------------------------------
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-app.set('port', (process.env.PORT || 5000));
+app.set('port', port);
 
 //Middlewares-------------------------------------------------------------------------------------------------------
 
@@ -65,6 +66,6 @@ res.status(500).send({message: 'my fault. sorry. maybe try again later?'});
 });
 
 //Start the server----------------------------------------------------------------------------------------------------
-server.listen(8000, () => {
+server.listen(port, () => {
     console.log('server up');
 });
