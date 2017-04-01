@@ -47,4 +47,4 @@ let HelloWorld = React.createClass({
 });
 
 
-ReactDOM.render(<HelloWorld greetTarget="Batman" />, document.getElementById('container'));
+ReactDOM.render(<HelloWorld greetTarget="Spiderman" />, document.getElementById('container'));
