@@ -9,9 +9,9 @@
   "scripts": {
     "build": "webpack",
     "start": "node server/server.js",
-    "watch": "nodemon /vagrant/server/server.js & webpack -w",
+    "watch": "webpack && nodemon /vagrant/server/server.js",
     "test": "karma start",
-    "heroku-postbuild": "npm install --dev && NODE_ENV=production webpack -p"
+    "heroku-postbuild": "npm install --dev && webpack -p"
   },
   "repository": {
     "type": "git",
@@ -55,7 +55,6 @@
     "jasmine-core": "^2.5.2",
     "karma": "^1.5.0",
     "karma-chrome-launcher": "^2.0.0",
-    "karma-firefox-launcher": "^1.0.1",
     "karma-jasmine": "^1.1.0",
     "karma-phantomjs-launcher": "^1.0.4",
     "karma-sourcemap-loader": "^0.3.7",

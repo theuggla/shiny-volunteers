@@ -13,18 +13,20 @@ let csp = require('helmet-csp');
 
 let app = express();
 let server = http.createServer(app);
+
 let port = process.env.PORT || 8000;
 let cwd = __dirname ? __dirname : process.cwd();
 
 //Configurations----------------------------------------------------------------------------------------------------
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+let staticPath = path.join(cwd, (process.env.NODE_ENV === 'production' ? '/../client/dist' : '/../client/debug'));
 app.set('port', port);
 
 //Middlewares-------------------------------------------------------------------------------------------------------
 
 //Find static resources.
-app.use(express.static(path.join(cwd, '/../client/dist')));
+app.use(express.static(staticPath));
 
 //JSON support
 app.use(bodyParser.json());
@@ -50,7 +52,7 @@ app.use(csp({
 }));
 
 //Routes------------------------------------------------------------------------------------------------------------
-app.use('/', (req, res, next) => {
+app.use('/', (req, res) => {
     res.send({message: 'made it?'});
 });
 
