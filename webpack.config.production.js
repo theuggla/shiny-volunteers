@@ -19,7 +19,6 @@ config.output = {
 };
 
 config.plugins = config.plugins.concat([
-    new webpack.optimize.OccurenceOrderPlugin(true),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
         output: {
