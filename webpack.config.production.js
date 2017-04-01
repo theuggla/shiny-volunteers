@@ -7,10 +7,6 @@ let cwd = __dirname ? __dirname : process.cwd();
 
 let DIST = path.join(cwd, '/client/dist/');
 
-
-config.bail = true;
-config.debug = false;
-config.profile = false;
 config.devtool = '#source-map';
 
 config.output = {
