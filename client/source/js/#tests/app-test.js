@@ -1,9 +1,9 @@
 //Succeeding test
-var expect = require('expect');
+let expect = require('expect');
 
-describe('tryTest', function() {
+describe('tryTest', () => {
 
-    it('Should work', function() {
+    it('Should work', () => {
         expect(1).toBe(1);
     });
 });

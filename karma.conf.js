@@ -10,7 +10,13 @@ module.exports = function(config) {
         autoWatch: false,
         files: ['webpack.tests.js'],
         preprocessors: {
-            'webpack.tests.js': ['webpack', 'sourcemap'],
+            'webpack.tests.js': ['webpack', 'sourcemap', 'babel'],
+        },
+        babelPreprocessor: {
+            options: {
+                presets: ['es2015', 'react'],
+                sourceMap: 'inline'
+            }
         },
 
         webpack: webpackConfig,
