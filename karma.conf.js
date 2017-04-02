@@ -3,7 +3,7 @@ let webpackConfig = require('./webpack.config.js');
 module.exports = function(config) {
     config.set({
 
-        browsers: ['PhantomJS'],
+        browsers: ['Firefox'],
         frameworks: ['jasmine'],
 
         autoWatch: false,
@@ -24,7 +24,7 @@ module.exports = function(config) {
             noInfo: true
         },
 
-        browserNoActivityTimeout: 60000, // 60 seconds
+        browserNoActivityTimeout: 100000, // 100 seconds
 
     });
 };
