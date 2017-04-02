@@ -1,9 +1,10 @@
 let webpackConfig = require('./webpack.config.js');
+process.env.CHROME_BIN = '/usr/bin/chrome';
 
 module.exports = function(config) {
     config.set({
 
-        browsers: ['Firefox'],
+        browsers: ['PhantomJS'],
         frameworks: ['jasmine'],
 
         autoWatch: false,
