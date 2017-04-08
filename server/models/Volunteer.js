@@ -32,6 +32,7 @@ volunteerSchema.plugin(findOrCreate);
  */
 volunteerSchema.methods.hashPasswordAndSave = function(password) {
     bcrypt.hash(password, 10, (err, hash) => {
+        if (err) return err;
         this.password = hash;
         this.save();
     });

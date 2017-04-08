@@ -18,7 +18,7 @@ function connect() {
     passport.use(new Strategy({
             clientID: '1219936468104276',
             clientSecret: '6f64667cbf8cd6953ef782085bc2201e',
-            callbackURL: 'http://localhost:8000/login/facebook/return',
+            callbackURL: process.env.SITE_URL + '/login/facebook/return',
         },
 
         function(accessToken, refreshToken, profile, done) {
@@ -34,19 +34,19 @@ function connect() {
                         user.id = user._id;
                         user.roles.push('volunteer');
                         user.save();
+                    } else {
+                        let payload = {
+                            sub: user.id
+                        };
+
+                        // create a token string
+                        let token = jwt.sign(payload, process.env.JWT_SECRET);
+                        let data = {
+                            email: user.email
+                        };
+
+                        return done(null, token, data);
                     }
-
-                    let payload = {
-                        sub: user.id
-                    };
-
-                    // create a token string
-                    let token = jwt.sign(payload, process.env.JWT_SECRET);
-                    let data = {
-                        email: user.email
-                    };
-
-                    return done(null, token, data);
                 });
         }));
 
