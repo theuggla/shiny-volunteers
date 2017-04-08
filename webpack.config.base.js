@@ -10,6 +10,7 @@ let DEV = path.join(cwd, 'client/source/');
 let DEBUG = path.join(cwd, 'client/debug/');
 
 let config = {
+    devtool: 'source-map',
     entry: [DEV + 'js/app.jsx'],
     output: {
         path: DEBUG,
@@ -30,7 +31,11 @@ let config = {
             {
                 test: /\.(eot|svg|ttf|woff|woff2)$/,
                 loader: 'url-loader?limit=100000'
-            }
+            },
+            {
+                test: /\.(jpg|jpeg|png|gif|)$/,
+                loader: 'url-loader?limit=100000?name=[name].[ext]&publicPath=../assets/&outputPath=assets/'
+            },
         ],
     },
     plugins: [
