@@ -1,5 +1,69 @@
-@import './bootstrap.min.css';
+/*fonts*/
+@font-face {
+    font-family: 'veteran_typewriterregular';
+    src: url("../assets/fonts/veteran_typewriter-webfont.woff") format('woff');
+    font-weight: normal;
+    font-style: normal;
 
-* {
-    text-align: justify;
+}
+
+@font-face {
+    font-family: 'journalregular';
+    src: url("../assets/fonts/journal-webfont.woff") format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+/*end fonts*/
+
+body {
+    background-image: url("../assets/intro-bg.jpg");
+}
+
+/*link styles*/
+a {
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.4s;
+}
+
+
+a:visited {
+    color: inherit;
+}
+
+a:hover {
+    color: #B2EBF2;
+}
+/*end link styles*/
+
+.text-center {
+    text-align: center;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4em;
+    font-family: 'Roboto', serif;
+}
+.top-bar::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.field-line, .button-line {
+    text-align: center;
+    padding: 1em;
+}
+
+.error-message {
+    padding: 0 1em;
+    color: tomato;
+}
+
+.success-message {
+    padding: 0 1em;
+    color: green;
 }
