@@ -2,8 +2,6 @@
  * A module to set up and handle the database.
  */
 let mongoose = require('mongoose');
-let session = require('express-session');
-let mongoStore = require('connect-mongo')(session);
 
 let isConnected = true;
 
@@ -40,5 +38,4 @@ function connect() {
 module.exports = {
     connect: connect,
     isConnected: isConnected,
-    sessionStore: sessionStore
 };
