@@ -5,7 +5,7 @@
 //Requires.
 let mongoose = require('mongoose');
 let findOrCreate = require('mongoose-find-or-create');
-let bcrypt = require('bcrypt');
+let bcrypt = require('bcrypt-nodejs');
 let Schema = mongoose.Schema;
 
 /**

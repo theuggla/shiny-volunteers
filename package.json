@@ -32,7 +32,7 @@
   "homepage": "https://github.com/1dv430/ma222jp-project#readme",
   "dependencies": {
     "axios": "^0.16.0",
-    "bcrypt": "^1.0.2",
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.1",
     "connect-mongo": "^1.3.2",
     "express": "^4.15.2",
