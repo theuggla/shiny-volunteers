@@ -17,8 +17,20 @@
 /*end fonts*/
 
 body {
+    background-color: black;
     background-image: url("../assets/intro-bg.jpg");
 }
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: #F5F5F5 !important;
+}
+
+
+
 
 /*link styles*/
 a {
@@ -44,6 +56,7 @@ a:hover {
 .top-bar {
     display: flex;
     justify-content: space-between;
+    color: #F5F5F5;
     margin-bottom: 4em;
     font-family: 'Roboto', serif;
 }
@@ -56,6 +69,10 @@ a:hover {
 .field-line, .button-line {
     text-align: center;
     padding: 1em;
+}
+
+.button-line {
+    margin-bottom: 1em;
 }
 
 .error-message {

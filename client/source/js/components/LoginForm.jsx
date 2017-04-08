@@ -2,6 +2,17 @@ import React, { PropTypes } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
+const styles = {
+    floatingLabelStyle: {
+        color: '#F5F5F5',
+        textAlign: 'center'
+    },
+    inputStyle: {
+        textAlign: 'center',
+        color: '#F5F5F5'
+    }
+};
+
 
 const SignUpForm = ({
     onSubmit,
@@ -16,35 +27,33 @@ const SignUpForm = ({
 
             <div className="field-line">
                 <TextField
-                    floatingLabelText="Email"
+                    floatingLabelText="email"
                     name="email"
                     errorText={errors.email}
                     onChange={onChange}
                     value={user.email}
-                    style={{
-                        maxWidth: '80%',
-                        textAlign: 'center'
-                    }}
+                    floatingLabelStyle={styles.floatingLabelStyle}
+                    inputStyle={styles.inputStyle}
                 />
             </div>
 
             <div className="field-line">
                 <TextField
-                    floatingLabelText="Password"
+                    floatingLabelText="password"
                     type="password"
                     name="password"
                     onChange={onChange}
                     errorText={errors.password}
                     value={user.password}
-                    style={{
-                        maxWidth: '80%',
-                        textAlign: 'center'
-                    }}
+                    floatingLabelStyle={styles.floatingLabelStyle}
+                    inputStyle={styles.inputStyle}
                 />
             </div>
 
             <div className="button-line">
                 <RaisedButton type="submit" label="Login" primary />
+            </div>
+            <div className="button-line">
                 <a href="/login/facebook"><RaisedButton label="Login with Facebook" primary /></a>
             </div>
         </form>

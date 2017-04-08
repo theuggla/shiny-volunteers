@@ -6,6 +6,7 @@
 
 //Requires.
 let passport = require('passport');
+let jwt = require('jsonwebtoken');
 let Strategy = require('passport-local').Strategy;
 let Volunteer = require('../models/Volunteer');
 
@@ -18,11 +19,14 @@ let Volunteer = require('../models/Volunteer');
 function connect() {
     passport.use(
         new Strategy(
-
-        {usernameField: 'email'},
-
-        (username, password, cb) => {
-            Volunteer.findOrCreate({email: username}, (err, user, created) => {
+            {
+                usernameField: 'email',
+                passwordField: 'password',
+                session: false,
+                passReqToCallback: true
+            },
+            (req, email, password, cb) => {
+            Volunteer.findOrCreate({email: email.trim()}, (err, user, created) => {
                 if (err) { return cb(err); }
 
                 if (!user) { return cb(null, false); }
@@ -30,18 +34,34 @@ function connect() {
                 if (created) {
                     user.id = user._id;
                     user.roles.push('volunteer');
-                    user.hashPasswordAndSave(password);
+                    user.hashPasswordAndSave(password.trim());
                 } else {
-                    user.comparePassword(password)
-                        .then((result) => {
-                            if (result) return cb(null, user);
-                            return cb(null, false);
+                    user.comparePassword(password.trim())
+                        .then((isMatch) => {
+                            if (!isMatch) {
+                                const error = new Error('Incorrect password');
+                                error.name = 'IncorrectCredentialsError';
+
+                                return cb(error);
+                            }
+
+                            let payload = {
+                                sub: user.id
+                            };
+
+                            // create a token string
+                            let token = jwt.sign(payload, process.env.JWT_SECRET);
+                            let data = {
+                                email: user.email
+                            };
+
+                            return cb(null, token, data);
                         })
                         .catch((error) => {
-                            return cb(error, false);
+                            return cb(error);
                         });
-                }
 
+                }
             });
         }));
 

@@ -40,15 +40,19 @@ class LoginPage extends React.Component {
             password: this.state.user.password
         })
             .then((response) => {
-                console.log(response);
+                this.setState({
+                    errors: {}
+                });
+
+                console.log('The form is valid');
+                console.log('you are logged in');
             })
             .catch((error) => {
-                console.log(error.response); //wrong on the server
-                console.log(error); //offline, or server not responding
-                console.log('we had a wrong');
-                let errors = {};
-                errors.summary = 'we had a wrong';
-                this.setState({errors: errors});
+                const errors = error.response ? error.response.data.errors ? error.response.data.errors : error.response.data : {summary: 'you seem to be offline'};
+
+                this.setState({
+                    errors: errors
+                });
             });
     }
 
@@ -58,7 +62,6 @@ class LoginPage extends React.Component {
             <LoginForm
                 onSubmit={this.processForm}
                 onChange={this.changeUser}
-                onFBLogin={this.loginWithFacebook}
                 errors={this.state.errors}
                 user={this.state.user}
             />

@@ -13,6 +13,8 @@ let passport = require('passport');
 let facebookauth = require('./lib/facebookauthresource');
 let localauth = require('./lib/localauthresource');
 let db = require('./lib/dbresource');
+let login = require('./routes/login');
+let api = require('./routes/api');
 
 
 let app = express();
@@ -58,27 +60,14 @@ app.use(csp({
     browserSniff: false
 }));
 
-app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
-
 // Initialize Passport and restore authentication state, if any, from the
 // session.
 app.use(passport.initialize());
-app.use(passport.session());
 
 //Routes------------------------------------------------------------------------------------------------------------
-app.get('/login/facebook', passport.authenticate('facebook'));
 
-app.post('/login/local', passport.authenticate('local'), (req, res) => {
-    console.log('did we make it?');
-    console.log(req.user);
-    res.send({message: 'made it'});
-});
-
-app.get('/login/facebook/return',
-    passport.authenticate('facebook'), (req, res) => {
-    console.log('we made it');
-        res.redirect('/');
-    });
+app.use('/login', login);
+app.use('/api', api);
 
 //Custom Error Pages-------------------------------------------------------------------------------------------------
 

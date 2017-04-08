@@ -6,12 +6,8 @@ import { Link } from 'react-router-dom';
 const Container = React.createClass({
     render: function () {
         return (
-            <div style={{
-                color: '#4DD0E1',
-            }}>
-                <div className="top-bar" style={{
-                    fontSize: '1em',
-                }}>
+            <div>
+                <div className="top-bar">
                         <Link to="/about">About</Link>
                         <Link to="/">Shiny App</Link>
                         <Link to="/login">Login</Link>

@@ -36,7 +36,17 @@ function connect() {
                         user.save();
                     }
 
-                    return done(null, user);
+                    let payload = {
+                        sub: user.id
+                    };
+
+                    // create a token string
+                    let token = jwt.sign(payload, process.env.JWT_SECRET);
+                    let data = {
+                        email: user.email
+                    };
+
+                    return done(null, token, data);
                 });
         }));
 
