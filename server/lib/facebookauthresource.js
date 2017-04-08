@@ -16,8 +16,8 @@ let Volunteer = require('../models/Volunteer');
  */
 function connect() {
     passport.use(new Strategy({
-            clientID: '1219936468104276',
-            clientSecret: '6f64667cbf8cd6953ef782085bc2201e',
+            clientID: process.env.FACEBOOK_ID,
+            clientSecret: process.env.FACEBOOK_SECRET,
             callbackURL: process.env.SITE_URL + '/login/facebook/return',
         },
 

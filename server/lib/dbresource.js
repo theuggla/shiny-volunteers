@@ -36,13 +36,6 @@ function connect() {
     mongoose.connect(process.env.MONGODB_URI);
 }
 
-/**
- * Sets up a session store to use with express-sessions.
- */
-function sessionStore() {
-    return new mongoStore({mongooseConnection: mongoose.connection});
-}
-
 //Exports.
 module.exports = {
     connect: connect,

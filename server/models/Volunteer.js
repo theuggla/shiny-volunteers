@@ -31,7 +31,7 @@ volunteerSchema.plugin(findOrCreate);
  * Salts and hashes the password.
  */
 volunteerSchema.methods.hashPasswordAndSave = function(password) {
-    bcrypt.hash(password, 10, (err, hash) => {
+    bcrypt.hash(password, null, null, (err, hash) => {
         if (err) return err;
         this.password = hash;
         this.save();
