@@ -3,10 +3,8 @@
  */
 
 require('mocha-steps');
-let React = require('react');
-let shallow = require('enzyme/shallow');
-let mount = require('enzyme/mount');
-let render = require('enzyme/render');
+import React from 'react';
+import { shallow, mount, render } from 'enzyme';
 let Foo = require('./Foo.jsx');
 
 describe('Example tests', () => {
