@@ -1,11 +1,35 @@
+let webpack = require('webpack');
+let path = require('path');
 let webpackConfig = require('./webpack.config.js');
-process.env.CHROME_BIN = '/usr/bin/chrome';
+let cwd = __dirname ? __dirname : process.cwd();
+
+
+webpackConfig.devtool = 'inline-source-map';
+
+webpackConfig.module.loaders.concat([
+    {
+        test: /\.(js|jsx)$/,
+        loader: 'babel-loader',
+        include: path.join(cwd, 'client/source/js'),
+        query: {
+            presets: ['react', 'airbnb', 'es2015', 'stage-0']
+        }
+    },
+]);
+
+webpackConfig.externals = {
+    'cheerio': 'window',
+    'react' : 'react',
+    'react/addons': 'react',
+    'react/lib/ExecutionEnvironment': 'react',
+    'react/lib/ReactContext': 'react'
+};
 
 module.exports = function(config) {
     config.set({
 
-        browsers: ['PhantomJS'],
-        frameworks: ['jasmine'],
+        browsers: ['Firefox'],
+        frameworks: ['mocha', 'chai'],
 
         autoWatch: false,
         files: ['webpack.tests.js'],
@@ -27,9 +51,6 @@ module.exports = function(config) {
         reporters: ['dots'],
         singleRun: true,
 
-        webpackMiddleware: {
-            noInfo: true
-        },
 
         browserNoActivityTimeout: 100000, // 100 seconds
 

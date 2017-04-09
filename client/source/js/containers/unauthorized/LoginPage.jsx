@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
-import LoginForm from '../components/LoginForm.jsx';
-import UnauthorizedContainer from '../components/UnauthorizedContainer.jsx';
+import LoginForm from '../../components/unauthorized/LoginForm.jsx';
+import UnauthorizedContainer from '../../components/unauthorized/UnauthorizedContainer.jsx';
 import axios from 'axios';
 
 class LoginPage extends React.Component {

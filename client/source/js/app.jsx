@@ -8,8 +8,8 @@ import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 
-import WelcomePage from './components/WelcomePage.jsx';
-import LoginPage from './containers/LoginPage.jsx';
+import WelcomePage from './components/unauthorized/WelcomePage.jsx';
+import LoginPage from './containers/unauthorized/LoginPage.jsx';
 import '../css/style.css';
 
 

@@ -19,7 +19,7 @@ let config = {
     module: {
         loaders: [
             {
-                test: /\.js?x$/,
+                test: /\.(js|jsx)$/,
                 include: DEV + 'js',
                 loader: "babel-loader"
             },
