@@ -3,11 +3,11 @@
  */
 
 require('mocha-steps');
-let React = require('react');
-let shallow = require('enzyme/shallow');
-let mount = require('enzyme/mount');
-let render = require('enzyme/render');
-let Foo = require('./Foo.jsx');
+import React from 'react';
+import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
+import { render } from 'enzyme';
+import Foo from './Foo.jsx';
 
 describe('Example tests', () => {
 
@@ -39,13 +39,9 @@ describe('Example tests', () => {
         });
     });
 
-});
-
-/*
-
     describe("A react suite", () => {
-        it("should work for class names", (done) => {
-            expect(shallow(<Foo />).contains(<div className="foo" />)).to.equal(true);
+        it("should work for child nodes", (done) => {
+            expect(shallow(<Foo />).contains(<p>Oi</p>)).to.equal(true);
             done();
         });
 
@@ -60,5 +56,3 @@ describe('Example tests', () => {
         });
     });
 });
-*/
-

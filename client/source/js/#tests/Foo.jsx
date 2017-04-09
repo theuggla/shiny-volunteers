@@ -1,22 +1,13 @@
 let React = require('react');
 
-const propTypes = {};
-
-const defaultProps = {};
-
 class Foo extends React.Component {
     constructor(props) {
         super(props);
     }
 
     render() {
-        return (
-            <div className="foo" />
-        );
+        return (<div className="foo"><p>Oi</p></div>);
     }
 }
 
-Foo.propTypes = propTypes;
-Foo.defaultProps = defaultProps;
-
-export default Foo;
+module.exports = Foo;
