@@ -3,6 +3,11 @@
  */
 
 require('mocha-steps');
+let React = require('react');
+let shallow = require('enzyme/shallow');
+let mount = require('enzyme/mount');
+let render = require('enzyme/render');
+let Foo = require('./Foo.jsx');
 
 describe('Example tests', () => {
 
@@ -33,8 +38,11 @@ describe('Example tests', () => {
 
         });
     });
+
 });
+
 /*
+
     describe("A react suite", () => {
         it("should work for class names", (done) => {
             expect(shallow(<Foo />).contains(<div className="foo" />)).to.equal(true);
