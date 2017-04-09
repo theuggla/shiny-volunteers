@@ -3,9 +3,6 @@
  */
 
 require('mocha-steps');
-import React from 'react';
-import { shallow, mount, render } from 'enzyme';
-let Foo = require('./Foo.jsx');
 
 describe('Example tests', () => {
 
@@ -36,7 +33,8 @@ describe('Example tests', () => {
 
         });
     });
-
+});
+/*
     describe("A react suite", () => {
         it("should work for class names", (done) => {
             expect(shallow(<Foo />).contains(<div className="foo" />)).to.equal(true);
@@ -54,5 +52,5 @@ describe('Example tests', () => {
         });
     });
 });
-
+*/
 
