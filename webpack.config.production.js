@@ -29,5 +29,5 @@ config.plugins = config.plugins.concat([
     })
 ]);
 
-//Exports.
+// Exports.
 module.exports = config;

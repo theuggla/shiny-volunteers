@@ -41,11 +41,11 @@ module.exports = function(config) {
         files: ['webpack.tests.js'],
         frameworks: ['mocha', 'chai'],
         preprocessors: {
-            'webpack.tests.js': ['webpack', 'sourcemap', 'babel'],
+            'webpack.tests.js': ['webpack', 'sourcemap', 'babel']
         },
         reporters: ['dots'],
         singleRun: true,
-        webpack: webpackConfig,
+        webpack: webpackConfig
 
     });
 };

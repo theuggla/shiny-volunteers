@@ -1,7 +1,6 @@
-let webpack = require('webpack');
 let path = require('path');
 let HTMLWebpackPlugin = require('html-webpack-plugin');
-let ExtractTextPlugin = require("extract-text-webpack-plugin");
+let ExtractTextPlugin = require('extract-text-webpack-plugin');
 let CopyWebpackPlugin = require('copy-webpack-plugin');
 
 let cwd = __dirname ? __dirname : process.cwd();
@@ -21,12 +20,12 @@ let config = {
             {
                 test: /\.(js|jsx)$/,
                 include: DEV + 'js',
-                loader: "babel-loader"
+                loader: 'babel-loader'
             },
             {
                 test: /\.css$/,
                 include: DEV + 'css',
-                loader: ExtractTextPlugin.extract({fallback: "style-loader", use: "css-loader"})
+                loader: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader'})
             },
             {
                 test: /\.(eot|svg|ttf|woff|woff2)$/,
@@ -54,5 +53,5 @@ let config = {
     ]
 };
 
-//Export.
+// Export.
 module.exports = config;
