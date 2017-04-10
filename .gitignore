@@ -6,3 +6,4 @@ provision.sh
 client/debug
 client/dist
 .idea
+npm*
