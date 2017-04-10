@@ -2,12 +2,12 @@
  * Router for the login handling pages.
  */
 
-//Requires.
+// Requires.
 let router = require('express').Router();
 let passport = require('passport');
 let validateLoginForm = require('../middleware/middleware').validateLoginForm;
 
-//Routes---------------------------------------------------------------------------------------------------------------
+// Routes---------------------------------------------------------------------------------------------------------------
 
 router.post('/local', validateLoginForm, (req, res, next) => {
     return passport.authenticate('local', (err, token, userData) => {
@@ -17,14 +17,13 @@ router.post('/local', validateLoginForm, (req, res, next) => {
                     success: false,
                     summary: err.message
                 });
+            } else {
+                return res.status(400).json({
+                    success: false,
+                    summary: 'Could not process the form.'
+                });
             }
-
-            return res.status(400).json({
-                success: false,
-                summary: 'Could not process the form.'
-            });
         }
-
 
         return res.json({
             success: true,
@@ -32,6 +31,7 @@ router.post('/local', validateLoginForm, (req, res, next) => {
             token,
             user: userData
         });
+
     })(req, res, next);
 });
 
@@ -44,5 +44,5 @@ router.route('/facebook/return')
     });
 
 
-//Exports-------------------------------------------------------------------------------------------------------------
+// Exports-------------------------------------------------------------------------------------------------------------
 module.exports = router;

@@ -4,12 +4,12 @@
   "description": "A web application to match volunteers against volunteer opportunities",
   "main": "server.js",
   "engines": {
-    "node": "7.7.3"
+    "node": "6.10.2"
   },
   "scripts": {
     "build": "webpack",
     "start": "node server/server.js",
-    "watch": "webpack && nodemon /vagrant/server/server.js",
+    "watch": "webpack && nodemon server/server.js",
     "test": "karma start",
     "heroku-postbuild": "npm install --dev && webpack"
   },

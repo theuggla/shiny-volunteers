@@ -24,18 +24,18 @@ function connect() {
     });
 
     // Close database connection if node process closes.
-    process.on("SIGINT", () => {
+    process.on('SIGINT', () => {
         db.close(() => {
             process.exit(0);
         });
     });
 
-    //Connect to the database
+    // Connect to the database
     mongoose.connect(process.env.MONGODB_URI);
 }
 
-//Exports.
+// Exports.
 module.exports = {
     connect: connect,
-    isConnected: isConnected,
+    isConnected: isConnected
 };
