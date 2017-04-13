@@ -7,96 +7,166 @@ let Volunteer = require('../models/Volunteer');
 let jwt = require('jsonwebtoken');
 
 
-passport.use(new FacebookStrategy({
-        clientID: process.env.FACEBOOK_ID,
-        clientSecret: process.env.FACEBOOK_SECRET,
-        callbackURL: process.env.SITE_URL + '/login/facebook/return'
-    },
+passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password', session: false, passReqToCallback: true}, (req, email, password, done) => {
+    Volunteer.findOne({'info.email': email.trim()}, (err, user) => {
+        // Something went wrong.
+        if (err) {
+            return done(err);
+        }
 
-    (accessToken, refreshToken, profile, done) => { //kommer inte hitta den under facebookid pga har bytt namn på facebookid
-        Volunteer.findOrCreate({facebookid: profile.id}, (err, user, created) => {
-            if (err) return done(err, false);
+        if (user && user.local.password) { // User exists.
+            user.comparePassword(password.trim())
+                .then((isMatch) => {
+                    if (!isMatch) {
+                        let error = new Error('Incorrect password');
+                        error.name = 'IncorrectCredentialsError';
 
-            if (created)
-            {
-                if (profile.email)
-                {
-                    user.email = profile.email;
-                }
-                user.roles.push('volunteer');
-                user.save();
-            } else {
-                let payload = {
-                    sub: user.id
-                };
+                        return done(error);
+                    }
 
-                // Create a token string
-                let token = jwt.sign(payload, process.env.JWT_SECRET);
-                let data = {
-                    email: user.email
-                };
+                    return done(null, user);
+                })
+                .catch((err) => {
+                    return done(err);
+                });
+        } else if (user) { //User already has Facebook login.
+            console.log('User already has facebook login.');
+            user.local.email = user.info.email;
+            user.save()
+                .then((savedUser) => {
+                    console.log('user saved! ' + savedUser.info.email);
 
-                return done(null, token, data);
-            }
-        });
-    }));
-
-passport.use(
-    new LocalStrategy(
-        {
-            usernameField: 'email',
-            passwordField: 'password',
-            session: false,
-            passReqToCallback: true
-        },
-        (req, email, password, cb) => {
-            Volunteer.findOrCreate({email: email.trim()}, (err, user, created) => {
-                if (err) { return cb(err); }
-
-                if (!user) { return cb(null, false); }
-
-                if (created) {
-                    user.id = user._id;
-                    user.roles.push('volunteer');
-                    user.hashPasswordAndSave(password.trim());
-                } else {
-                    user.comparePassword(password.trim())
-                        .then((isMatch) => {
-                            if (!isMatch) {
-                                const error = new Error('Incorrect password');
-                                error.name = 'IncorrectCredentialsError';
-
-                                return cb(error);
-                            }
-
-                            let payload = {
-                                sub: user.id
-                            };
-
-                            // Create a token string
-                            let token = jwt.sign(payload, process.env.JWT_SECRET);
-                            let data = {
-                                email: user.email
-                            };
-
-                            return cb(null, token, data);
-                        })
-                        .catch((error) => {
-                            return cb(error);
-                        });
-
+                    return user.hashPasswordAndSave(password);
+                })
+                .then((user) => {
+                    return done(null, user);
+                })
+                .catch((error) => {
+                    return done(error);
+                });
+        } else { // User does not exist.
+            console.log('user wasnt found. creating user.');
+            let newUser = new Volunteer({
+                info  : {
+                    email       : email.trim(),
+                    roles       : ['volunteer']
+                },
+                local : {
+                    email       : email.trim()
+                },
+                profile : {
+                    isComplete  : false
                 }
             });
-        }));
 
-passport.serializeUser((user, cb) => {
-    cb(null, user.id);
+            newUser.save()
+                .then((savedUser) => {
+                    console.log('user saved! ' + savedUser.info.email);
+
+                    return savedUser.hashPasswordAndSave(password);
+                })
+                .then((user) => {
+                    console.log('password is saved');
+                })
+                .then((user) => {
+                    return done(null, user);
+                })
+                .catch((error) => {
+                    return done(error);
+                });
+        }
+
+                    /*
+                    let payload = {
+                        sub: user.id
+                    };
+
+                    // Create a token string
+                    let token = jwt.sign(payload, process.env.JWT_SECRET);
+                    let data = {
+                        email: user.email
+                    };
+
+                    return done(null, token, data);*/
+    });
+}));
+
+
+passport.use(new FacebookStrategy({
+    clientID: process.env.FACEBOOK_ID,
+    clientSecret: process.env.FACEBOOK_SECRET,
+    callbackURL: process.env.SITE_URL + '/login/facebook/return',
+    profileFields: ['id', 'displayName', 'email']},
+
+    (accessToken, refreshToken, profile, done) => {
+        if (profile.emails) {
+            Volunteer.findOne({'info.email': profile.emails[0].value}, (err, user) => {
+                if (err) {
+                    return done(err);
+                }
+
+                if (user) {
+                    console.log('user have local login');
+                    user.facebook.id = profile.id;
+                    user.facebook.email = user.info.email;
+                    user.save()
+                        .then(() => {
+                            return done(null, user);
+                        })
+                        .catch((error) => {
+                            return done(error);
+                        });
+                }
+            });
+        } else {
+            Volunteer.findOrCreate({'facebook.id': profile.id}, (err, user, created) => {
+                if (err) {
+                    return done(err, false);
+                }
+
+                if (created) {
+                    if (profile.emails) {
+                        user.info.email = profile.emails[0].value;
+                        user.facebook.email = profile.emails[0].value;
+                    }
+
+                    user.info.roles.push('volunteer');
+                    user.save()
+                        .then(() => {
+                            return done(null, user);
+                        })
+                        .catch((error) => {
+                            return done(error);
+                        });
+                }
+            });
+        }
+
+            /*
+            let payload = {
+                sub: user.id
+            };
+            // Create a token string
+            let token = jwt.sign(payload, process.env.JWT_SECRET);
+            let data = {
+                email: user.email
+            };
+
+            return done(null, token, data);*/
+}));
+
+// Put the user in the database.
+passport.serializeUser((user, done) => {
+    return done(null, user.id);
 });
 
-passport.deserializeUser((id, cb) => {
+// Retrieve the user from the database.
+passport.deserializeUser((id, done) => {
     Volunteer.findById(id, (err, user) => {
-        if (err) { return cb(err); }
-        cb(null, user);
+        if (err) {
+            return done(err);
+        }
+
+        return done(null, user);
     });
 });
-

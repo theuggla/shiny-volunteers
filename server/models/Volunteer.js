@@ -11,7 +11,7 @@ let userBase = require('./UserBase');
  */
 let volunteerSchema = userBase({
     profile: {
-
+        isComplete: Boolean
     }
 });
 

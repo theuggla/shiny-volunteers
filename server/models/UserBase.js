@@ -14,19 +14,19 @@ module.exports = function(paths) {
         info: {
             email: {
                 type: String,
-                unique: true
+                unique: true,
+                sparse: true
             },
             roles: [String]
         },
         local: {
             email: {
                 type: String,
-                unique: true,
                 validate: {
                     validator: function (value) {
                         return (/.+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/).test(value);
                     },
-                    message: 'email is not valid!'
+                    message: 'email is not valid'
                 }
             },
             password: String
@@ -34,7 +34,8 @@ module.exports = function(paths) {
         facebook: {
             id: {
                 type: String,
-                unique: true
+                unique: true,
+                sparse: true
             },
             email: String
         }
@@ -51,25 +52,29 @@ module.exports = function(paths) {
      * Salts and hashes the password.
      */
     schema.methods.hashPasswordAndSave = function(password) {
-        bcrypt.hash(password, null, null, (err, hash) => {
-            if (err) return err;
-            this.password = hash;
-            this.save();
+        return new Promise((resolve, reject) => {
+            bcrypt.hash(password, null, null, (err, hash) => {
+                if (err) {
+                    reject(err);
+                }
+                this.local.password = hash;
+                this.save();
+                resolve(this);
+            });
         });
     };
-
 
     /**
      * Compares two passwords.
      * @param pass {string} the password to compare.
-     * @returns {Promise} a Promise that resolves
+     * @returns {Promise}  that resolves
      * true if the password is correct
      * false if it is not correct
      * or rejects with an error.
      */
     schema.methods.comparePassword = function(pass) {
         return new Promise((resolve, reject) => {
-            bcrypt.compare(pass, this.password, (err, res) => {
+            bcrypt.compare(pass, this.local.password, (err, res) => {
                 if (err) {
                     reject(err);
                 } else {

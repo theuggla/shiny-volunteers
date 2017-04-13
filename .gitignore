@@ -1,7 +1,5 @@
 node_modules
-.vagrant
-Vagrantfile
-provision.sh
+.env
 .editorconfig
 client/debug
 client/dist

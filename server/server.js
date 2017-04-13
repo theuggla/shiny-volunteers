@@ -10,7 +10,6 @@ let http = require('http');
 let helmet = require('helmet');
 let csp = require('helmet-csp');
 let passport = require('passport');
-let auth = require('./lib/auth');
 let db = require('./lib/dbresource');
 let login = require('./routes/login');
 let api = require('./routes/api');
@@ -26,8 +25,10 @@ let cwd = __dirname ? __dirname : process.cwd();
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 let staticPath = path.join(cwd, (process.env.NODE_ENV === 'production' ? '/../client/dist' : '/../client/debug'));
-app.set('port', port);
+require('dotenv').config({silent: process.env.NODE_ENV === 'production'});
+require('./lib/auth');
 
+app.set('port', port);
 db.connect();
 
 // Middlewares-------------------------------------------------------------------------------------------------------
