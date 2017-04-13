@@ -60,6 +60,7 @@ a:hover {
     margin-bottom: 4em;
     font-family: 'Roboto', serif;
 }
+
 .top-bar::after {
     content: '';
     display: block;
@@ -76,11 +77,13 @@ a:hover {
 }
 
 .error-message {
+    text-align: center;
     padding: 0 1em;
     color: tomato;
 }
 
 .success-message {
+    text-align: center;
     padding: 0 1em;
     color: green;
 }

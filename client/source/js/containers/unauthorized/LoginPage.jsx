@@ -1,12 +1,14 @@
 import React, { PropTypes } from 'react';
 import LoginForm from '../../components/unauthorized/LoginForm.jsx';
-import UnauthorizedContainer from '../../components/unauthorized/UnauthorizedContainer.jsx';
+import UnauthorizedContainer from './UnauthorizedContainer.jsx';
+import auth from '../../modules/Auth';
 import axios from 'axios';
 
 class LoginPage extends React.Component {
 
     constructor(props) {
-        super(props);
+        super({routes: props.authorize});
+        console.log(props);
 
         this.state = {
             errors: {},
@@ -40,14 +42,19 @@ class LoginPage extends React.Component {
             password: this.state.user.password
         })
             .then((response) => {
+            console.log(response);
                 this.setState({
                     errors: {}
                 });
+                console.log(response.data.user);
+                auth.authenticateUser(response.token, response.data.user.roles);
 
                 console.log('The form is valid');
                 console.log('you are logged in');
+                this.props.history.push('/volunteer');
             })
             .catch((error) => {
+            console.log(error);
                 const errors = error.response ? error.response.data.errors ? error.response.data.errors : error.response.data : {summary: 'you seem to be offline'};
 
                 this.setState({

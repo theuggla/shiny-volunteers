@@ -2,10 +2,8 @@
  * Defines middlewares.
  */
 
-
 let Volunteer = require('../models/Volunteer');
-
-//Define Middleware----------------------------------------------------------------------------------------------------
+let jwt = require('jsonwebtoken');
 
 /**
  *  The Auth Checker middleware function.
@@ -15,18 +13,20 @@ module.exports.checkIfAuthorized = function(req, res, next) {
         return res.status(401).end();
     }
 
-    //get the token
+    // Get the token.
     const token = req.headers.authorization.split(' ')[1];
 
-    // decode the token
+    // Decode the token.
     return jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-        if (err) { return res.status(401).end(); }
+        if (err) {
+            return res.status(401).end();
+        }
 
         const userId = decoded.sub;
 
-        // check if a user exists
+        // Check if a user exists.
         return Volunteer.findById(userId, (err, user) => {
-            if (user || !user) {
+            if (err || !user) {
                 return res.status(401).end();
             }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, CardTitle } from 'material-ui/Card';
-import UnauthorizedContainer from './UnauthorizedContainer.jsx';
+import UnauthorizedContainer from '../../containers/unauthorized/UnauthorizedContainer.jsx';
 
 
 const WelcomePage = React.createClass({

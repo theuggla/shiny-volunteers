@@ -32,7 +32,7 @@ passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password
                         return done(error);
                     }
 
-                    return done(null, user);
+                    return done(null, getJWT(user), user.info);
                 })
                 .catch((error) => {
                     return done(error);
@@ -47,7 +47,7 @@ passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password
                     return savedUser.hashPasswordAndSave(password);
                 })
                 .then((savedUser) => {
-                    return done(null, savedUser);
+                    return done(null, getJWT(savedUser), savedUser.info);
                 })
                 .catch((error) => {
                     return done(error);
@@ -74,25 +74,12 @@ passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password
                     return savedUser.hashPasswordAndSave(password);
                 })
                 .then((savedUser) => {
-                    return done(null, savedUser);
+                    return done(null, getJWT(savedUser), user.info);
                 })
                 .catch((error) => {
                     return done(error);
                 });
         }
-
-                    /*
-                    let payload = {
-                        sub: user.id
-                    };
-
-                    // Create a token string
-                    let token = jwt.sign(payload, process.env.JWT_SECRET);
-                    let data = {
-                        email: user.email
-                    };
-
-                    return done(null, token, data);*/
     });
 }));
 
@@ -119,7 +106,7 @@ passport.use(new FacebookStrategy({clientID: process.env.FACEBOOK_ID, clientSecr
                     user.facebook.email = user.info.email;
                     user.save()
                         .then(() => {
-                            return done(null, user);
+                            return done(null, getJWT(user), user.info);
                         })
                         .catch((error) => {
                             return done(error);
@@ -134,12 +121,12 @@ passport.use(new FacebookStrategy({clientID: process.env.FACEBOOK_ID, clientSecr
 
             // Something went wrong.
             if (err) {
-                return done(err, false);
+                return done(err);
             }
 
             // The user already exists.
             if (user) {
-                return done(null, user);
+                return done(null, getJWT(user), user.info);
             }
 
             // The user did not exist.
@@ -157,30 +144,19 @@ passport.use(new FacebookStrategy({clientID: process.env.FACEBOOK_ID, clientSecr
                 });
 
                 if (profile.emails) {
-                    user.info.email = profile.emails[0].value;
-                    user.facebook.email = profile.emails[0].value;
+                    newUser.info.email = profile.emails[0].value;
+                    newUser.facebook.email = profile.emails[0].value;
                 }
 
                 newUser.save()
                     .then((savedUser) => {
-                        return done(null, savedUser);
+                        return done(null, getJWT(savedUser), savedUser.info);
                     })
                     .catch((error) => {
                         return done(error);
                     });
             }
         });
-            /*
-            let payload = {
-                sub: user.id
-            };
-            // Create a token string
-            let token = jwt.sign(payload, process.env.JWT_SECRET);
-            let data = {
-                email: user.email
-            };
-
-            return done(null, token, data);*/
 }));
 
 // Put the user in the database.
@@ -198,3 +174,17 @@ passport.deserializeUser((id, done) => {
         return done(null, user);
     });
 });
+
+/**
+ * Generates a JWT to send back for authentication.
+ * @param user the user to generate the token for.
+ * @returns {*} the token.
+ */
+function getJWT(user) {
+    let payload = {
+        scopes: user.info.roles,
+        sub: user._id
+    };
+
+    return jwt.sign(payload, process.env.JWT_SECRET);
+}
