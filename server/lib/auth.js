@@ -1,5 +1,6 @@
 'use strict';
 
+// Requires.
 let passport = require('passport');
 let LocalStrategy = require('passport-local').Strategy;
 let FacebookStrategy = require('passport-facebook').Strategy;
@@ -7,14 +8,21 @@ let Volunteer = require('../models/Volunteer');
 let jwt = require('jsonwebtoken');
 
 
+/**
+ * Local Passport-strategy.
+ * Will add the user if it does not already exist.
+ * Will connect the accounts if the user already has a Facebook-login.
+ */
 passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password', session: false, passReqToCallback: true}, (req, email, password, done) => {
     Volunteer.findOne({'info.email': email.trim()}, (err, user) => {
+
         // Something went wrong.
         if (err) {
             return done(err);
         }
 
-        if (user && user.local.password) { // User exists.
+        // User exists with a local login.
+        if (user && user.local.password) {
             user.comparePassword(password.trim())
                 .then((isMatch) => {
                     if (!isMatch) {
@@ -26,26 +34,28 @@ passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password
 
                     return done(null, user);
                 })
-                .catch((err) => {
-                    return done(err);
+                .catch((error) => {
+                    return done(error);
                 });
-        } else if (user) { //User already has Facebook login.
-            console.log('User already has facebook login.');
+        }
+
+        // User exists with a Facebook login.
+        if (user) {
             user.local.email = user.info.email;
             user.save()
                 .then((savedUser) => {
-                    console.log('user saved! ' + savedUser.info.email);
-
-                    return user.hashPasswordAndSave(password);
+                    return savedUser.hashPasswordAndSave(password);
                 })
-                .then((user) => {
-                    return done(null, user);
+                .then((savedUser) => {
+                    return done(null, savedUser);
                 })
                 .catch((error) => {
                     return done(error);
                 });
-        } else { // User does not exist.
-            console.log('user wasnt found. creating user.');
+        }
+
+        // User does not exist.
+        if (!user) {
             let newUser = new Volunteer({
                 info  : {
                     email       : email.trim(),
@@ -61,15 +71,10 @@ passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password
 
             newUser.save()
                 .then((savedUser) => {
-                    console.log('user saved! ' + savedUser.info.email);
-
                     return savedUser.hashPasswordAndSave(password);
                 })
-                .then((user) => {
-                    console.log('password is saved');
-                })
-                .then((user) => {
-                    return done(null, user);
+                .then((savedUser) => {
+                    return done(null, savedUser);
                 })
                 .catch((error) => {
                     return done(error);
@@ -91,22 +96,25 @@ passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password
     });
 }));
 
-
-passport.use(new FacebookStrategy({
-    clientID: process.env.FACEBOOK_ID,
-    clientSecret: process.env.FACEBOOK_SECRET,
-    callbackURL: process.env.SITE_URL + '/login/facebook/return',
-    profileFields: ['id', 'displayName', 'email']},
-
+/**
+ * Facebook Passport-strategy.
+ * Will add the user if it does not already exist.
+ * Will connect the accounts if the user already has a Local-login.
+ */
+passport.use(new FacebookStrategy({clientID: process.env.FACEBOOK_ID, clientSecret: process.env.FACEBOOK_SECRET, callbackURL: process.env.SITE_URL + '/login/facebook/return', profileFields: ['id', 'displayName', 'email']},
     (accessToken, refreshToken, profile, done) => {
+
+        // The Facebook-profile has an associated email-address.
         if (profile.emails) {
             Volunteer.findOne({'info.email': profile.emails[0].value}, (err, user) => {
+
+                // Something went wrong.
                 if (err) {
                     return done(err);
                 }
 
+                // The user already has a local login.
                 if (user) {
-                    console.log('user have local login');
                     user.facebook.id = profile.id;
                     user.facebook.email = user.info.email;
                     user.save()
@@ -118,30 +126,50 @@ passport.use(new FacebookStrategy({
                         });
                 }
             });
-        } else {
-            Volunteer.findOrCreate({'facebook.id': profile.id}, (err, user, created) => {
-                if (err) {
-                    return done(err, false);
-                }
-
-                if (created) {
-                    if (profile.emails) {
-                        user.info.email = profile.emails[0].value;
-                        user.facebook.email = profile.emails[0].value;
-                    }
-
-                    user.info.roles.push('volunteer');
-                    user.save()
-                        .then(() => {
-                            return done(null, user);
-                        })
-                        .catch((error) => {
-                            return done(error);
-                        });
-                }
-            });
         }
 
+        // Facebook-profile does not have an associated email address.
+        // Or user did not have a local login.
+        Volunteer.findOne({'facebook.id': profile.id}, (err, user) => {
+
+            // Something went wrong.
+            if (err) {
+                return done(err, false);
+            }
+
+            // The user already exists.
+            if (user) {
+                return done(null, user);
+            }
+
+            // The user did not exist.
+            if (!user) {
+                let newUser = new Volunteer({
+                    info  : {
+                        roles       : ['volunteer']
+                    },
+                    facebook : {
+                        id       : profile.id
+                    },
+                    profile : {
+                        isComplete  : false
+                    }
+                });
+
+                if (profile.emails) {
+                    user.info.email = profile.emails[0].value;
+                    user.facebook.email = profile.emails[0].value;
+                }
+
+                newUser.save()
+                    .then((savedUser) => {
+                        return done(null, savedUser);
+                    })
+                    .catch((error) => {
+                        return done(error);
+                    });
+            }
+        });
             /*
             let payload = {
                 sub: user.id

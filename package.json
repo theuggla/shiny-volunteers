@@ -85,6 +85,8 @@
     "mocha-steps": "^1.0.2",
     "nodemon": "^1.11.0",
     "react-addons-test-utils": "^15.5.1",
+    "react-dom": "^15.5.4",
+    "react-test-renderer": "^15.5.4",
     "style-loader": "^0.16.1",
     "url-loader": "^0.5.8"
   }
