@@ -1,14 +1,12 @@
 import React, { PropTypes } from 'react';
 import LoginForm from '../../components/unauthorized/LoginForm.jsx';
-import UnauthorizedContainer from './UnauthorizedContainer.jsx';
 import auth from '../../modules/Auth';
 import axios from 'axios';
 
 class LoginPage extends React.Component {
 
     constructor(props) {
-        super({routes: props.authorize});
-        console.log(props);
+        super(props);
 
         this.state = {
             errors: {},
@@ -51,7 +49,7 @@ class LoginPage extends React.Component {
 
                 console.log('The form is valid');
                 console.log('you are logged in');
-                this.props.history.push('/volunteer');
+                this.props.history.push('/volunteer/matches');
             })
             .catch((error) => {
             console.log(error);
@@ -65,14 +63,12 @@ class LoginPage extends React.Component {
 
     render() {
         return (
-            <UnauthorizedContainer>
             <LoginForm
                 onSubmit={this.processForm}
                 onChange={this.changeUser}
                 errors={this.state.errors}
                 user={this.state.user}
             />
-            </UnauthorizedContainer>
         );
     }
 

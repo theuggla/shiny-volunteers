@@ -160,12 +160,12 @@ passport.use(new FacebookStrategy({clientID: process.env.FACEBOOK_ID, clientSecr
 }));
 
 // Put the user in the database.
-passport.serializeUser((user, done) => {
-    return done(null, user.id);
+passport.serializeUser((userJWT, done) => {
+    return done(null, userJWT);
 });
 
 // Retrieve the user from the database.
-passport.deserializeUser((id, done) => {
+passport.deserializeUser((userJWT, done) => {
     Volunteer.findById(id, (err, user) => {
         if (err) {
             return done(err);

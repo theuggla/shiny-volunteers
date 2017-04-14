@@ -1,31 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import injectTapEventPlugin from 'react-tap-event-plugin';
-injectTapEventPlugin();
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import { BrowserRouter, Route } from 'react-router-dom'
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+injectTapEventPlugin();
 
 
-import WelcomePage from './components/unauthorized/WelcomePage.jsx';
-import LoginPage from './containers/unauthorized/LoginPage.jsx';
-import VolunteerContainer from './components/authorized/volunteer/VolunteerContainer.jsx';
-import VolunteerMatchPage from './components/authorized/volunteer/VolunteerMatchPage.jsx';
+import FrontEndContainer from './containers/unauthorized/FrontEndContainer.jsx';
+import VolunteerContainer from './containers/authorized/volunteer/VolunteerContainer.jsx';
+import OrganizationContainer from './containers/authorized/organization/OrganizationContainer.jsx';
 import '../css/style.css';
 
 
-const HelloWorld = () => (
+const App = () => (
     <BrowserRouter >
             <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
-                    <div>
-                        <Route exact path="/" component={WelcomePage}/>
-                        <Route path="/login" component={LoginPage}/>
-                        <Route render={(props) => <VolunteerMatchPage {...props} authorize={['volunteer']} />} path="/volunteer" />
-                    </div>
+                <Switch>
+                    <Route path="/volunteer" render={(props) => (<VolunteerContainer {...props} routes={[{authorize: ['volunteer']}]}/>)} />
+                    <Route path="/organization" render={(props) => (<OrganizationContainer {...props} routes={[{authorize: ['organization']}]}/>)} />
+                    <Route path="/" component={FrontEndContainer} />
+                </Switch>
             </MuiThemeProvider>
     </BrowserRouter>
 );
 
 
-ReactDOM.render(<HelloWorld />, document.getElementById('container'));
+ReactDOM.render(<App />, document.getElementById('container'));

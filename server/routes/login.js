@@ -36,7 +36,7 @@ router.post('/local', validateLoginForm, (req, res, next) => {
 });
 
 router.route('/facebook')
-    .get(passport.authenticate('facebook', { scope: ['public_profile', 'email']}));
+    .get(passport.authenticate('facebook', { session: false, scope: ['public_profile', 'email']}));
 
 router.route('/facebook/return')
     .get(passport.authenticate('facebook'), (req, res) => {
