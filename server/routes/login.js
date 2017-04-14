@@ -12,7 +12,13 @@ let validateLoginForm = require('../middleware/middleware').validateLoginForm;
 router.post('/local', validateLoginForm, (req, res, next) => {
     return passport.authenticate('local', (err, token, userData) => {
         if (err) {
+            console.log(err);
             if (err.name === 'IncorrectCredentialsError') {
+                return res.status(400).json({
+                    success: false,
+                    summary: err.message
+                });
+            } else if (err.name === 'AccountMismatchError') {
                 return res.status(400).json({
                     success: false,
                     summary: err.message
@@ -36,11 +42,16 @@ router.post('/local', validateLoginForm, (req, res, next) => {
 });
 
 router.route('/facebook')
-    .get(passport.authenticate('facebook', { session: false, scope: ['public_profile', 'email']}));
+    .get(passport.authenticate('facebook', { scope: ['public_profile', 'email']}));
 
 router.route('/facebook/return')
     .get(passport.authenticate('facebook'), (req, res) => {
-        return res.redirect('/');
+        return res.json({
+            success: true,
+            summary: 'You have successfully logged in!',
+            token : req.user,
+            user: req.authInfo
+        });
     });
 
 

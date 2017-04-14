@@ -6,7 +6,7 @@ const matchesIcon = <FontIcon className="material-icons">matches</FontIcon>;
 const applicationsIcon = <FontIcon className="material-icons">applications</FontIcon>;
 const profileIcon = <FontIcon className="material-icons">profile</FontIcon>;
 
-class BottomNavigationExampleSimple extends Component {
+class VolunteerNav extends Component {
     constructor(props) {
         super(props);
     }
@@ -55,4 +55,4 @@ class BottomNavigationExampleSimple extends Component {
     }
 }
 
-export default BottomNavigationExampleSimple;
+export default VolunteerNav;

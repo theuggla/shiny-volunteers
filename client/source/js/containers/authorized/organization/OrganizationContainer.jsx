@@ -1,22 +1,45 @@
 import React from 'react';
-import { Link, Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, Switch } from 'react-router-dom';
+import { AuthorizedComponent } from 'react-router-role-authorization';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
+import auth from '../../../modules/Auth';
+
+import OrganizationNav from '../../../components/authorized/OrganizationNav.jsx';
 import OurNeedsPage from './OurNeedsPage.jsx';
 import AddNeedPage from './AddNeedPage.jsx';
 import EditNeedPage from './EditNeedPage.jsx';
 
-const OrganizationContainer = (props) => (
-    <div className="volunteer-app">
-        <div className="top-bar">
-            <Link to={`${props.match.path}/tasks`}>tasks</Link>
-            <Link to={`${props.match.path}/profile`}>profile</Link>
-        </div>
 
-        <Redirect exact path={`${props.match.path}/`} to={`${props.match.path}/needs`}/>
-        <Route path={`${props.match.path}/needs`}  component={OurNeedsPage}/>
-        <Route path={`${props.match.path}/needs/add`}  component={AddNeedPage}/>
-        <Route path={`${props.match.path}/needs/edit`}  component={EditNeedPage}/>
-    </div>
-);
+class OrganizationContainer extends AuthorizedComponent {
+    constructor(props) {
+        super(props);
+
+        this.userRoles = auth.getAuthRoles();
+        this.notAuthorizedPath = "/"
+    }
+
+    handleUnauthorizedRole(routeRoles, userRoles) {
+        this.props.history.push('/');
+    }
+
+    render() {
+        return (
+            <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
+                <div className="organization-app app-container">
+                    <Redirect exact path={`${this.props.match.path}/`} to={`${this.props.match.path}/needs`}/>
+                    <Switch>
+                    <Route path={`${this.props.match.path}/needs/add`}  component={AddNeedPage}/>
+                    <Route path={`${this.props.match.path}/needs/edit`}  component={EditNeedPage}/>
+                    <Route path={`${this.props.match.path}/needs`}  component={OurNeedsPage}/>
+                    </Switch>
+                    <OrganizationNav match={this.props.match} history={this.props.history}/>
+                </div>
+            </MuiThemeProvider>
+        );
+    }
+}
 
 export default OrganizationContainer;

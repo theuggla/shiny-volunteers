@@ -30,14 +30,6 @@ module.exports = function(paths) {
                 }
             },
             password: String
-        },
-        facebook: {
-            id: {
-                type: String,
-                unique: true,
-                sparse: true
-            },
-            email: String
         }
     });
 

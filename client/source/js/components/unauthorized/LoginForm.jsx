@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
@@ -13,12 +13,12 @@ const styles = {
     }
 };
 
-
 const SignUpForm = ({
     onSubmit,
     onChange,
     errors,
     user,
+    allowFacebook
 }) => (
         <form action="/login/local" method="POST" onSubmit={onSubmit}>
             <h2>Login</h2>
@@ -53,17 +53,14 @@ const SignUpForm = ({
             <div className="button-line">
                 <RaisedButton type="submit" label="Login" primary />
             </div>
+
+
+            {allowFacebook &&
             <div className="button-line">
                 <a href="/login/facebook"><RaisedButton label="Login with Facebook" primary /></a>
-            </div>
+            </div> }
+
         </form>
 );
-
-SignUpForm.propTypes = {
-    onSubmit: PropTypes.func.isRequired,
-    onChange: PropTypes.func.isRequired,
-    errors: PropTypes.object.isRequired,
-    user: PropTypes.object.isRequired
-};
 
 export default SignUpForm;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Route } from 'react-router-dom';
+import { Link, Route, Switch } from 'react-router-dom';
 
 import Background from '../../../assets/intro-bg.jpg';
 
@@ -13,11 +13,10 @@ const Container = ({ match }) => (
                 <div className="top-bar">
                         <Link to="/about">About</Link>
                         <Link to="/">Shiny App</Link>
-                        <Link to="/login">Login</Link>
                 </div>
 
-                <Route exact path={`${match.url}`} component={Welcome}/>
-                <Route path="/login"  component={LoginPage}/>
+                <Route exact path={`${match.url}`} render={(props) => (<Welcome history={props.history}/>)}/>
+                <Route path="/login/:role"  render={(props) => (<LoginPage {...props}/>)}/>
                 <Route path="/about" component={About}/>
             </div>
 );

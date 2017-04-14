@@ -12,6 +12,14 @@ let userBase = require('./UserBase');
 let volunteerSchema = userBase({
     profile: {
         isComplete: Boolean
+    },
+    facebook: {
+        id: {
+            type: String,
+            unique: true,
+            sparse: true
+        },
+        email: String
     }
 });
 

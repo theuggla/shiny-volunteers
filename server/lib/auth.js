@@ -5,6 +5,7 @@ let passport = require('passport');
 let LocalStrategy = require('passport-local').Strategy;
 let FacebookStrategy = require('passport-facebook').Strategy;
 let Volunteer = require('../models/Volunteer');
+let Organization = require('../models/Organization');
 let jwt = require('jsonwebtoken');
 
 
@@ -41,6 +42,14 @@ passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password
 
         // User exists with a Facebook login.
         if (user) {
+            // User has a volunteer Facebook-login and tries to sign up as an Organization.
+            if (req.body.role === 'organization') {
+                let error = new Error('Cannot use the same email-address as an organization and a volunteer. Please sign up with another email.');
+                error.name = 'AccountMismatchError';
+
+                return done(error);
+            }
+
             user.local.email = user.info.email;
             user.save()
                 .then((savedUser) => {
@@ -56,25 +65,40 @@ passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password
 
         // User does not exist.
         if (!user) {
-            let newUser = new Volunteer({
-                info  : {
-                    email       : email.trim(),
-                    roles       : ['volunteer']
-                },
-                local : {
-                    email       : email.trim()
-                },
-                profile : {
-                    isComplete  : false
-                }
-            });
+            let newUser;
+
+            if (req.body.role === 'volunteer') {
+                newUser = new Volunteer({
+                    info  : {
+                        email       : email.trim(),
+                        roles       : ['volunteer']
+                    },
+                    local : {
+                        email       : email.trim()
+                    },
+                    profile : {
+                        isComplete  : false
+                    }
+                });
+            } else {
+                newUser = new Organization({
+                    info  : {
+                        email       : email.trim(),
+                        roles       : ['organization']
+                    },
+                    local : {
+                        email       : email.trim()
+                    }
+                });
+            }
+
 
             newUser.save()
                 .then((savedUser) => {
                     return savedUser.hashPasswordAndSave(password);
                 })
                 .then((savedUser) => {
-                    return done(null, getJWT(savedUser), user.info);
+                    return done(null, getJWT(savedUser), savedUser.info);
                 })
                 .catch((error) => {
                     return done(error);
@@ -166,7 +190,9 @@ passport.serializeUser((userJWT, done) => {
 
 // Retrieve the user from the database.
 passport.deserializeUser((userJWT, done) => {
-    Volunteer.findById(id, (err, user) => {
+    let decoded = jwt.verify(userJWT, process.env.JWT_SECRET);
+
+    Volunteer.findById(decoded.sub, (err, user) => {
         if (err) {
             return done(err);
         }

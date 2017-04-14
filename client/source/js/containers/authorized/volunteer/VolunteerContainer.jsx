@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, Switch } from 'react-router-dom';
 import { AuthorizedComponent } from 'react-router-role-authorization';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
@@ -17,7 +17,7 @@ class VolunteerContainer extends AuthorizedComponent {
         super(props);
 
         this.userRoles = auth.getAuthRoles();
-        this.notAuthorizedPath = '/login';
+        this.notAuthorizedPath = "/"
     }
 
     handleUnauthorizedRole(routeRoles, userRoles) {
@@ -31,16 +31,12 @@ class VolunteerContainer extends AuthorizedComponent {
         return (
             <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
             <div className="volunteer-app app-container">
-                <div className="top-bar">
-                    <Link to={`${this.props.match.path}/matches`}>matches</Link>
-                    <Link to={`${this.props.match.path}/applications`}>applications</Link>
-                    <Link to={`${this.props.match.path}/profile`}>profile</Link>
-                </div>
-
+                <Switch>
                 <Redirect exact path={`${this.props.match.path}/`} to={`${this.props.match.path}/matches`}/>
                 <Route path={`${this.props.match.path}/matches`}  component={MatchPage}/>
                 <Route path={`${this.props.match.path}/applications`}  component={ApplicationsPage}/>
                 <Route path={`${this.props.match.path}/profile`}  component={ProfilePage}/>
+                </Switch>
                 <VolunteerNav match={this.props.match} history={this.props.history}/>
             </div>
             </MuiThemeProvider>
