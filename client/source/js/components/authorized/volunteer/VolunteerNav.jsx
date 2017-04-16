@@ -20,6 +20,7 @@ class VolunteerNav extends Component {
     render() {
         return (
                 <BottomNavigation
+                    className="volunteer-nav"
                     selectedIndex={this.state.selectedIndex}
                     style={{margin: 0, padding: 0}}
                 >

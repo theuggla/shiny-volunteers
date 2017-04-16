@@ -20,6 +20,7 @@ class OrganizationNav extends Component {
     render() {
         return (
             <BottomNavigation
+                className ="organization-nav"
                 selectedIndex={this.state.selectedIndex}
                 style={{margin: 0, padding: 0}}
             >
