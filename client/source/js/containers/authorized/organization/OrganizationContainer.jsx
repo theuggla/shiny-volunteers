@@ -7,7 +7,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 import auth from '../../../modules/Auth';
 
-import OrganizationNav from '../../../components/authorized/OrganizationNav.jsx';
+import OrganizationNav from '../../../components/authorized/organization/OrganizationNav.jsx';
 import OurNeedsPage from './OurNeedsPage.jsx';
 import AddNeedPage from './AddNeedPage.jsx';
 import EditNeedPage from './EditNeedPage.jsx';

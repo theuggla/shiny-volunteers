@@ -33,7 +33,6 @@ class LoginPage extends React.Component {
 
     processForm(event) {
         //prevent form from sending
-        console.log(event);
         event.preventDefault();
 
         axios.post('/login/local', {

@@ -42,7 +42,11 @@ class Auth {
      */
 
     static getToken() {
-        return JSON.parse(Cookies.get('currentUser')).token;
+        if (Auth.isUserAuthenticated()) {
+            return JSON.parse(Cookies.get('currentUser')).token;
+        } else {
+            return undefined;
+        }
     }
 
     /**
@@ -51,7 +55,11 @@ class Auth {
      */
 
     static getAuthRoles() {
-        return JSON.parse(Cookies.get('currentUser')).roles;
+        if (Auth.isUserAuthenticated()) {
+            return JSON.parse(Cookies.get('currentUser')).roles;
+        } else {
+            return [];
+        }
     }
 
 }

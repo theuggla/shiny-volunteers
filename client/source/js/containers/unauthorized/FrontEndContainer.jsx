@@ -17,7 +17,7 @@ const Container = ({ match }) => (
 
                 <Route exact path={`${match.url}`} render={(props) => (<Welcome history={props.history}/>)}/>
                 <Route path="/login/:role"  render={(props) => (<LoginPage {...props}/>)}/>
-                <Route path="/about" component={About}/>
+                <Route id="about" path="/about" component={About}/>
             </div>
 );
 

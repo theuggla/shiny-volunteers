@@ -7,7 +7,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 import auth from '../../../modules/Auth';
 
-import VolunteerNav from '../../../components/authorized/VolunteerNav.jsx';
+import VolunteerNav from '../../../components/authorized/volunteer/VolunteerNav.jsx';
 import MatchPage from './MatchPage.jsx';
 import ApplicationsPage from './ApplicationsPage.jsx';
 import ProfilePage from './ProfilePage.jsx';
