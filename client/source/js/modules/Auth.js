@@ -8,6 +8,16 @@ class Auth {
      * @param {[string]} roles an array of roles the user is authenticated as
      */
     static authenticateUser(token, roles) {
+        if (!Array.isArray(roles)) {
+            roles = [roles];
+        }
+
+        roles.forEach((role) => {
+            if (typeof role !== 'string') {
+                throw new Error('Roles myst be an array of strings.');
+            }
+        });
+
         Cookies.set('currentUser', {token: token, roles: roles});
     }
 
@@ -16,7 +26,7 @@ class Auth {
      * @returns {boolean} true if the user is authenticated.
      */
     static isUserAuthenticated() {
-        return Cookies.get('currentUser') !== 'undefined';
+        return Cookies.get('currentUser') !== undefined;
     }
 
     /**
