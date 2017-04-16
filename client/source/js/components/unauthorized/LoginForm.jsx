@@ -20,7 +20,7 @@ const SignUpForm = ({
     user,
     allowFacebook
 }) => (
-        <form action="/login/local" method="POST" onSubmit={onSubmit}>
+        <form className="login-form" action="/login/local" method="POST" onSubmit={onSubmit}>
             <h2>Login</h2>
 
             {errors.summary && <p className="error-message">{errors.summary}</p>}
