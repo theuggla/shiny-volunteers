@@ -46,6 +46,11 @@ module.exports.validateLoginForm = function(req, res, next) {
     let isFormValid = true;
     let summary = '';
 
+    if (req.body.token) {
+        console.log('got here');
+        return next();
+    }
+
     if (!payload || typeof payload.email !== 'string' || payload.email.trim().length === 0 || !(/.+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(payload.email))) {
         isFormValid = false;
         errors.email = 'Please provide an email address.';

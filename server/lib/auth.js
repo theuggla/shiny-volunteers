@@ -16,95 +16,107 @@ let jwt = require('jsonwebtoken');
  */
 passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password', session: false, passReqToCallback: true}, (req, email, password, done) => {
     Volunteer.findOne({'info.email': email.trim()}, (err, user) => {
-
         // Something went wrong.
         if (err) {
             return done(err);
         }
 
-        // User exists with a local login.
-        if (user && user.local.password) {
-            user.comparePassword(password.trim())
-                .then((isMatch) => {
-                    if (!isMatch) {
-                        let error = new Error('Incorrect password');
-                        error.name = 'IncorrectCredentialsError';
+        // Check if user is already registred as an organization
+        Organization.findOne({'info.email': email.trim()}, (err, orgUser) => {
+            if (err) {
+                return done(err);
+            }
 
+            if (!user) {
+                user = orgUser;
+            }
+
+            // User exists with a local login.
+            if (user && user.local.password) {
+                user.comparePassword(password.trim())
+                    .then((isMatch) => {
+                        if (!isMatch) {
+                            let error = new Error('Incorrect password');
+                            error.name = 'IncorrectCredentialsError';
+
+                            return done(error);
+                        }
+
+                        return done(null, getJWT(user), user.info);
+                    })
+                    .catch((error) => {
                         return done(error);
-                    }
-
-                    return done(null, getJWT(user), user.info);
-                })
-                .catch((error) => {
-                    return done(error);
-                });
-        }
-
-        // User exists with a Facebook login.
-        if (user) {
-            // User has a volunteer Facebook-login and tries to sign up as an Organization.
-            if (req.body.role === 'organization') {
-                let error = new Error('Cannot use the same email-address as an organization and a volunteer. Please sign up with another email.');
-                error.name = 'AccountMismatchError';
-
-                return done(error);
+                    });
             }
 
-            user.local.email = user.info.email;
-            user.save()
-                .then((savedUser) => {
-                    return savedUser.hashPasswordAndSave(password);
-                })
-                .then((savedUser) => {
-                    return done(null, getJWT(savedUser), savedUser.info);
-                })
-                .catch((error) => {
+            // User exists with a Facebook login.
+            if (user) {
+                // User has a volunteer Facebook-login and tries to sign up as an Organization.
+                if (req.body.role === 'organization') {
+                    let error = new Error('Cannot use the same email-address as an organization and a volunteer. Please sign up with another email.');
+                    error.name = 'AccountMismatchError';
+
                     return done(error);
-                });
-        }
+                }
 
-        // User does not exist.
-        if (!user) {
-            let newUser;
-
-            if (req.body.role === 'volunteer') {
-                newUser = new Volunteer({
-                    info  : {
-                        email       : email.trim(),
-                        roles       : ['volunteer']
-                    },
-                    local : {
-                        email       : email.trim()
-                    },
-                    profile : {
-                        isComplete  : false
-                    }
-                });
-            } else {
-                newUser = new Organization({
-                    info  : {
-                        email       : email.trim(),
-                        roles       : ['organization']
-                    },
-                    local : {
-                        email       : email.trim()
-                    }
-                });
+                user.local.email = user.info.email;
+                user.save()
+                    .then((savedUser) => {
+                        return savedUser.hashPasswordAndSave(password);
+                    })
+                    .then((savedUser) => {
+                        return done(null, getJWT(savedUser), savedUser.info);
+                    })
+                    .catch((error) => {
+                        return done(error);
+                    });
             }
 
+            // User does not exist.
+            if (!user) {
+                let newUser;
 
-            newUser.save()
-                .then((savedUser) => {
-                    return savedUser.hashPasswordAndSave(password);
-                })
-                .then((savedUser) => {
-                    return done(null, getJWT(savedUser), savedUser.info);
-                })
-                .catch((error) => {
-                    return done(error);
-                });
-        }
-    });
+                if (req.body.role === 'volunteer') {
+                    newUser = new Volunteer({
+                        info  : {
+                            email       : email.trim(),
+                            roles       : ['volunteer']
+                        },
+                        local : {
+                            email       : email.trim()
+                        },
+                        profile : {
+                            isComplete  : false
+                        }
+                    });
+                } else {
+                    newUser = new Organization({
+                        info  : {
+                            email       : email.trim(),
+                            roles       : ['organization']
+                        },
+                        local : {
+                            email       : email.trim()
+                        }
+                    });
+                }
+
+
+                newUser.save()
+                    .then((savedUser) => {
+                        return savedUser.hashPasswordAndSave(password);
+                    })
+                    .then((savedUser) => {
+                        return done(null, getJWT(savedUser), savedUser.info);
+                    })
+                    .catch((error) => {
+                        return done(error);
+                    });
+            }
+        });
+
+        });
+
 }));
 
 /**
@@ -118,24 +130,32 @@ passport.use(new FacebookStrategy({clientID: process.env.FACEBOOK_ID, clientSecr
         // The Facebook-profile has an associated email-address.
         if (profile.emails) {
             Volunteer.findOne({'info.email': profile.emails[0].value}, (err, user) => {
+                // Check if user is already registred as an organization
+                Organization.findOne({'info.email': profile.emails[0].value}, (err, orgUser) => {
+                    if (err) {
+                        return done(err);
+                    }
 
-                // Something went wrong.
-                if (err) {
-                    return done(err);
-                }
+                    if (orgUser) {
+                        let error = new Error('Cannot use the same email-address as an organization and a volunteer. Please sign up with another email.');
+                        error.name = 'AccountMismatchError';
 
-                // The user already has a local login.
-                if (user) {
-                    user.facebook.id = profile.id;
-                    user.facebook.email = user.info.email;
-                    user.save()
-                        .then(() => {
-                            return done(null, getJWT(user), user.info);
-                        })
-                        .catch((error) => {
-                            return done(error);
-                        });
-                }
+                        return done(error);
+                    }
+
+                    // The user already has a local login.
+                    if (user) {
+                        user.facebook.id = profile.id;
+                        user.facebook.email = user.info.email;
+                        user.save()
+                            .then(() => {
+                                return done(null, getJWT(user), user.info);
+                            })
+                            .catch((error) => {
+                                return done(error);
+                            });
+                    }
+                });
             });
         }
 

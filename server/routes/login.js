@@ -10,9 +10,9 @@ let validateLoginForm = require('../middleware/middleware').validateLoginForm;
 // Routes---------------------------------------------------------------------------------------------------------------
 
 router.post('/local', validateLoginForm, (req, res, next) => {
+    if (req.body)
     return passport.authenticate('local', (err, token, userData) => {
         if (err) {
-            console.log(err);
             if (err.name === 'IncorrectCredentialsError') {
                 return res.status(400).json({
                     success: false,
@@ -42,16 +42,17 @@ router.post('/local', validateLoginForm, (req, res, next) => {
 });
 
 router.route('/facebook')
-    .get(passport.authenticate('facebook', { scope: ['public_profile', 'email']}));
+    .get(passport.authenticate('facebook', {scope: ['public_profile', 'email']}));
 
 router.route('/facebook/return')
     .get(passport.authenticate('facebook'), (req, res) => {
-        return res.json({
-            success: true,
-            summary: 'You have successfully logged in!',
+        res.send({
             token : req.user,
             user: req.authInfo
         });
+
+        // TODO:
+        return res.redirect('/');
     });
 
 

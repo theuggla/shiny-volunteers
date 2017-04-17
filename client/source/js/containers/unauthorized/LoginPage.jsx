@@ -18,6 +18,7 @@ class LoginPage extends React.Component {
 
         this.processForm = this.processForm.bind(this);
         this.changeUser = this.changeUser.bind(this);
+        this.facebookLogin = this.facebookLogin.bind(this);
     }
 
     //update user details
@@ -55,11 +56,20 @@ class LoginPage extends React.Component {
             });
     }
 
+    facebookLogin(event) {
+        debugger;
+        this.setState({
+            errors: {}
+        });
+        this.props.history.push('/');
+    }
+
     render() {
         return (
             <LoginForm
                 onSubmit={this.processForm}
                 onChange={this.changeUser}
+                onFacebookLogin={this.facebookLogin}
                 errors={this.state.errors}
                 user={this.state.user}
                 allowFacebook = {this.props.match.params.role === 'volunteer'}

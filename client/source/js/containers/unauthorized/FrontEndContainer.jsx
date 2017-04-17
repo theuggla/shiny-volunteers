@@ -9,15 +9,15 @@ import About from '../../components/unauthorized/About.jsx';
 
 
 const Container = ({ match }) => (
-            <div style={{color: 'white', height: '100vh', width: '100vw', backgroundImage: `url(${Background})`}}>
+            <div className="front-end" style={{color: 'white', height: '100vh', width: '100vw', backgroundImage: `url(${Background})`}}>
                 <div className="top-bar">
-                        <Link to="/about">About</Link>
-                        <Link to="/">Shiny App</Link>
+                        <Link id="about-link" to="/about">About</Link>
+                        <Link id="start-link" to="/">Shiny App</Link>
                 </div>
 
                 <Route exact path={`${match.url}`} render={(props) => (<Welcome history={props.history}/>)}/>
                 <Route path="/login/:role"  render={(props) => (<LoginPage {...props}/>)}/>
-                <Route id="about" path="/about" component={About}/>
+                <Route path="/about" component={About}/>
             </div>
 );
 

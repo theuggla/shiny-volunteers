@@ -16,6 +16,7 @@ const styles = {
 const SignUpForm = ({
     onSubmit,
     onChange,
+    onFacebookLogin,
     errors,
     user,
     allowFacebook
@@ -57,7 +58,7 @@ const SignUpForm = ({
 
             {allowFacebook &&
             <div className="button-line">
-                <a href="/login/facebook"><RaisedButton label="Login with Facebook" primary /></a>
+                <a href="/login/facebook"><RaisedButton label="Login with Facebook" onTouchTap={onFacebookLogin} primary /></a>
             </div> }
 
         </form>
