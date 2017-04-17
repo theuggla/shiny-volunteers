@@ -70,6 +70,7 @@ a:hover {
     flex-direction: column;
     justify-content: space-between;
     margin: 0;
+    text-align: center;
 }
 
 .field-line, .button-line {
@@ -92,3 +93,16 @@ a:hover {
     padding: 0 1em;
     color: green;
 }
+
+/*specific styles*/
+/*unauthorized components*/
+.welcome {
+    padding-bottom: 30vh;
+}
+
+.login-form {
+    padding-bottom: 20vw;
+}
+
+/*end unauthorized components*/
+/*end specific styles*/
