@@ -18,7 +18,7 @@ class Auth {
             }
         });
 
-        Cookies.set('currentUser', {token: token, roles: roles});
+        Cookies.set('currentUser', {token: token, roles: roles}, {expires: 30});
     }
 
     /**

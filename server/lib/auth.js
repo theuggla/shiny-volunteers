@@ -120,39 +120,49 @@ passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password
 }));
 
 /**
- * Facebook Passport-strategy.
+ * Facebook login handler.
+ * User will already have logged in client side, and this is to serialize the user
+ * into the database.
  * Will add the user if it does not already exist.
  * Will connect the accounts if the user already has a Local-login.
  */
-passport.use(new FacebookStrategy({clientID: process.env.FACEBOOK_ID, clientSecret: process.env.FACEBOOK_SECRET, callbackURL: process.env.SITE_URL + '/login/facebook/return', profileFields: ['id', 'displayName', 'email']},
-    (accessToken, refreshToken, profile, done) => {
-
+module.exports.facebookAuth = function (profile) {
+    return new Promise((resolve, reject) => {
         // The Facebook-profile has an associated email-address.
-        if (profile.emails) {
-            Volunteer.findOne({'info.email': profile.emails[0].value}, (err, user) => {
+        if (profile.email) {
+            console.log('had email');
+            Volunteer.findOne({'info.email': profile.email}, (err, user) => {
+                console.log('should be here');
                 // Check if user is already registred as an organization
-                Organization.findOne({'info.email': profile.emails[0].value}, (err, orgUser) => {
+                Organization.findOne({'info.email': profile.email}, (err, orgUser) => {
                     if (err) {
-                        return done(err);
+                        console.log('should not be here');
+                        return reject(err);
                     }
 
                     if (orgUser) {
+                        console.log('should not be here');
                         let error = new Error('Cannot use the same email-address as an organization and a volunteer. Please sign up with another email.');
                         error.name = 'AccountMismatchError';
 
-                        return done(error);
+                        return reject(error);
                     }
 
                     // The user already has a local login.
                     if (user) {
+                        console.log('should not be here');
                         user.facebook.id = profile.id;
                         user.facebook.email = user.info.email;
                         user.save()
                             .then(() => {
-                                return done(null, getJWT(user), user.info);
+                                let response = {};
+                                response.token = getJWT(user);
+                                response.userData = user.info;
+
+                                return resolve(response);
                             })
                             .catch((error) => {
-                                return done(error);
+                                return resolve(error);
                             });
                     }
                 });
@@ -162,19 +172,27 @@ passport.use(new FacebookStrategy({clientID: process.env.FACEBOOK_ID, clientSecr
         // Facebook-profile does not have an associated email address.
         // Or user did not have a local login.
         Volunteer.findOne({'facebook.id': profile.id}, (err, user) => {
+            console.log('should be here, checking against facebook ids');
 
             // Something went wrong.
             if (err) {
-                return done(err);
+                console.log('should not have error');
+                return reject(err);
             }
 
             // The user already exists.
             if (user) {
-                return done(null, getJWT(user), user.info);
+                console.log('should not find one');
+                let response = {};
+                response.token = getJWT(user);
+                response.userData = user.info;
+
+                return resolve(response);
             }
 
             // The user did not exist.
             if (!user) {
+                console.log('should be here, not finding the user');
                 let newUser = new Volunteer({
                     info  : {
                         roles       : ['volunteer']
@@ -187,21 +205,27 @@ passport.use(new FacebookStrategy({clientID: process.env.FACEBOOK_ID, clientSecr
                     }
                 });
 
-                if (profile.emails) {
-                    newUser.info.email = profile.emails[0].value;
-                    newUser.facebook.email = profile.emails[0].value;
+                if (profile.email) {
+                    console.log('should be here, saving the email');
+                    newUser.info.email = profile.email;
+                    newUser.facebook.email = profile.email;
                 }
 
                 newUser.save()
                     .then((savedUser) => {
-                        return done(null, getJWT(savedUser), savedUser.info);
+                        let response = {};
+                        response.token = getJWT(savedUser);
+                        response.userData = savedUser.info;
+
+                        return resolve(response);
                     })
                     .catch((error) => {
-                        return done(error);
+                        return reject(error);
                     });
             }
         });
-}));
+    });
+};
 
 // Put the user in the database.
 passport.serializeUser((userJWT, done) => {

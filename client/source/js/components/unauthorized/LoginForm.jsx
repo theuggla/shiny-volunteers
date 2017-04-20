@@ -1,5 +1,6 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
+import FacebookLogin from 'react-facebook-login';
 import TextField from 'material-ui/TextField';
 
 const styles = {
@@ -58,7 +59,13 @@ const SignUpForm = ({
 
             {allowFacebook &&
             <div className="button-line">
-                <a href="/login/facebook"><RaisedButton label="Login with Facebook" onTouchTap={onFacebookLogin} primary /></a>
+                <FacebookLogin
+                    appId="1226422467455676"
+                    autoLoad={true}
+                    fields="name,email,id"
+                    scope="public_profile,email"
+                    callback={onFacebookLogin}
+                />
             </div> }
 
         </form>
