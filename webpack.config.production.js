@@ -7,9 +7,14 @@ let cwd = __dirname ? __dirname : process.cwd();
 
 let DIST = path.join(cwd, '/client/dist/');
 
+config.entry = {
+    main: DEV + 'js/app.jsx',
+    jw: DEV + 'js/service-worker.js'
+};
+
 config.output = {
     path: DIST,
-    filename: 'javascript/[name].min.js'
+    filename: '[name].min.js'
 };
 
 config.plugins = config.plugins.concat([
