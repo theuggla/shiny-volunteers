@@ -16,6 +16,10 @@ class SkillPicker extends Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            values: null
+        };
+
         this.state.values = this.props.values ?
             selectableSkills
                 .filter((skill) => {return this.props.values.includes(skill.name);})

@@ -53,7 +53,7 @@ class AddNeedPage extends React.Component {
                                  onSubmit={this.processForm}
                                  onChange={this.changeNeed}
                                  errors={this.state.errors}
-                                 profile={this.state.need}
+                                 need={this.state.need}
                     />
         );
     }

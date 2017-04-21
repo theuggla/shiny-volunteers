@@ -3,44 +3,53 @@
  */
 
 let Volunteer = require('../models/Volunteer');
+let Organization = require('../models/Organization');
 let jwt = require('jsonwebtoken');
 
 /**
  *  The Auth Checker middleware function.
  */
 module.exports.checkIfAuthorized = function(req, res, next) {
-    console.log('checking for auth');
-    console.log(req.headers);
     if (!req.headers.authorization) {
-        console.log('no auth header!');
         return res.status(401).end();
     }
 
     // Get the token.
     const token = req.headers.authorization.split(' ')[1];
-    console.log('token: ' + token);
 
     // Decode the token.
     return jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err) {
-            console.log('error in jwt!');
             return res.status(401).end();
         }
 
         const userId = decoded.sub;
+        const role = decoded.scopes[0];
 
-        // Check if a user exists.
-        return Volunteer.findById(userId, (err, user) => {
-            console.log('looking for user with user id ' + userId);
-            if (err || !user) {
-                console.log('did not find that user!');
+        switch (role) {
+            case 'organization':
+                return Organization.findById(userId, (error, user) => {
+                    if (error || !user) {
+                        return res.status(401).end();
+                    }
+
+                    req.user = user;
+
+                    return next();
+                });
+            case 'volunteer':
+                return Volunteer.findById(userId, (error, user) => {
+                    if (error || !user) {
+                        return res.status(401).end();
+                    }
+
+                    req.user = user;
+
+                    return next();
+                });
+            default:
                 return res.status(401).end();
-            }
-
-            req.user = user;
-
-            return next();
-        });
+        }
     });
 };
 
@@ -56,7 +65,6 @@ module.exports.validateLoginForm = function(req, res, next) {
     let summary = '';
 
     if (req.body.token) {
-        console.log('got here');
         return next();
     }
 

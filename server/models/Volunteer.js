@@ -4,6 +4,7 @@
 
 // Requires.
 let mongoose = require('mongoose');
+let Schema = mongoose.Schema;
 let userBase = require('./UserBase');
 
 /**
@@ -54,6 +55,7 @@ let volunteerSchema = userBase({
         }
 
     },
+    applications: [{type: Schema.Types.ObjectId, ref: 'Need'}],
     facebook: {
         id: {
             type: String,
