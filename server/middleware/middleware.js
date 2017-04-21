@@ -9,16 +9,21 @@ let jwt = require('jsonwebtoken');
  *  The Auth Checker middleware function.
  */
 module.exports.checkIfAuthorized = function(req, res, next) {
+    console.log('checking for auth');
+    console.log(req.headers);
     if (!req.headers.authorization) {
+        console.log('no auth header!');
         return res.status(401).end();
     }
 
     // Get the token.
     const token = req.headers.authorization.split(' ')[1];
+    console.log('token: ' + token);
 
     // Decode the token.
     return jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err) {
+            console.log('error in jwt!');
             return res.status(401).end();
         }
 
@@ -26,9 +31,13 @@ module.exports.checkIfAuthorized = function(req, res, next) {
 
         // Check if a user exists.
         return Volunteer.findById(userId, (err, user) => {
+            console.log('looking for user with user id ' + userId);
             if (err || !user) {
+                console.log('did not find that user!');
                 return res.status(401).end();
             }
+
+            req.user = user;
 
             return next();
         });

@@ -8,8 +8,6 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 injectTapEventPlugin();
 
 import Auth from './modules/Auth';
-/*<Route path="/" render={() => ( Auth.isUserAuthenticated() ? (<Redirect to={Auth.getAuthRoles()[0]}/>) : (<FrontEndContainer />))} />*/
-
 
 import FrontEndContainer from './containers/unauthorized/FrontEndContainer.jsx';
 import VolunteerContainer from './containers/authorized/volunteer/VolunteerContainer.jsx';
@@ -22,9 +20,9 @@ const App = () => (
             <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
                 <div>
                     <Switch>
-                    <Route path="/volunteer" render={(props) => (<VolunteerContainer {...props} routes={[{authorize: ['volunteer']}]}/>)} />
-                    <Route path="/organization" render={(props) => (<OrganizationContainer {...props} routes={[{authorize: ['organization']}]}/>)} />
-                    <Route path="/" component={FrontEndContainer} />
+                        <Route path="/volunteer" render={(props) => (<VolunteerContainer {...props} routes={[{authorize: ['volunteer']}]}/>)} />
+                        <Route path="/organization" render={(props) => (<OrganizationContainer {...props} routes={[{authorize: ['organization']}]}/>)} />
+                        <Route path="/" render={() => ( Auth.isUserAuthenticated() ? (<Redirect to={Auth.getAuthRoles()[0]}/>) : (<FrontEndContainer />))} />
                     </Switch>
                 </div>
             </MuiThemeProvider>

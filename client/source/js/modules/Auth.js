@@ -8,6 +8,7 @@ class Auth {
      * @param {[string]} roles an array of roles the user is authenticated as
      */
     static authenticateUser(token, roles) {
+        console.log('authenticating with token ' + token);
         if (!Array.isArray(roles)) {
             roles = [roles];
         }
@@ -34,6 +35,9 @@ class Auth {
      */
     static deauthenticateUser() {
         Cookies.remove('currentUser');
+        console.log('i am here');
+
+        return true;
     }
 
     /**

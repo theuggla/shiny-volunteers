@@ -11,7 +11,48 @@ let userBase = require('./UserBase');
  */
 let volunteerSchema = userBase({
     profile: {
-        isComplete: Boolean
+        isComplete: Boolean,
+        skills: [String],
+        interests: [String],
+        timePerWeek: Number,
+        available: {
+            monday: {
+                morning: Boolean,
+                day: Boolean,
+                evening: Boolean
+            },
+            tuesday: {
+                morning: Boolean,
+                day: Boolean,
+                evening: Boolean
+            },
+            wednesday: {
+                morning: Boolean,
+                day: Boolean,
+                evening: Boolean
+            },
+            thursday: {
+                morning: Boolean,
+                day: Boolean,
+                evening: Boolean
+            },
+            friday: {
+                morning: Boolean,
+                day: Boolean,
+                evening: Boolean
+            },
+            saturday: {
+                morning: Boolean,
+                day: Boolean,
+                evening: Boolean
+            },
+            sunday: {
+                morning: Boolean,
+                day: Boolean,
+                evening: Boolean
+            }
+        }
+
     },
     facebook: {
         id: {

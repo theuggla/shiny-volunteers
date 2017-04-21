@@ -21,7 +21,6 @@ class LoginPage extends React.Component {
         this.facebookLogin = this.facebookLogin.bind(this);
     }
 
-    //update user details
     changeUser(event) {
         const field = event.target.name;
         const user = this.state.user;
@@ -33,7 +32,6 @@ class LoginPage extends React.Component {
     }
 
     processForm(event) {
-        //prevent form from sending
         event.preventDefault();
 
         axios.post('/login/local', {
@@ -42,10 +40,13 @@ class LoginPage extends React.Component {
             role: this.props.match.params.role
         })
             .then((response) => {
+            console.log('got response');
+            console.log(response);
+            console.log('got token ' + response.data.token +' in response');
                 this.setState({
                     errors: {}
                 });
-                auth.authenticateUser(response.token, response.data.user.roles);
+                auth.authenticateUser(response.data.token, response.data.user.roles);
                 this.props.history.push('/' + response.data.user.roles[0]);
             })
             .catch((error) => {
@@ -57,14 +58,12 @@ class LoginPage extends React.Component {
     }
 
     facebookLogin(user) {
-        console.log(user);
         axios.post('/login/facebook', user)
             .then((response) => {
-            console.log(response);
                 this.setState({
                     errors: {}
                 });
-                auth.authenticateUser(response.token, response.data.user.roles);
+                auth.authenticateUser(response.data.token, response.data.user.roles);
                 this.props.history.push('/' + response.data.user.roles[0]);
             })
             .catch((error) => {
@@ -77,7 +76,7 @@ class LoginPage extends React.Component {
 
     render() {
         return (
-            <LoginForm
+            <LoginForm className="login-page"
                 onSubmit={this.processForm}
                 onChange={this.changeUser}
                 onFacebookLogin={this.facebookLogin}

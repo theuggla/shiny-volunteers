@@ -8,6 +8,7 @@ import sinon from 'sinon';
 
 import LoginForm from '../LoginForm.jsx';
 import RaisedButton from 'material-ui/RaisedButton';
+import FacebookButton from 'react-facebook-login';
 import TextField from 'material-ui/TextField';
 
 describe("LoginForm Component", () => {
@@ -49,13 +50,15 @@ describe("LoginForm Component", () => {
     describe("Visually", () => {
 
         it("should render two buttons for volunteers", (done) => {
-            expect(wrapper.find(RaisedButton)).to.have.length(2);
+            expect(wrapper.find(RaisedButton)).to.have.length(1);
+            expect(wrapper.find(FacebookButton)).to.have.length(1);
             done();
         });
 
         it("should render one button for organizations", (done) => {
             wrapper.setProps({allowFacebook: false});
             expect(wrapper.find(RaisedButton)).to.have.length(1);
+            expect(wrapper.find(FacebookButton)).to.have.length(0);
             done();
         });
 

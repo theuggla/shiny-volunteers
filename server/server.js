@@ -12,6 +12,7 @@ let csp = require('helmet-csp');
 let passport = require('passport');
 let db = require('./lib/dbresource');
 let login = require('./routes/login');
+let volunteer = require('./routes/volunteer');
 let api = require('./routes/api');
 
 
@@ -64,6 +65,7 @@ app.use(passport.initialize());
 // Routes------------------------------------------------------------------------------------------------------------
 
 app.use('/login', login);
+app.use('/volunteer', volunteer);
 app.use('/api', api);
 
 // Custom Error Pages-------------------------------------------------------------------------------------------------

@@ -32,10 +32,12 @@ router.post('/local', validateLoginForm, (req, res, next) => {
             }
         }
 
+        console.log('got token ' + token + ' from local auth');
+
         return res.json({
             success: true,
             summary: 'You have successfully logged in!',
-            token,
+            token: token,
             user: userData
         });
 

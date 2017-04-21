@@ -130,18 +130,14 @@ module.exports.facebookAuth = function (profile) {
     return new Promise((resolve, reject) => {
         // The Facebook-profile has an associated email-address.
         if (profile.email) {
-            console.log('had email');
             Volunteer.findOne({'info.email': profile.email}, (err, user) => {
-                console.log('should be here');
                 // Check if user is already registred as an organization
                 Organization.findOne({'info.email': profile.email}, (err, orgUser) => {
                     if (err) {
-                        console.log('should not be here');
                         return reject(err);
                     }
 
                     if (orgUser) {
-                        console.log('should not be here');
                         let error = new Error('Cannot use the same email-address as an organization and a volunteer. Please sign up with another email.');
                         error.name = 'AccountMismatchError';
 
@@ -150,7 +146,6 @@ module.exports.facebookAuth = function (profile) {
 
                     // The user already has a local login.
                     if (user) {
-                        console.log('should not be here');
                         user.facebook.id = profile.id;
                         user.facebook.email = user.info.email;
                         user.save()
@@ -172,17 +167,14 @@ module.exports.facebookAuth = function (profile) {
         // Facebook-profile does not have an associated email address.
         // Or user did not have a local login.
         Volunteer.findOne({'facebook.id': profile.id}, (err, user) => {
-            console.log('should be here, checking against facebook ids');
 
             // Something went wrong.
             if (err) {
-                console.log('should not have error');
                 return reject(err);
             }
 
             // The user already exists.
             if (user) {
-                console.log('should not find one');
                 let response = {};
                 response.token = getJWT(user);
                 response.userData = user.info;
@@ -192,7 +184,6 @@ module.exports.facebookAuth = function (profile) {
 
             // The user did not exist.
             if (!user) {
-                console.log('should be here, not finding the user');
                 let newUser = new Volunteer({
                     info  : {
                         roles       : ['volunteer']
@@ -206,7 +197,6 @@ module.exports.facebookAuth = function (profile) {
                 });
 
                 if (profile.email) {
-                    console.log('should be here, saving the email');
                     newUser.info.email = profile.email;
                     newUser.facebook.email = profile.email;
                 }
