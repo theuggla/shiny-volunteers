@@ -3,7 +3,6 @@
 // Requires.
 let passport = require('passport');
 let LocalStrategy = require('passport-local').Strategy;
-let FacebookStrategy = require('passport-facebook').Strategy;
 let Volunteer = require('../models/Volunteer');
 let Organization = require('../models/Organization');
 let jwt = require('jsonwebtoken');
@@ -15,109 +14,101 @@ let jwt = require('jsonwebtoken');
  * Will connect the accounts if the user already has a Facebook-login.
  */
 passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password', session: false, passReqToCallback: true}, (req, email, password, done) => {
-    Volunteer.findOne({'info.email': email.trim()}, (err, user) => {
-        // Something went wrong.
-        if (err) {
-            return done(err);
-        }
+    switch (req.body.role) {
+        case 'organization':
+            isOrganization({email: email})
+                .then((user) => {
+                    if (user) {
+                        tryLogin(user, password)
+                            .then((loggedInUser) => {
+                                return done(null, getJWT(loggedInUser), loggedInUser.info);
+                            })
+                            .catch((error) => {
+                                return done(error);
+                            });
+                    } else {
+                        isVolunteer({email: email})
+                            .then((user) => {
+                                if (user) {
+                                    let err = new Error('Cannot use the same email-address as an organization and a volunteer. Please sign up with another email.');
+                                    err.name = 'AccountMismatchError';
 
-        // Check if user is already registred as an organization
-        Organization.findOne({'info.email': email.trim()}, (err, orgUser) => {
-            if (err) {
-                return done(err);
-            }
+                                    return done(err);
+                                } else {
+                                    createNewUser({
+                                        info: {
+                                            email: email.trim(),
+                                            role: 'organization'
+                                        },
+                                        local: {
+                                            email: email.trim(),
+                                            password: password
+                                        }
+                                    })
+                                        .then((createdUser) => {
+                                            return done(null, getJWT(createdUser), createdUser.info);
+                                        })
+                                        .catch((error) => {
+                                            return done(error);
+                                        });
+                                }
+                            });
+                    }
+                })
+                .catch((err) => {
+                    return done(err);
+                });
+            break;
+        case 'volunteer':
+            isVolunteer({email: email})
+                .then((user) => {
+                    if (user) {
+                        tryLogin(user, password)
+                            .then((loggedInUser) => {
+                                return done(null, getJWT(loggedInUser), loggedInUser.info);
+                            })
+                            .catch((error) => {
+                                return done(error);
+                            });
+                    } else {
+                        isOrganization({email: email})
+                            .then((user) => {
+                                if (user) {
+                                    let err = new Error('Cannot use the same email-address as an organization and a volunteer. Please sign up with another email.');
+                                    err.name = 'AccountMismatchError';
 
-            if (!user) {
-                user = orgUser;
-            }
-
-            // User exists with a local login.
-            if (user && user.local.password) {
-                user.comparePassword(password.trim())
-                    .then((isMatch) => {
-                        if (!isMatch) {
-                            let error = new Error('Incorrect password');
-                            error.name = 'IncorrectCredentialsError';
-
-                            return done(error);
-                        }
-
-                        return done(null, getJWT(user), user.info);
-                    })
-                    .catch((error) => {
-                        return done(error);
-                    });
-            }
-
-            // User exists with a Facebook login.
-            if (user) {
-                // User has a volunteer Facebook-login and tries to sign up as an Organization.
-                if (req.body.role === 'organization') {
-                    let error = new Error('Cannot use the same email-address as an organization and a volunteer. Please sign up with another email.');
-                    error.name = 'AccountMismatchError';
-
-                    return done(error);
-                }
-
-                user.local.email = user.info.email;
-                user.save()
-                    .then((savedUser) => {
-                        return savedUser.hashPasswordAndSave(password);
-                    })
-                    .then((savedUser) => {
-                        return done(null, getJWT(savedUser), savedUser.info);
-                    })
-                    .catch((error) => {
-                        return done(error);
-                    });
-            }
-
-            // User does not exist.
-            if (!user) {
-                let newUser;
-
-                if (req.body.role === 'volunteer') {
-                    newUser = new Volunteer({
-                        info  : {
-                            email       : email.trim(),
-                            roles       : ['volunteer']
-                        },
-                        local : {
-                            email       : email.trim()
-                        },
-                        profile : {
-                            isComplete  : false
-                        }
-                    });
-                } else {
-                    newUser = new Organization({
-                        info  : {
-                            email       : email.trim(),
-                            roles       : ['organization']
-                        },
-                        local : {
-                            email       : email.trim()
-                        }
-                    });
-                }
-
-
-                newUser.save()
-                    .then((savedUser) => {
-                        return savedUser.hashPasswordAndSave(password);
-                    })
-                    .then((savedUser) => {
-                        return done(null, getJWT(savedUser), savedUser.info);
-                    })
-                    .catch((error) => {
-                        return done(error);
-                    });
-            }
-        });
-
-        });
-
-}));
+                                    return done(err);
+                                } else {
+                                    createNewUser({
+                                        info: {
+                                            email: email.trim(),
+                                            role: 'volunteer'
+                                        },
+                                        facebook: {},
+                                        local: {
+                                            email: email.trim(),
+                                            password: password
+                                        }
+                                    })
+                                        .then((user) => {
+                                            return done(null, getJWT(user), user.info);
+                                        })
+                                        .catch((error) => {
+                                            return done(error);
+                                        });
+                                }
+                            });
+                    }
+                })
+                .catch((err) => {
+                    return done(err);
+                });
+            break;
+        default:
+            return done(new Error('No such role.'));
+    }
+})
+);
 
 /**
  * Facebook login handler.
@@ -125,96 +116,90 @@ passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password
  * into the database.
  * Will add the user if it does not already exist.
  * Will connect the accounts if the user already has a Local-login.
+ * @param profile {Object} the information about the user gotten from facebook.
  */
 module.exports.facebookAuth = function (profile) {
     return new Promise((resolve, reject) => {
         // The Facebook-profile has an associated email-address.
         if (profile.email) {
-            Volunteer.findOne({'info.email': profile.email}, (err, user) => {
-                // Check if user is already registred as an organization
-                Organization.findOne({'info.email': profile.email}, (err, orgUser) => {
-                    if (err) {
-                        return reject(err);
-                    }
-
-                    if (orgUser) {
+            isOrganization({email: profile.email})
+                .then((user) => {
+                    if (user) {
                         let error = new Error('Cannot use the same email-address as an organization and a volunteer. Please sign up with another email.');
                         error.name = 'AccountMismatchError';
 
-                        return reject(error);
+                        throw error;
                     }
 
-                    // The user already has a local login.
-                    if (user) {
-                        user.facebook.id = profile.id;
-                        user.facebook.email = user.info.email;
-                        user.save()
-                            .then(() => {
-                                let response = {};
-                                response.token = getJWT(user);
-                                response.userData = user.info;
+                    isVolunteer({email: profile.email})
+                        .then((user) => {
+                            // User already has local login.
+                            if (user) {
+                                user.facebook.id = profile.id;
+                                user.facebook.email = user.info.email;
+                                user.save()
+                                    .then(() => {
+                                        let response = {};
+                                        response.token = getJWT(user);
+                                        response.userData = user.info;
 
-                                return resolve(response);
-                            })
-                            .catch((error) => {
-                                return resolve(error);
-                            });
-                    }
+                                        resolve(response);
+                                    })
+                                    .catch((error) => {
+                                        throw error;
+                                    });
+                            }
+                        })
+                        .catch((error) => {
+                            throw error;
+                        });
+                })
+                .catch((error) => {
+                    reject(error);
                 });
-            });
         }
 
-        // Facebook-profile does not have an associated email address.
-        // Or user did not have a local login.
-        Volunteer.findOne({'facebook.id': profile.id}, (err, user) => {
+        // Facebook-profile does not have an associated email address, or
+        // User did not have a local login.
+        isVolunteer({facebookID: profile.id})
+            .then((user) => {
+                // The user already exists.
+                if (user) {
+                    let response = {};
+                    response.token = getJWT(user);
+                    response.userData = user.info;
 
-            // Something went wrong.
-            if (err) {
-                return reject(err);
-            }
-
-            // The user already exists.
-            if (user) {
-                let response = {};
-                response.token = getJWT(user);
-                response.userData = user.info;
-
-                return resolve(response);
-            }
-
-            // The user did not exist.
-            if (!user) {
-                let newUser = new Volunteer({
-                    info  : {
-                        roles       : ['volunteer']
-                    },
-                    facebook : {
-                        id       : profile.id
-                    },
-                    profile : {
-                        isComplete  : false
-                    }
-                });
-
-                if (profile.email) {
-                    newUser.info.email = profile.email;
-                    newUser.facebook.email = profile.email;
+                    resolve(response);
                 }
 
-                newUser.save()
-                    .then((savedUser) => {
+                createNewUser({
+                    info: {
+                        email: profile.email,
+                        role: 'volunteer'
+                    },
+                    facebook: {
+                        id: profile.id,
+                        email: profile.email
+                    },
+                    local: {}
+                })
+                    .then((createdUser) => {
                         let response = {};
-                        response.token = getJWT(savedUser);
-                        response.userData = savedUser.info;
+                        response.token = getJWT(createdUser);
+                        response.userData = createdUser.info;
 
-                        return resolve(response);
+                        resolve(response);
                     })
                     .catch((error) => {
-                        return reject(error);
+                        reject(error);
                     });
-            }
+
+
+            })
+            .catch((error) => {
+                reject(error);
+            });
         });
-    });
 };
 
 // Put the user in the database.
@@ -247,4 +232,158 @@ function getJWT(user) {
     };
 
     return jwt.sign(payload, process.env.JWT_SECRET);
+}
+
+/**
+ * Checks if a user is registered as a volunteer.
+ * @param user the user to look for.
+ * @returns a Promise that resolves with the user if found, null if not found, and rejects with any errors.
+ */
+function isVolunteer(user) {
+    return new Promise((resolve, reject) => {
+        if (user.id) {
+            Volunteer.findById(user.id, (err, volUser) => {
+                if (err) {
+                    reject(err);
+                }
+                resolve(volUser);
+            });
+        } else if (user.email) {
+            Volunteer.findOne({'info.email': user.email.trim()}, (err, volUser) => {
+                if (err) {
+                    reject(err);
+                }
+                resolve(volUser);
+            });
+        } else if (user.facebookID) {
+            Volunteer.findOne({'facebook.id': user.facebookID}, (err, volUser) => {
+                if (err) {
+                    reject(err);
+                }
+                resolve(volUser);
+            });
+        }
+        else {
+            resolve(null);
+        }
+    });
+}
+
+/**
+ * Checks if a user is registered as an organization.
+ * @param user the user to look for.
+ * @returns a Promise that resolves with the user if found, null if not found, and rejects with any errors.
+ */
+function isOrganization(user) {
+    return new Promise((resolve, reject) => {
+        if (user.id) {
+            Organization.findById(user.id, (err, orgUser) => {
+                if (err) {
+                    reject(err);
+                }
+                resolve(orgUser);
+            });
+        } else if (user.email) {
+            Organization.findOne({'info.email': user.email.trim()}, (err, orgUser) => {
+                if (err) {
+                    reject(err);
+                }
+                resolve(orgUser);
+            });
+        } else {
+            resolve(null);
+        }
+    });
+}
+
+/**
+ * Tries to log a user ín with a password,
+ * If the user is only registered over facebook, creates a local login with the given password.
+ * @param user {User} the user to log in.
+ * @param password {string} the password from the user.
+ * @returns {Promise} a promise that resolves with the logged in user or rejects with an error.
+ */
+function tryLogin(user, password) {
+    return new Promise((resolve, reject) => {
+        if (user.local && user.local.password) {
+            user.comparePassword(password.trim())
+                .then((isMatch) => {
+                    if (!isMatch) {
+                        let error = new Error('Incorrect password');
+                        error.name = 'IncorrectCredentialsError';
+
+                        reject(error);
+                    }
+
+                    resolve(user);
+                })
+                .catch((err) => {
+                    reject(err);
+                });
+        }
+
+        // User exists with a Facebook login an no Local login.
+        user.local.email = user.info.email;
+        user.save()
+            .then((savedUser) => {
+                return savedUser.hashPasswordAndSave(password);
+            })
+            .then((savedUser) => {
+                resolve(savedUser);
+            })
+            .catch((err) => {
+                reject(err);
+            });
+    });
+}
+
+/**
+ * Creates a new user.
+ * @param user {Object} an object with information about the user to create.
+ * @returns {Promise} that resolves with the newly created user or rejects with an error.
+ */
+function createNewUser(user) {
+    return new Promise((resolve, reject) => {
+        let newUser;
+
+        if (user.info.role === 'volunteer') {
+            newUser = new Volunteer({
+                info  : {
+                    email       : user.info.email,
+                    roles       : [user.info.role]
+                },
+                local : {
+                    email       : user.local.email
+                },
+                facebook: {
+                    email       : user.facebook.email,
+                    id          : user.facebook.id
+                },
+                profile : {
+                    isComplete  : false
+                }
+            });
+        } else {
+            newUser = new Organization({
+                info  : {
+                    email       : user.info.email,
+                    roles       : [user.info.role]
+                },
+                local : {
+                    email       : user.local.email
+                }
+            });
+        }
+
+        newUser.save()
+            .then((savedUser) => {
+                return savedUser.local.email ? savedUser.hashPasswordAndSave(user.password) : Promise.resolve(savedUser);
+            })
+            .then((savedUser) => {
+                resolve(savedUser);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
 }

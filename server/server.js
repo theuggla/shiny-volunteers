@@ -13,6 +13,7 @@ let passport = require('passport');
 let db = require('./lib/dbresource');
 let login = require('./routes/login');
 let volunteer = require('./routes/volunteer');
+let organization = require('./routes/organization');
 let api = require('./routes/api');
 
 
@@ -66,6 +67,7 @@ app.use(passport.initialize());
 
 app.use('/login', login);
 app.use('/volunteer', volunteer);
+app.use('/organization', organization);
 app.use('/api', api);
 
 // Custom Error Pages-------------------------------------------------------------------------------------------------

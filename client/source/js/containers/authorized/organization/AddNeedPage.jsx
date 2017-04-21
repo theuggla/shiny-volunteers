@@ -9,7 +9,7 @@ class AddNeedPage extends React.Component {
         super(props);
 
         this.state = {
-            need: null,
+            need: {},
             errors: {}
         };
 

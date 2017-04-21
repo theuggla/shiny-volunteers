@@ -1,7 +1,7 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import SkillPicker from './SkillPicker.jsx';
+import SkillPicker from '../SkillPicker.jsx';
 
 const ProfileForm = ({
     onSubmit,

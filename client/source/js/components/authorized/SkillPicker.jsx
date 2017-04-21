@@ -16,15 +16,12 @@ class SkillPicker extends Component {
     constructor(props) {
         super(props);
 
-        console.log('setting skillpicker state');
-        console.log(props);
-        let initialValues = selectableSkills.filter((skill) => {
-            return this.props.values.includes(skill.name);
-        });
+        this.state.values = this.props.values ?
+            selectableSkills
+                .filter((skill) => {return this.props.values.includes(skill.name);})
+                .map((skill) => {return skill.value})
+            : [];
 
-        this.state = {values: initialValues.map((skill) => {return skill.value})};
-        console.log('values');
-        console.log(this.state.values);
     }
 
     handleChange = (event, index, values) => {

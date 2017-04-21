@@ -14,6 +14,7 @@ router.post('/local', validateLoginForm, (req, res, next) => {
     if (req.body)
     return passport.authenticate('local', (err, token, userData) => {
         if (err) {
+            console.log(err);
             if (err.name === 'IncorrectCredentialsError') {
                 return res.status(400).json({
                     success: false,
@@ -31,8 +32,6 @@ router.post('/local', validateLoginForm, (req, res, next) => {
                 });
             }
         }
-
-        console.log('got token ' + token + ' from local auth');
 
         return res.json({
             success: true,
