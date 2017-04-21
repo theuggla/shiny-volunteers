@@ -18,9 +18,9 @@ class AddNeedPage extends React.Component {
     }
 
     changeNeed(event) {
-        const field = event.name;
+        const field = event.target.name;
         const need = this.state.need;
-        need[field] = event.value;
+        need[field] = event.target.value;
 
         this.setState({
             need: need
@@ -29,9 +29,10 @@ class AddNeedPage extends React.Component {
 
     processForm(event) {
         event.preventDefault();
+        console.log(this.state.need);
         axios({
             method: 'POST',
-            url: '/organization/needs/add',
+            url: '/organization/needs',
             headers: {'Authorization': `bearer ${Auth.getToken()}`},
             data: this.state.need
         }).then(() => {
@@ -49,12 +50,13 @@ class AddNeedPage extends React.Component {
 
     render() {
         return (
-                    <NeedsForm className="needs-page"
-                                 onSubmit={this.processForm}
-                                 onChange={this.changeNeed}
-                                 errors={this.state.errors}
-                                 need={this.state.need}
-                    />
+            <NeedsForm
+                className="needs-page"
+                onSubmit={this.processForm}
+                onChange={this.changeNeed}
+                errors={this.state.errors}
+                need={this.state.need}
+            />
         );
     }
 

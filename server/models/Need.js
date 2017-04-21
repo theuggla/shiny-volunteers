@@ -12,6 +12,9 @@ let needSchema = new mongoose.Schema({
     _creator        : {type: String, ref: 'Organization'},
     applicants      : [{type: String, ref: 'Volunteer'}],
     title           : String,
+    description     : String,
+    shortDesc       : String,
+    expiryDate      : {type: Date, default: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1)},
     skills          : [String]
 });
 

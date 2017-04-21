@@ -36,8 +36,10 @@ class SkillPicker extends Component {
         });
 
         let changeEvent = {
-            name: 'skills',
-            value: mappedValues
+            target: {
+                name: 'skills',
+                value: mappedValues
+            }
         };
 
         this.props.onChange(changeEvent);

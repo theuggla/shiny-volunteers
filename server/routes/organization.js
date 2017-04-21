@@ -10,39 +10,54 @@ let Need = require('../models/Need');
 // Routes---------------------------------------------------------------------------------------------------------------
 router.use(checkIfAuthorized);
 
-router.post('/needs/add', (req, res, next) => {
-    let user = req.user;
-    console.log('made it to the add need');
-    console.log('with');
-    console.log(req.body);
-    console.log('for user');
-    console.log(user);
+router.route('/needs')
+    .get((req, res, next) => {
+        let user = req.user;
+            Need
+            .find({_creator: user._id})
+                .then((result) => {
+                    let mappedResult = result.map((need) => {
+                        return {
+                            skills          : need.skills,
+                            title           : need.title,
+                            description     : need.description,
+                            shortDesc       : need.shortDesc,
+                            expiryDate      : need.expiryDate.toLocaleDateString()
+                        };
+                    });
 
-    let need = new Need({
-        _creator : user._id,
-        skills   : req.body.skills
+                    res.json({needs: mappedResult});
+                });
+    })
+    .post((req, res, next) => {
+        let user = req.user;
+        let dotIndex = req.body.description.indexOf('.');
+        let cutOfDesc = (dotIndex < 100 && dotIndex > 20) ? dotIndex : 80;
+        let need = new Need({
+            _creator        : user._id,
+            skills          : req.body.skills,
+            title           : req.body.title,
+            description     : req.body.description,
+            shortDesc       : req.body.description.slice(0, cutOfDesc) + ' (...)'
+        });
+
+        need.save()
+            .then((savedNeed) => {
+                user.needs.push(savedNeed._id);
+                return user.save();
+            })
+            .then((user) => {
+                res.redirect('/organization/needs');
+            })
+            .catch((error) => {
+                return res.json({error: 'Error saving the need'});
+            });
     });
 
-    need.save()
-        .then((savedNeed) => {
-        console.log('need saved');
-            user.needs.push(savedNeed._id);
-            return user.save();
-        })
-        .then((user) => {
-        console.log('need saved as user reference');
-            res.redirect('/organization/needs/add');
-        })
-        .catch((error) => {
-        console.log('got error ' + error);
-            return res.json({error: 'Error saving the need'});
-        });
-});
-
-router.get('/needs/add', (req, res, next) => {
-    res.json({success: true, message: 'hurray'});
-});
-
+router.route('/needs/:id')
+    .get((req, res, next) => {
+        res.json({success: true, message: 'here be specific need'});
+    });
 
 // Exports-------------------------------------------------------------------------------------------------------------
 module.exports = router;
