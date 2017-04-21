@@ -42,9 +42,9 @@ class ProfilePage extends React.Component {
     }
 
     changeProfile(event) {
-        const field = event.name;
+        const field = event.target.name;
         const profile = this.state.profile;
-        profile[field] = event.value;
+        profile[field] = event.target.value;
 
         this.setState({
             profile: profile
@@ -53,6 +53,8 @@ class ProfilePage extends React.Component {
 
     processForm(event) {
         event.preventDefault();
+        console.log('sending form with data');
+        console.log(this.state.profile);
         axios({
             method: 'POST',
             url: '/volunteer/profile',

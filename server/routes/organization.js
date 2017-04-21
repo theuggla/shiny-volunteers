@@ -18,6 +18,7 @@ router.route('/needs')
                 .then((result) => {
                     let mappedResult = result.map((need) => {
                         return {
+                            _id             : need._id,
                             skills          : need.skills,
                             title           : need.title,
                             description     : need.description,
