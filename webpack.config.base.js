@@ -10,10 +10,13 @@ let DEBUG = path.join(cwd, 'client/debug/');
 
 let config = {
     devtool: 'source-map',
-    entry: [DEV + 'js/app.jsx'],
+    entry: {
+        main: DEV + 'js/app.jsx',
+        sw: DEV + 'js/service-worker.js'
+    },
     output: {
         path: DEBUG,
-        filename: 'javascript/[name].min.js'
+        filename: '[name].min.js'
     },
     module: {
         loaders: [
@@ -49,7 +52,7 @@ let config = {
                 from: DEV + 'assets',
                 to: 'assets'
             }
-        ]),
+        ])
     ]
 };
 
