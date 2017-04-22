@@ -1,0 +1,27 @@
+{
+    "name": "Sparks",
+    "short_name": "Sparks",
+    "start_url": ".",
+    "display": "standalone",
+    ​​"orientation": "portrait-primary",
+    "background_color": "#00BCD4",
+    "description": "Helps you to help out.",
+    "theme_color": "#00BCD4",
+    "icons": [{
+        "src": "assets/icons/homescreen128.png",
+        "sizes": "128x128",
+        "type": "image/png"
+    }, {
+        "src": "assets/icons/homescreen144.png",
+        "sizes": "144x144",
+        "type": "image/png"
+    }, {
+        "src": "assets/icons/homescreen152.png",
+        "sizes": "152x152",
+        "type": "image/png"
+    }, {
+        "src": "assets/icons/homescreen192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+    }]
+}

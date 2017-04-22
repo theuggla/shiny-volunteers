@@ -108,6 +108,7 @@ self.addEventListener('fetch', (event) => {
         onFetch(event);
     }
 
+    // Do not intervene with facebook requests.
     function isNotFacebook(requestURL) {
         let parsedurl = url.parse(requestURL);
 

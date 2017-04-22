@@ -2,9 +2,13 @@ import React, {Component} from 'react';
 import FontIcon from 'material-ui/FontIcon';
 import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigation';
 
-const matchesIcon = <FontIcon className="material-icons">matches</FontIcon>;
-const applicationsIcon = <FontIcon className="material-icons">applications</FontIcon>;
+const matchesIcon = <img src="/assets/logo.png" />;
+const applicationsIcon = <FontIcon className="material-icons">app</FontIcon>;
 const profileIcon = <FontIcon className="material-icons">profile</FontIcon>;
+
+let style = {
+    maxHeight: '50%'
+};
 
 class VolunteerNav extends Component {
     constructor(props) {
@@ -25,6 +29,7 @@ class VolunteerNav extends Component {
                     style={{margin: 0, padding: 0}}
                 >
                     <BottomNavigationItem
+                        style={style}
                         label="matches"
                         icon={matchesIcon}
                         onTouchTap={() =>

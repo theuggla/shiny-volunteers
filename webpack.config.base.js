@@ -37,11 +37,11 @@ let config = {
             {
                 test: /\.(jpg|jpeg|png|gif|)$/,
                 loader: 'url-loader?limit=100000?name=[name].[ext]&publicPath=../assets/&outputPath=assets/'
-            },
-        ],
+            }
+        ]
     },
     plugins: [
-        new ExtractTextPlugin("stylesheets/styles.css"),
+        new ExtractTextPlugin('stylesheets/styles.css'),
         new HTMLWebpackPlugin({
             template: DEV + 'index.html',
             filename: 'index.html',
@@ -51,7 +51,12 @@ let config = {
             {
                 from: DEV + 'assets',
                 to: 'assets'
-            }
+            },
+            {
+                from: DEV + 'manifest.json',
+                to: 'manifest.json'
+            },
+
         ])
     ]
 };

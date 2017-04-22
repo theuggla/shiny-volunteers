@@ -1,4 +1,5 @@
 import React from 'react';
+import CircularProgress from 'material-ui/CircularProgress';
 import NeedsList from '../../../components/authorized/organization/NeedsList.jsx';
 import Auth from '../../../modules/Auth';
 import axios from 'axios';
@@ -38,7 +39,7 @@ class OurNeedsPage extends React.Component {
             this.state.needs ? (
                     <NeedsList className="needs-page"
                                needs={this.state.needs}
-                    />) : (<p>Loading</p>)
+                    />) : (<CircularProgress />)
         );
     }
 

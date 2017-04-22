@@ -13,7 +13,7 @@ const Container = ({ match }) => (
             <div className="front-end app-container" style={{color: 'white', height: '100vh', width: '100vw', backgroundImage: `url(${Background})`}}>
                 <div className="top-bar">
                     <Link id="about-link" to="/about">About</Link>
-                    <Link id="start-link" to="/">Shiny App</Link>
+                    <Link id="start-link" to="/"><img src="/assets/logo.png" /></Link>
                 </div>
 
                 <Route exact path="/" render={(props) => (<Welcome history={props.history}/>)}/>

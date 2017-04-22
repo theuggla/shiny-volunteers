@@ -1,5 +1,6 @@
 import React from 'react';
 import ProfileForm from '../../../components/authorized/volunteer/ProfileForm.jsx';
+import CircularProgress from 'material-ui/CircularProgress';
 import Auth from '../../../modules/Auth';
 import axios from 'axios';
 
@@ -24,16 +25,12 @@ class ProfilePage extends React.Component {
             headers: {'Authorization': `bearer ${Auth.getToken()}`},
         })
             .then((response) => {
-            console.log('got response profile');
-            console.log(response.data.profile);
                 this.setState({
                     profile: response.data.profile
                 });
 
             })
             .catch((error) => {
-            console.log('or got an error');
-            console.log(error);
                 const errors = error.response ? error.response.data.errors ? error.response.data.errors : error.response.data : {summary: 'you seem to be offline'};
                 this.setState({
                     errors: errors
@@ -53,8 +50,6 @@ class ProfilePage extends React.Component {
 
     processForm(event) {
         event.preventDefault();
-        console.log('sending form with data');
-        console.log(this.state.profile);
         axios({
             method: 'POST',
             url: '/volunteer/profile',
@@ -83,7 +78,7 @@ class ProfilePage extends React.Component {
                        onChange={this.changeProfile}
                        errors={this.state.errors}
                        profile={this.state.profile}
-            />) : (<p>Loading</p>)
+            />) : (<CircularProgress />)
         );
     }
 
