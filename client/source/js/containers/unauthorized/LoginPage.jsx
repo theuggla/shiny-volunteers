@@ -40,9 +40,6 @@ class LoginPage extends React.Component {
             role: this.props.match.params.role
         })
             .then((response) => {
-            console.log('got response');
-            console.log(response);
-            console.log('got token ' + response.data.token +' in response');
                 this.setState({
                     errors: {}
                 });

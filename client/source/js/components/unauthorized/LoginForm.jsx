@@ -65,6 +65,7 @@ const SignUpForm = ({
                     fields="name,email,id"
                     scope="public_profile,email"
                     callback={onFacebookLogin}
+                    cssClass="facebook-button"
                 />
             </div> }
 

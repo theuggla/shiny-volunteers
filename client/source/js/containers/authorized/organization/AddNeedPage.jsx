@@ -29,7 +29,6 @@ class AddNeedPage extends React.Component {
 
     processForm(event) {
         event.preventDefault();
-        console.log(this.state.need);
         axios({
             method: 'POST',
             url: '/organization/needs',

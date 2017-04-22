@@ -73,7 +73,7 @@ class ProfilePage extends React.Component {
     render() {
         return (
             this.state.profile ? (
-            <ProfileForm className="profile-page"
+            <ProfileForm
                        onSubmit={this.processForm}
                        onChange={this.changeProfile}
                        errors={this.state.errors}

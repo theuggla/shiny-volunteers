@@ -1,7 +1,6 @@
 {
     "name": "Sparks",
     "short_name": "Sparks",
-    "start_url": ".",
     "display": "standalone",
     "background_color": "#00BCD4",
     "description": "Helps you to help out.",

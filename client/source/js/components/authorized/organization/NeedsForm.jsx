@@ -57,7 +57,7 @@ const NeedsForm = ({
         </div>
 
         <div className="button-line">
-            <RaisedButton type="submit" label="Save" secondary />
+            <RaisedButton type="submit" label="Save" primary />
         </div>
 
     </form>

@@ -1,13 +1,23 @@
 import React, {Component} from 'react';
-import FontIcon from 'material-ui/FontIcon';
 import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigation';
+import FontIcon from 'material-ui/FontIcon';
 
-const matchesIcon = <img src="/assets/logo.png" />;
-const applicationsIcon = <FontIcon className="material-icons">app</FontIcon>;
-const profileIcon = <FontIcon className="material-icons">profile</FontIcon>;
+const matchesIcon = <FontIcon className="material-icons"><img src="/assets/icons/matches-icon-grey.png" style={{maxHeight: '70%'}}/></FontIcon>;
+const matchesIconActive = <FontIcon className="material-icons"><img src="/assets/icons/matches-icon-red.png" style={{maxHeight: '70%'}}/></FontIcon>;
+const applicationsIcon = <FontIcon className="material-icons"><img src="/assets/icons/applications-icon-grey.png" style={{maxHeight: '70%'}}/></FontIcon>;
+const applicationsIconActive = <FontIcon className="material-icons"><img src="/assets/icons/applications-icon-red.png" style={{maxHeight: '70%'}}/></FontIcon>;
+const profileIcon = <FontIcon className="material-icons"><img src="/assets/icons/profile-icon-grey.png" style={{maxHeight: '70%'}}/></FontIcon>;
+const profileIconActive = <FontIcon className="material-icons"><img src="/assets/icons/profile-icon-red.png" style={{maxHeight: '70%'}}/></FontIcon>;
 
 let style = {
-    maxHeight: '50%'
+    height: '12vh',
+    maxHeight: '12vh',
+    width: '100%',
+    position: 'fixed',
+    left: 0,
+    bottom: 0,
+    paddingBottom: '3vh',
+    zIndex: '10'
 };
 
 class VolunteerNav extends Component {
@@ -17,21 +27,35 @@ class VolunteerNav extends Component {
 
     state = {
         selectedIndex: 0,
+        matchesIcon: matchesIconActive,
+        applicationsIcon: applicationsIcon,
+        profileIcon: profileIcon
     };
 
-    select = (index) => this.setState({selectedIndex: index});
+    select = (index) => {
+        let match = (index === 0) ? matchesIconActive : matchesIcon;
+        let applications = (index === 1) ? applicationsIconActive : applicationsIcon;
+        let profile = (index === 2) ? profileIconActive : profileIcon;
+
+
+        this.setState({
+            selectedIndex: index,
+            matchesIcon: match,
+            applicationsIcon: applications,
+            profileIcon: profile
+        });
+    };
 
     render() {
         return (
                 <BottomNavigation
-                    className="volunteer-nav"
+                    className="authorized-nav"
                     selectedIndex={this.state.selectedIndex}
-                    style={{margin: 0, padding: 0}}
+                    style={style}
                 >
                     <BottomNavigationItem
-                        style={style}
                         label="matches"
-                        icon={matchesIcon}
+                        icon={this.state.matchesIcon}
                         onTouchTap={() =>
                         {
                             this.select(0);
@@ -40,7 +64,7 @@ class VolunteerNav extends Component {
                     />
                     <BottomNavigationItem
                         label="applications"
-                        icon={applicationsIcon}
+                        icon={this.state.applicationsIcon}
                         onTouchTap={() =>
                         {
                             this.select(1);
@@ -49,7 +73,7 @@ class VolunteerNav extends Component {
                     />
                     <BottomNavigationItem
                         label="profile"
-                        icon={profileIcon}
+                        icon={this.state.profileIcon}
                         onTouchTap={() =>
                         {
                             this.select(2);
