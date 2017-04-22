@@ -7,11 +7,6 @@ let cwd = __dirname ? __dirname : process.cwd();
 
 let DIST = path.join(cwd, '/client/dist/');
 
-config.entry = {
-    main: DEV + 'js/app.jsx',
-    jw: DEV + 'js/service-worker.js'
-};
-
 config.output = {
     path: DIST,
     filename: '[name].min.js'
