@@ -49,7 +49,7 @@ class VolunteerNav extends Component {
     render() {
         return (
                 <BottomNavigation
-                    className="authorized-nav"
+                    className="volunteer-nav"
                     selectedIndex={this.state.selectedIndex}
                     style={style}
                 >

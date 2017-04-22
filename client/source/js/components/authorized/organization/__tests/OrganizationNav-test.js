@@ -29,7 +29,7 @@ describe("OrganizationNav Component", () => {
         });
 
         it("should render three BottomNav-items", (done) => {
-            expect(wrapper.find(BottomNavigationItem)).to.have.length(3);
+            expect(wrapper.find(BottomNavigationItem)).to.have.length(2);
             done();
         });
     });
@@ -41,8 +41,6 @@ describe("OrganizationNav Component", () => {
             expect(wrapper.state('selectedIndex')).to.equal(0);
             wrapper.find('[label="add need"]').simulate('touchTap');
             expect(wrapper.state('selectedIndex')).to.equal(1);
-            wrapper.find('[label="edit need"]').simulate('touchTap');
-            expect(wrapper.state('selectedIndex')).to.equal(2);
             done();
         });
 
@@ -54,8 +52,6 @@ describe("OrganizationNav Component", () => {
             expect(historyMock[historyMock.length -1]).to.equal('/organization/needs');
             wrapper.find('[label="add need"]').simulate('touchTap');
             expect(historyMock[historyMock.length -1]).to.equal('/organization/needs/add');
-            wrapper.find('[label="edit need"]').simulate('touchTap');
-            expect(historyMock[historyMock.length -1]).to.equal('/organization/needs/edit');
             done();
         });
     });
