@@ -3,7 +3,6 @@
     "short_name": "Sparks",
     "start_url": ".",
     "display": "standalone",
-    ​​"orientation": "portrait-primary",
     "background_color": "#00BCD4",
     "description": "Helps you to help out.",
     "theme_color": "#00BCD4",
