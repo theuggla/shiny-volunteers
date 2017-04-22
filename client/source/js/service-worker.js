@@ -3,13 +3,14 @@
  * site for offline use.
  */
 
+let url = require('url');
+
 
 // Keep track of the cache.
 let CACHE_VERSION = 'v1';
 
 
 self.addEventListener('install', (event) => {
-    console.log('sw installing');
     // Store some files on first load.
     function onInstall () {
         return caches.open(CACHE_VERSION)
@@ -27,7 +28,6 @@ self.addEventListener('install', (event) => {
 
 // Clear out the cache if service worker is updated.
 self.addEventListener('activate', (event) => {
-    console.log('sw activated');
     event.waitUntil(
         caches.keys().then(function (cacheNames) {
             return Promise.all(
@@ -41,10 +41,9 @@ self.addEventListener('activate', (event) => {
     );
 });
 
-// Handle fetch events by sending back the cached resource if available.
+// Handle fetch events by first asking the network, then sending back the cached resource if available.
 self.addEventListener('fetch', (event) => {
     function onFetch (event) {
-        console.log('got get request');
         let request = event.request;
         let acceptHeader = request.headers.get('Accept');
         let resourceType = 'static';
@@ -88,8 +87,8 @@ self.addEventListener('fetch', (event) => {
         });
     }
 
+    // Get response from network.
     function fromNetwork(request, timeout) {
-        console.log('tries to respond from network');
         return new Promise((resolve, reject) => {
             let timeoutId = setTimeout(reject, timeout);
 
@@ -104,10 +103,14 @@ self.addEventListener('fetch', (event) => {
         });
     }
 
-    console.log(event);
-
     // Use cache first if GET request.
-    if (event.request.method === 'GET') {
+    if ((isNotFacebook(event.request.url)) && event.request.method === 'GET') {
         onFetch(event);
+    }
+
+    function isNotFacebook(requestURL) {
+        let parsedurl = url.parse(requestURL);
+
+        return !(parsedurl.hostname.includes('facebook'));
     }
 });
