@@ -30,6 +30,12 @@ input:-webkit-autofill:active {
     -webkit-text-fill-color: #F5F5F5 !important;
 }
 
+html {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../assets/intro-bg.jpg");
+    background-attachment: fixed;
+    background-size: cover;
+}
+
 html, body, div {
     margin: 0;
     padding: 0;
@@ -48,6 +54,7 @@ a {
     font-weight: bold;
     text-decoration: none;
     transition: color 0.4s;
+    color: inherit;
 }
 
 
@@ -100,7 +107,7 @@ a:hover {
 .bottom-bar {
     max-height: 12vh;
     text-align: center;
-    margin: 0;
+    margin: 3vh;
 }
 
 .flex-box {

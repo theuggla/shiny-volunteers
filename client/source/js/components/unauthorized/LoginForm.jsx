@@ -23,7 +23,6 @@ const SignUpForm = ({
     allowFacebook
 }) => (
         <form className="login-form" action="/login/local" method="POST" onSubmit={onSubmit}>
-            <h2>Login</h2>
 
             {errors.summary && <p className="error-message">{errors.summary}</p>}
 
@@ -60,7 +59,7 @@ const SignUpForm = ({
             {allowFacebook &&
             <div className="button-line">
                 <FacebookLogin
-                    appId="1219936468104276"
+                    appId="1228933440537912"
                     autoLoad={false}
                     fields="name,email,id"
                     scope="public_profile,email"

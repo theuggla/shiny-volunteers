@@ -64,8 +64,7 @@ app.use('/api', api);
 
 // 400 >
 app.use((req, res) => {
-    console.log('redirecting');
-    res.send('');
+    res.status(400).end();
 });
 
 // 500

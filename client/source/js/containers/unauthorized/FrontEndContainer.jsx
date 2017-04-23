@@ -1,26 +1,25 @@
 import React from 'react';
 import { Link, Route, Switch, Redirect } from 'react-router-dom';
 
-import Background from '../../../assets/intro-bg.jpg';
-
 import Welcome from '../../components/unauthorized/Welcome.jsx';
 import LoginPage from './LoginPage.jsx';
 import About from '../../components/unauthorized/About.jsx';
 
-let style= {
-    color: 'white',
-    height: '100vh',
-    width: '100vw',
-    backgroundImage: `url(${Background})`,
-    backgroundAttachment: 'fixed'
+let style = {
+    frontend: {
+        height: '100vh',
+        color: 'white',
+        overflow: 'scroll'
+    },
+
 };
 
 
 const Container = ({ match }) => (
-            <div className="front-end app-container" style={style}>
-                <div className="flex-box" style={{backgroundColor: 'rgba(0, 0, 0, 0.8)'}}>
+            <div className="front-end app-container" style={style.frontend}>
+                <div className="flex-box">
                 <div className="top-bar">
-                    <Link id="start-link" to="/"><img src="/assets/logo.png" style={{maxHeight:"10vh"}}/></Link>
+                    <Link id="start-link" to="/"><img src="/assets/logo.png" style={{maxHeight:"20vh", margin: '3vh'}}/></Link>
                 </div>
                     <div className="main-space-front">
                         <Route exact path="/" render={(props) => (<Welcome history={props.history}/>)}/>
