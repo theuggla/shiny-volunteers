@@ -60,7 +60,7 @@ const SignUpForm = ({
             {allowFacebook &&
             <div className="button-line">
                 <FacebookLogin
-                    appId="1226422467455676"
+                    appId="1219936468104276"
                     autoLoad={false}
                     fields="name,email,id"
                     scope="public_profile,email"

@@ -55,22 +55,22 @@ class LoginPage extends React.Component {
     }
 
     facebookLogin(response) {
-        console.log('got to facebook response');
-        console.log(response);
-        axios.post('/login/facebook', response)
-            .then((response) => {
-                this.setState({
-                    errors: {}
+        if (response.status) {
+            axios.post('/login/facebook', response)
+                .then((response) => {
+                    this.setState({
+                        errors: {}
+                    });
+                    auth.authenticateUser(response.data.token, response.data.user.roles);
+                    this.props.history.push('/' + response.data.user.roles[0]);
+                })
+                .catch((error) => {
+                    const errors = error.response ? error.response.data.errors ? error.response.data.errors : error.response.data : {summary: 'you seem to be offline'};
+                    this.setState({
+                        errors: errors
+                    });
                 });
-                auth.authenticateUser(response.data.token, response.data.user.roles);
-                this.props.history.push('/' + response.data.user.roles[0]);
-            })
-            .catch((error) => {
-                const errors = error.response ? error.response.data.errors ? error.response.data.errors : error.response.data : {summary: 'you seem to be offline'};
-                this.setState({
-                    errors: errors
-                });
-            });
+        }
     }
 
     render() {
