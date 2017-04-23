@@ -39,6 +39,7 @@
     "express-session": "^1.15.2",
     "helmet": "^3.5.0",
     "helmet-csp": "^2.4.0",
+    "heroku-ssl-redirect": "0.0.3",
     "js-cookie": "^2.1.4",
     "jsonwebtoken": "^7.3.0",
     "material-ui": "^0.17.1",

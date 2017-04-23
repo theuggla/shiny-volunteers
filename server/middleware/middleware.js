@@ -11,7 +11,7 @@ let jwt = require('jsonwebtoken');
  */
 module.exports.checkIfAuthorized = function(req, res, next) {
     if (!req.headers.authorization) {
-        return res.status(401).end();
+        return next();
     }
 
     // Get the token.
@@ -20,7 +20,7 @@ module.exports.checkIfAuthorized = function(req, res, next) {
     // Decode the token.
     return jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err) {
-            return res.status(401).end();
+            return next();
         }
 
         const userId = decoded.sub;
@@ -30,7 +30,7 @@ module.exports.checkIfAuthorized = function(req, res, next) {
             case 'organization':
                 return Organization.findById(userId, (error, user) => {
                     if (error || !user) {
-                        return res.status(401).end();
+                        return next();
                     }
 
                     req.user = user;
@@ -40,7 +40,7 @@ module.exports.checkIfAuthorized = function(req, res, next) {
             case 'volunteer':
                 return Volunteer.findById(userId, (error, user) => {
                     if (error || !user) {
-                        return res.status(401).end();
+                        return next();
                     }
 
                     req.user = user;
@@ -48,7 +48,7 @@ module.exports.checkIfAuthorized = function(req, res, next) {
                     return next();
                 });
             default:
-                return res.status(401).end();
+                return next();
         }
     });
 };

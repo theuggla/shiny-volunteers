@@ -7,6 +7,7 @@ let express = require('express');
 let bodyParser = require('body-parser');
 let path = require('path');
 let http = require('http');
+let sslRedirect = require('heroku-ssl-redirect');
 let helmet = require('helmet');
 let csp = require('helmet-csp');
 let passport = require('passport');
@@ -15,7 +16,6 @@ let login = require('./routes/login');
 let volunteer = require('./routes/volunteer');
 let organization = require('./routes/organization');
 let api = require('./routes/api');
-
 
 let app = express();
 let server = http.createServer(app);
@@ -34,6 +34,9 @@ app.set('port', port);
 db.connect();
 
 // Middlewares-------------------------------------------------------------------------------------------------------
+
+// Enable ssl redirect.
+app.use(sslRedirect());
 
 // Find static resources.
 app.use(express.static(staticPath));
@@ -59,15 +62,16 @@ app.use('/api', api);
 
 // Custom Error Pages-------------------------------------------------------------------------------------------------
 
-// 404
+// 400 >
 app.use((req, res) => {
-    res.status(404).send({message: 'really couldn\'t find this page!'});
+    console.log('redirecting');
+    res.send('');
 });
 
 // 500
 app.use((err, req, res, next) => {
     console.log(err);
-    res.send({message: 'my fault. sorry. maybe try again later?'});
+    res.status(500).end();
 });
 
 // Start the server----------------------------------------------------------------------------------------------------

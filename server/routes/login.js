@@ -14,7 +14,7 @@ router.post('/local', validateLoginForm, (req, res, next) => {
     if (req.body)
     return passport.authenticate('local', (err, token, userData) => {
         if (err) {
-            console.log(err);
+            console.error(err);
             if (err.name === 'IncorrectCredentialsError') {
                 return res.status(400).json({
                     success: false,
