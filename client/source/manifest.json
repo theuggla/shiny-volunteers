@@ -1,7 +1,8 @@
 {
     "name": "Sparks",
     "short_name": "Sparks",
-    "display": "standalone",
+    "start_url": "/index.html",
+    "display": "fullscreen",
     "background_color": "#00BCD4",
     "description": "Helps you to help out.",
     "theme_color": "#00BCD4",
