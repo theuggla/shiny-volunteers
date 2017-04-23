@@ -54,8 +54,9 @@ class LoginPage extends React.Component {
             });
     }
 
-    facebookLogin(user) {
-        axios.post('/login/facebook', user)
+    facebookLogin(response) {
+        console.log(response);
+        axios.post('/login/facebook', response)
             .then((response) => {
                 this.setState({
                     errors: {}

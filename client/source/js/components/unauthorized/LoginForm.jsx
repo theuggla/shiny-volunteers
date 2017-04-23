@@ -61,7 +61,7 @@ const SignUpForm = ({
             <div className="button-line">
                 <FacebookLogin
                     appId="1226422467455676"
-                    autoLoad={true}
+                    autoLoad={false}
                     fields="name,email,id"
                     scope="public_profile,email"
                     callback={onFacebookLogin}
