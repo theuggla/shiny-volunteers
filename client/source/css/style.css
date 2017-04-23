@@ -91,7 +91,6 @@ a:hover {
     padding: 0;
     padding-top: 3vh;
     padding-bottom: 3vh;
-    margin-bottom: 2em;
     position: fixed;
     width: 100vw;
     left: 0;
@@ -102,6 +101,12 @@ a:hover {
     content: '';
     display: block;
     clear: both;
+}
+
+.organization-app, .volunteer-app {
+    background-color: white;
+    padding-top: 2em;
+    display: flex;
 }
 
 .bottom-bar {
@@ -122,7 +127,8 @@ a:hover {
 .main-space {
     flex: 1;
     margin-top: 20vh;
-    margin-bottom: 20vh;
+    padding-bottom: 20vh;
+    min-height: 70vh;
 }
 
 
