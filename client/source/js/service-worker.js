@@ -7,7 +7,7 @@ let url = require('url');
 
 
 // Keep track of the cache.
-let CACHE_VERSION = 'v3';
+let CACHE_VERSION = 'v9';
 
 
 self.addEventListener('install', (event) => {
@@ -30,7 +30,7 @@ self.addEventListener('install', (event) => {
                 '/assets/icons/matches-icon-grey.png',
                 '/assets/icons/matches-icon-red.png',
                 '/assets/icons/profile-icon-grey.png',
-                '/assets/icons/profile-icon-red.png',
+                '/assets/icons/profile-icon-red.png'
             ]));
     }
 
@@ -76,12 +76,15 @@ self.addEventListener('fetch', (event) => {
             fromNetwork(event.request, 1000)
                 .then((response) => addToCache(cacheKey, request, response))
                 .catch(() => fetchFromCache(event))
-                .catch(() => fetch(request))
-                .then((response) => addToCache(cacheKey, request, response)));
+                .catch(() => fetch(request)));
     }
 
     // Add responses to cache to fetch later.
     function addToCache (cacheKey, request, response) {
+        console.log('in add to cache with request ');
+        console.log(request);
+        console.log('and response ');
+        console.log(response);
         if (response.ok) {
             let copy = response.clone(); // Copy the response as to not use it up.
             caches.open(cacheKey).then((cache) => {
@@ -94,6 +97,8 @@ self.addEventListener('fetch', (event) => {
 
     // Get responses from cache.
     function fetchFromCache (event) {
+        console.log('fetching from cache');
+        console.log(event.request);
         return caches.match(event.request).then((response) => {
             if (!response) {
                 throw Error('${event.request.url} not found in cache');

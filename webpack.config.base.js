@@ -55,7 +55,7 @@ let config = {
             {
                 from: DEV + 'manifest.json',
                 to: 'manifest.json'
-            },
+            }
 
         ])
     ]

@@ -47,19 +47,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 // Security
 app.use(helmet());
 
-// Security-CSP
-app.use(csp({
-    directives: {
-        defaultSrc: ['"self"'],
-        scriptSrc: ['"self"'],
-        objectSrc: ['"none"']
-    },
-    loose: false,
-    reportOnly: false,
-    setAllHeaders: true,
-    browserSniff: false
-}));
-
 // Initialize Passport
 app.use(passport.initialize());
 
