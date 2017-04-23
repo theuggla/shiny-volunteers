@@ -36,11 +36,6 @@ describe("LoginForm Component", () => {
             done();
         });
 
-        it("should contain text", (done) => {
-            expect(wrapper.contains(<h2>Login</h2>)).to.equal(true);
-            done();
-        });
-
         it("should render two text fields", (done) => {
             expect(wrapper.find(TextField)).to.have.length(2);
             done();
