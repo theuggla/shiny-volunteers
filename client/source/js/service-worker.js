@@ -7,19 +7,31 @@ let url = require('url');
 
 
 // Keep track of the cache.
-let CACHE_VERSION = 'v1';
+let CACHE_VERSION = 'v3';
 
 
 self.addEventListener('install', (event) => {
+    console.log('sw installing');
+
     // Store some files on first load.
+
     function onInstall () {
         return caches.open(CACHE_VERSION)
-            .then(cache => cache.addAll([
-                    '/main.min.js',
-                    '/stylesheets/styles.css',
-                    '/index.html',
-                ])
-            );
+            .then((cache) => cache.addAll([
+                '/main.min.js',
+                '/stylesheets/styles.css',
+                '/index.html',
+                '/assets/logo.png',
+                '/assets/intro-bg.jpg',
+                '/assets/icons/add-need-icon-grey.png',
+                '/assets/icons/add-need-icon-red.png',
+                '/assets/icons/applications-icon-grey.png',
+                '/assets/icons/applications-icon-red.png',
+                '/assets/icons/matches-icon-grey.png',
+                '/assets/icons/matches-icon-red.png',
+                '/assets/icons/profile-icon-grey.png',
+                '/assets/icons/profile-icon-red.png',
+            ]));
     }
 
     event.waitUntil(onInstall(event));
@@ -28,6 +40,7 @@ self.addEventListener('install', (event) => {
 
 // Clear out the cache if service worker is updated.
 self.addEventListener('activate', (event) => {
+    console.log('sw activating');
     event.waitUntil(
         caches.keys().then(function (cacheNames) {
             return Promise.all(
@@ -43,6 +56,8 @@ self.addEventListener('activate', (event) => {
 
 // Handle fetch events by first asking the network, then sending back the cached resource if available.
 self.addEventListener('fetch', (event) => {
+    console.log('sw fetching');
+
     function onFetch (event) {
         let request = event.request;
         let acceptHeader = request.headers.get('Accept');
@@ -105,6 +120,7 @@ self.addEventListener('fetch', (event) => {
 
     // Use cache first if GET request.
     if ((isNotFacebook(event.request.url)) && event.request.method === 'GET') {
+        console.log('fetching ' + event.request.url);
         onFetch(event);
     }
 

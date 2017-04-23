@@ -16,7 +16,6 @@ router.route('/profile')
     })
     .post((req, res, next) => {
         let user = req.user;
-        console.log(req.body);
         user.profile = req.body;
         user.save()
             .then(() => {
