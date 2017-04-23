@@ -66,6 +66,7 @@ const SignUpForm = ({
                     scope="public_profile,email"
                     callback={onFacebookLogin}
                     cssClass="facebook-button"
+                    redirectUri={window.location.hostname}
                 />
             </div> }
 

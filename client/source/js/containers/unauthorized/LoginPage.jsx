@@ -55,6 +55,7 @@ class LoginPage extends React.Component {
     }
 
     facebookLogin(response) {
+        console.log('got to facebook response');
         console.log(response);
         axios.post('/login/facebook', response)
             .then((response) => {
