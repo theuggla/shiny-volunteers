@@ -65,7 +65,7 @@ app.use('/organization', organization);
 
 // 400 >
 app.use((req, res) => {
-    res.status(400).end();
+    res.status(302).redirect('/');
 });
 
 // 500

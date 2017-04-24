@@ -5,7 +5,7 @@
 
 
 // Keep track of the cache.
-let CACHE_VERSION = 'v10';
+let CACHE_VERSION = 'v13';
 
 
 self.addEventListener('install', (event) => {
@@ -62,12 +62,20 @@ self.addEventListener('fetch', (event) => {
         } else if (acceptHeader.indexOf('image') !== -1) {
             resourceType = 'image';
         }
-
+m
         cacheKey = resourceType;
 
         event.respondWith(
             fromNetwork(event.request, 1000)
-                .then((response) => addToCache(cacheKey, request, response))
+                .then((response) => {
+
+                  if (response.type === 'opaqueredirect') {
+                        // Do not cache redirects, follow them.
+                        return Promise.reject(event);
+                    }
+
+                    return addToCache(cacheKey, request, response);
+                })
                 .catch(() => fetchFromCache(event))
                 .catch(() => fetch(request)));
     }

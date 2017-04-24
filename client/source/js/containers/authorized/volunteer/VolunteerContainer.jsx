@@ -6,6 +6,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 import Auth from '../../../modules/Auth';
 
+import FrontEndContainer from '../../unauthorized/FrontEndContainer.jsx';
 import VolunteerNav from '../../../components/authorized/volunteer/VolunteerNav.jsx';
 import MatchPage from './MatchPage.jsx';
 import ApplicationsPage from './ApplicationsPage.jsx';
@@ -22,15 +23,16 @@ class VolunteerContainer extends AuthorizedComponent {
         super(props);
 
         this.userRoles = Auth.getAuthRoles();
+        this.isAuthorized = true;
         this.notAuthorizedPath = "/"
     }
 
     handleUnauthorizedRole(routeRoles, userRoles) {
-        this.props.history.push('/');
+        this.isAuthorized = false;
     }
 
     render() {
-        return (
+        return this.isAuthorized ? (
             <MuiThemeProvider muiTheme={muiTheme}>
             <div className="volunteer-app app-container">
                 <div className="app-bar">
@@ -42,13 +44,13 @@ class VolunteerContainer extends AuthorizedComponent {
                     <Route path={`${this.props.match.path}/applications`}  component={ApplicationsPage}/>
                     <Route path={`${this.props.match.path}/profile`}  component={ProfilePage}/>
                     <Route path={`${this.props.match.path}/logout`} render={() => ( Auth.deauthenticateUser() ? (<Redirect to={'/'}/>) : (<Redirect to={`${this.props.match.path}/matches`}/>) )} />
-                    <Redirect exact path={`${this.props.match.path}/`} to={`${this.props.match.path}/matches`}/>
+                    <Redirect path={`${this.props.match.path}/`} to={`${this.props.match.path}/matches`}/>
                 </Switch>
                 </div>
                 <VolunteerNav match={this.props.match} history={this.props.history}/>
             </div>
             </MuiThemeProvider>
-        );
+            ) : ( <FrontEndContainer />);
     }
 }
 

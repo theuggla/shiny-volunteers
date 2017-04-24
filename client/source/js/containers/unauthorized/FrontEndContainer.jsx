@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { Link, Route } from 'react-router-dom';
+import { Link, Route, Switch } from 'react-router-dom';
 
 import Welcome from '../../components/unauthorized/Welcome.jsx';
 import LoginPage from './LoginPage.jsx';
@@ -17,9 +17,11 @@ const Container = ({ match }) => (
                     <Link id="start-link" to="/"><img src="/assets/logo.png" style={style.logo}/></Link>
                 </div>
                     <div className="main-space-front">
-                        <Route exact path="/" render={(props) => (<Welcome history={props.history}/>)}/>
-                        <Route path="/login/:role"  render={(props) => (<LoginPage {...props}/>)}/>
-                        <Route path="/about" component={About}/>
+                        <Switch>
+                            <Route path="/login/:role"  render={(props) => (<LoginPage {...props}/>)}/>
+                            <Route path="/about" component={About}/>
+                            <Route path="/" render={(props) => (<Welcome history={props.history}/>)}/>
+                        </Switch>
                     </div>
                 <div className="bottom-bar">
                     <Link id="about-link" to="/about">what is this</Link>
