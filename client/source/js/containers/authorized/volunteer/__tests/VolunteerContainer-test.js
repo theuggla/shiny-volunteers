@@ -29,7 +29,6 @@ describe("Volunteer Container", () => {
                 history = {historyMock}
             />, {context: {router: <MemoryRouter />}});
 
-        describe("basic render", () => {
 
             it("should mount", (done) => {
                 expect(wrapper.find('.volunteer-app').length).to.equal(1);
@@ -53,19 +52,11 @@ describe("Volunteer Container", () => {
                     history={historyMock}
                 />, {context: {router: <MemoryRouter />}});
 
-            describe("basic render", () => {
 
-                it("should mount", (done) => {
-                    expect(wrapper.find('.volunteer-app').length).to.equal(1);
-                    done();
-                });
-
-                it("should redirect to start", (done) => {
-                    expect(historyMock[historyMock.length - 1]).to.equal('/');
+                it("should not mount", (done) => {
+                    expect(wrapper.find('.volunteer-app').length).to.equal(0);
                     done();
                 });
 
             });
-        });
-    });
 });

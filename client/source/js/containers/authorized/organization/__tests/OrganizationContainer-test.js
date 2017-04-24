@@ -28,9 +28,8 @@ describe("Organization Container", () => {
                 history = {historyMock}
             />, {context: {router: <MemoryRouter />}});
 
-        describe("Basic render", () => {
 
-            it("should mount", (done) => {
+            it("should not mount", (done) => {
                 expect(wrapper.find('.organization-app').length).to.equal(1);
                 done();
             });
@@ -52,19 +51,11 @@ describe("Organization Container", () => {
                     history={historyMock}
                 />, {context: {router: <MemoryRouter />}});
 
-            describe("Basic render", () => {
 
-                it("should mount", (done) => {
-                    expect(wrapper.find('.organization-app').length).to.equal(1);
-                    done();
-                });
-
-                it("should redirect to start", (done) => {
-                    expect(historyMock[historyMock.length - 1]).to.equal('/');
+                it("should not mount", (done) => {
+                    expect(wrapper.find('.organization-app').length).to.equal(0);
                     done();
                 });
 
             });
-        });
-    });
 });

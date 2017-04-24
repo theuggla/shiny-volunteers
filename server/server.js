@@ -61,7 +61,7 @@ app.use('/login', login);
 app.use('/volunteer', volunteer);
 app.use('/organization', organization);
 
-// Custom Error Pages-------------------------------------------------------------------------------------------------
+// Custom Error Responses-------------------------------------------------------------------------------------------------
 
 // 400 >
 app.use((req, res) => {
