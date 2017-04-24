@@ -62,7 +62,7 @@ self.addEventListener('fetch', (event) => {
         } else if (acceptHeader.indexOf('image') !== -1) {
             resourceType = 'image';
         }
-m
+
         cacheKey = resourceType;
 
         event.respondWith(
