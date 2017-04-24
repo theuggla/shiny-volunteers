@@ -1,6 +1,11 @@
+/**
+ * Starting point of the application.
+ * Redirects the user to logged in screen if authenticated.
+ */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
+import { HashRouter, Route, Switch, Redirect } from 'react-router-dom'
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
@@ -14,9 +19,8 @@ import VolunteerContainer from './containers/authorized/volunteer/VolunteerConta
 import OrganizationContainer from './containers/authorized/organization/OrganizationContainer.jsx';
 import '../css/style.css';
 
-
 const App = () => (
-    <BrowserRouter >
+    <HashRouter >
             <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
                 <div>
                     <Switch>
@@ -26,7 +30,7 @@ const App = () => (
                     </Switch>
                 </div>
             </MuiThemeProvider>
-    </BrowserRouter>
+    </HashRouter>
 );
 
 

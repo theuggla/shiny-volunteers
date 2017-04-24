@@ -7,13 +7,13 @@ webpackConfig.devtool = 'inline-source-map';
 
 webpackConfig.module.loaders.concat([
     {
-        include: path.join(cwd, 'client/source/js'),
+        include: [(path.join(cwd, 'client/source/js'))],
         loader: 'babel-loader',
         query: {
             presets: ['react', 'airbnb', 'es2015', 'stage-0']
         },
-        test: /\.(js|jsx)$/
-    },
+        test: /\.(js|jsx)$/,
+    }
 ]);
 
 webpackConfig.externals = {

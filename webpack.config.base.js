@@ -1,4 +1,5 @@
 let path = require('path');
+let webpack = require('webpack');
 let HTMLWebpackPlugin = require('html-webpack-plugin');
 let ExtractTextPlugin = require('extract-text-webpack-plugin');
 let CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -12,7 +13,6 @@ let config = {
     devtool: 'source-map',
     entry: {
         main: DEV + 'js/app.jsx',
-        sw: DEV + 'js/service-worker.js'
     },
     output: {
         path: DEBUG,
@@ -35,7 +35,7 @@ let config = {
                 loader: 'url-loader?limit=100000'
             },
             {
-                test: /\.(jpg|jpeg|png|gif|)$/,
+                test: /\.(jpg|jpeg|png|gif|ico)$/,
                 loader: 'url-loader?limit=100000?name=[name].[ext]&publicPath=../assets/&outputPath=assets/'
             }
         ]
@@ -55,9 +55,14 @@ let config = {
             {
                 from: DEV + 'manifest.json',
                 to: 'manifest.json'
+            },
+            {
+                from: DEV + 'service-worker.js',
+                to: 'service-worker.js'
             }
 
-        ])
+        ]),
+        new webpack.DefinePlugin({'process.env': {'FACEBOOK_ID': JSON.stringify(process.env.FACEBOOK_ID)}})
     ]
 };
 

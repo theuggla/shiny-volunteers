@@ -59,13 +59,12 @@ const SignUpForm = ({
             {allowFacebook &&
             <div className="button-line">
                 <FacebookLogin
-                    appId="1228933440537912"
-                    autoLoad={false}
+                    appId={process.env.FACEBOOK_ID}
+                    autoLoad={true}
                     fields="name,email,id"
                     scope="public_profile,email"
                     callback={onFacebookLogin}
                     cssClass="facebook-button"
-                    redirectUri={window.location.hostname}
                 />
             </div> }
 

@@ -9,13 +9,12 @@ let path = require('path');
 let http = require('http');
 let sslRedirect = require('heroku-ssl-redirect');
 let helmet = require('helmet');
-let csp = require('helmet-csp');
 let passport = require('passport');
+let favicon = require('serve-favicon');
 let db = require('./lib/dbresource');
 let login = require('./routes/login');
 let volunteer = require('./routes/volunteer');
 let organization = require('./routes/organization');
-let api = require('./routes/api');
 
 let app = express();
 let server = http.createServer(app);
@@ -34,6 +33,9 @@ app.set('port', port);
 db.connect();
 
 // Middlewares-------------------------------------------------------------------------------------------------------
+
+// Serve favicon.
+app.use(favicon(path.join(staticPath, '/assets/', 'favicon.ico')));
 
 // Enable ssl redirect.
 app.use(sslRedirect());
@@ -58,7 +60,6 @@ app.use(passport.initialize());
 app.use('/login', login);
 app.use('/volunteer', volunteer);
 app.use('/organization', organization);
-app.use('/api', api);
 
 // Custom Error Pages-------------------------------------------------------------------------------------------------
 
@@ -69,7 +70,7 @@ app.use((req, res) => {
 
 // 500
 app.use((err, req, res, next) => {
-    console.log(err);
+    console.error(err);
     res.status(500).end();
 });
 

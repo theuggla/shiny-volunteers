@@ -74,9 +74,7 @@ a:hover {
 .top-bar {
     color: #F5F5F5;
     background-color: transparent;
-    padding-top: 3vh;
-    max-height: 15vh;
-    z-index: 100;
+    padding-bottom: 3vh;
 }
 
 .top-bar::after {
@@ -115,9 +113,11 @@ a:hover {
     margin: 3vh;
 }
 
-.flex-box {
+.front-end {
     height: 100%;
     width: 100%;
+    min-height: 100vh;
+    color: white;
     display: flex;
     flex-direction: column;
     justify-content: space-around;

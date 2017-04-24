@@ -3,16 +3,12 @@
  * site for offline use.
  */
 
-let url = require('url');
-
 
 // Keep track of the cache.
-let CACHE_VERSION = 'v9';
+let CACHE_VERSION = 'v10';
 
 
 self.addEventListener('install', (event) => {
-    console.log('sw installing');
-
     // Store some files on first load.
 
     function onInstall () {
@@ -40,7 +36,6 @@ self.addEventListener('install', (event) => {
 
 // Clear out the cache if service worker is updated.
 self.addEventListener('activate', (event) => {
-    console.log('sw activating');
     event.waitUntil(
         caches.keys().then(function (cacheNames) {
             return Promise.all(
@@ -56,8 +51,6 @@ self.addEventListener('activate', (event) => {
 
 // Handle fetch events by first asking the network, then sending back the cached resource if available.
 self.addEventListener('fetch', (event) => {
-    console.log('sw fetching');
-
     function onFetch (event) {
         let request = event.request;
         let acceptHeader = request.headers.get('Accept');
@@ -81,10 +74,6 @@ self.addEventListener('fetch', (event) => {
 
     // Add responses to cache to fetch later.
     function addToCache (cacheKey, request, response) {
-        console.log('in add to cache with request ');
-        console.log(request);
-        console.log('and response ');
-        console.log(response);
         if (response.ok) {
             let copy = response.clone(); // Copy the response as to not use it up.
             caches.open(cacheKey).then((cache) => {
@@ -97,8 +86,6 @@ self.addEventListener('fetch', (event) => {
 
     // Get responses from cache.
     function fetchFromCache (event) {
-        console.log('fetching from cache');
-        console.log(event.request);
         return caches.match(event.request).then((response) => {
             if (!response) {
                 throw Error('${event.request.url} not found in cache');
@@ -125,14 +112,11 @@ self.addEventListener('fetch', (event) => {
 
     // Use cache first if GET request.
     if ((isNotFacebook(event.request.url)) && event.request.method === 'GET') {
-        console.log('fetching ' + event.request.url);
         onFetch(event);
     }
 
     // Do not intervene with facebook requests.
     function isNotFacebook(requestURL) {
-        let parsedurl = url.parse(requestURL);
-
-        return !(parsedurl.hostname.includes('facebook'));
+        return !(requestURL.includes('facebook'));
     }
 });
