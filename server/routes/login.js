@@ -5,7 +5,7 @@
 // Requires.
 let router = require('express').Router();
 let passport = require('passport');
-let facebookAuth = require('../lib/auth').facebookAuth;
+let facebookAuth = require('../lib/authresource').facebookAuth;
 let validateLoginForm = require('../middleware/middleware').validateLoginForm;
 
 // Routes---------------------------------------------------------------------------------------------------------------

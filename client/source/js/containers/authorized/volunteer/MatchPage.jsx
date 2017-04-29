@@ -1,6 +1,6 @@
 import React from 'react';
 import CircularProgress from 'material-ui/CircularProgress';
-import NeedsList from '../../../components/authorized/organization/NeedsList.jsx';
+import NeedsList from '../../../components/authorized/NeedsList.jsx';
 import Auth from '../../../modules/Auth';
 import axios from 'axios';
 
@@ -34,11 +34,26 @@ class OurNeedsPage extends React.Component {
             });
     }
 
+    applyForMatch() {
+        axios({
+            method: 'POST',
+            url: '/volunteer/apply',
+            headers: {'Authorization': `bearer ${Auth.getToken()}`},
+        })
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
     render() {
         return (
             this.state.needs ? (
                     <NeedsList className="needs-page"
                                needs={this.state.needs}
+                               onNeedClick={this.applyForMatch}
                     />) : (<CircularProgress />)
         );
     }

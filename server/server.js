@@ -27,7 +27,7 @@ let cwd = __dirname ? __dirname : process.cwd();
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 let staticPath = path.join(cwd, (process.env.NODE_ENV === 'production' ? '/../client/dist' : '/../client/debug'));
 require('dotenv').config({silent: process.env.NODE_ENV === 'production'});
-require('./lib/auth');
+require('./lib/authresource');
 
 app.set('port', port);
 db.connect();

@@ -5,7 +5,7 @@ import Subheader from 'material-ui/Subheader';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
-const NeedsList = ({needs}) => (
+const NeedsList = ({needs, onNeedClick}) => (
         <div className="needs-list">
             <List>
                 <Subheader>Matches</Subheader>
@@ -13,7 +13,10 @@ const NeedsList = ({needs}) => (
                     <div style={{textAlign: 'left'}}>
                     <ListItem
                         leftAvatar={
-                            <FloatingActionButton mini={true}>
+                            <FloatingActionButton
+                                mini={true}
+                                onTouchTap={onNeedClick}
+                            >
                             <ContentAdd />
                             </FloatingActionButton>
                         }
