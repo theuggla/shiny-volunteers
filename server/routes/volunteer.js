@@ -6,6 +6,7 @@
 let router = require('express').Router();
 let checkIfAuthorized = require('../middleware/middleware').checkIfAuthorized;
 let Need = require('../models/Need');
+let mailer = require('../lib/emailresource');
 
 // Routes---------------------------------------------------------------------------------------------------------------
 router.use(checkIfAuthorized);
@@ -44,8 +45,21 @@ router.route('/match')
             });
     });
 
+router.route('/apply')
+    .get((req, res, next) => {
+        res.json({message: 'success in sending email'});
+    })
+    .post((req, res, next) => {
+        let user = req.user;
 
-
+        mailer.sendMail()
+            .then((result) => {
+                res.redirect('/volunteer/apply');
+            })
+            .catch((error) => {
+                res.json({message: 'a fail'});
+            });
+    });
 
 // Exports-------------------------------------------------------------------------------------------------------------
 module.exports = router;

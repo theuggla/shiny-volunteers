@@ -21,6 +21,12 @@ config.plugins = config.plugins.concat([
             warnings: false,
             screw_ie8: true
         }
+    }),
+    new webpack.DefinePlugin({
+        'process.env': {
+            'FACEBOOK_ID': JSON.stringify(process.env.FACEBOOK_ID),
+            'NODE_ENV': JSON.stringify('production')
+        }
     })
 ]);
 

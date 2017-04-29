@@ -1,37 +1,41 @@
 import React from 'react';
-import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn}
-    from 'material-ui/Table';
+import {List, ListItem} from 'material-ui/List';
+import Divider from 'material-ui/Divider';
+import Subheader from 'material-ui/Subheader';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 
 const NeedsList = ({needs}) => (
         <div className="needs-list">
-            <Table
-                height="60vh"
-            >
-                <TableHeader
-                    displaySelectAll={false}
-                    adjustForCheckbox={false}
-                >
-                    <TableRow>
-                        <TableHeaderColumn tooltip="The Name">Name</TableHeaderColumn>
-                        <TableHeaderColumn tooltip="The Description">Description</TableHeaderColumn>
-                        <TableHeaderColumn tooltip="The Expiry Date">Expires</TableHeaderColumn>
-                    </TableRow>
-                </TableHeader>
-                <TableBody
-                    deselectOnClickaway={true}
-                    showRowHover={true}
-                    stripedRows={true}
-                    displayRowCheckbox={false}
-                >
-                    {needs.map( (row) => (
-                        <TableRow key={row._id}>
-                            <TableRowColumn>{row.title}</TableRowColumn>
-                            <TableRowColumn>{row.description}</TableRowColumn>
-                            <TableRowColumn>{row.expiryDate}</TableRowColumn>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+            <List>
+                <Subheader>Matches</Subheader>
+                {needs.map( (row) => (
+                    <div style={{textAlign: 'left'}}>
+                    <ListItem
+                        leftAvatar={
+                            <FloatingActionButton mini={true}>
+                            <ContentAdd />
+                            </FloatingActionButton>
+                        }
+                        key={row._id}
+                        primaryText={row.title}
+                        primaryTogglesNestedList={true}
+                        nestedItems={[
+                            <ListItem
+                                primaryText={row.description}
+                            />,
+                            <ListItem
+                                primaryText='skills needed'
+                                nestedItems={row.skills.map((skill) => (
+                                    <ListItem
+                                        primaryText={skill}
+                                    />))}
+                                />
+                        ]}
+                    />
+                    </div>
+                ))}
+            </List>
         </div>
     );
 

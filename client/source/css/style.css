@@ -44,6 +44,10 @@ html, body, div {
     text-align: center;
 }
 
+.needs-list div {
+    text-align: left;
+}
+
 img {
     max-height: 100%;
     max-width: 100%;

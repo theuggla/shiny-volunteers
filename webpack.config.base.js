@@ -62,7 +62,6 @@ let config = {
             }
 
         ]),
-        new webpack.DefinePlugin({'process.env': {'FACEBOOK_ID': JSON.stringify(process.env.FACEBOOK_ID)}})
     ]
 };
 
