@@ -372,14 +372,12 @@ function createNewTempUser(user) {
 
             if (newTempUser) {
                 let URL = newTempUser[verify.options.URLFieldName];
-                console.log(newTempUser);
 
-                verify.sendVerificationEmail(newTempUser.info.email, URL, function(err, info) {
+                verify.sendVerificationEmail(user.info.email, URL, function(err, info) {
                     if (err) {
-                        console.log(err);
                         reject(new Error('fail'));
                     }
-                    resolve({message: 'yes'});
+                    resolve(newTempUser);
                 });
 
             } else {

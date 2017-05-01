@@ -58,22 +58,17 @@ router.route('/applications')
 
         Need.findById(req.body.id)
             .then((result) => {
-            console.log('found need');
-                console.log(result);
                 need = result;
 
                 return volunteers.updateApplications(user, need);
             })
             .then(() => {
-            console.log('will be sending mails');
                 return Promise.all([mailer.sendMailToUser(user, need), mailer.sendApplicationMail(need)]);
             })
             .then(() => {
-            console.log('mails are sent');
                 res.redirect('/volunteer/applications');
             })
             .catch((error) => {
-            console.log(error);
                 res.json({message: 'something seems to have gone wrong with your application. please try again later.'});
             });
     });

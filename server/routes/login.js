@@ -84,7 +84,7 @@ router.route('/email-verification/:URL')
             .then((response) => {
                 res.json({
                     success: true,
-                    summary: 'You have successfully logged in!',
+                    summary: 'You have successfully confirmed your account!',
                     token : response.token,
                     user: response.userData
                 });

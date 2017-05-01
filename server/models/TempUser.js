@@ -12,7 +12,10 @@ let TempUserSchema = new Schema({
             unique: true,
             sparse: true
         },
-        roles: [String]
+        roles: {
+            type: [String],
+            default: ['temp']
+        }
     },
     local: {
         email: {

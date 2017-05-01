@@ -43,7 +43,7 @@ module.exports.sendMailToUser = function(user, need) {
             console.log('will be sending mail to user');
                 if (err) {
                     console.log('got error');
-                    console.log(error);
+                    console.log(err);
                     reject(err);
                 }
                 else {
