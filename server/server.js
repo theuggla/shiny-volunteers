@@ -12,6 +12,7 @@ let helmet = require('helmet');
 let passport = require('passport');
 let favicon = require('serve-favicon');
 let db = require('./lib/dbresource');
+let verify = require('./lib/verificationresource');
 let login = require('./routes/login');
 let volunteer = require('./routes/volunteer');
 let organization = require('./routes/organization');
@@ -31,6 +32,7 @@ require('./lib/authresource');
 
 app.set('port', port);
 db.connect();
+verify.connect();
 
 // Middlewares-------------------------------------------------------------------------------------------------------
 

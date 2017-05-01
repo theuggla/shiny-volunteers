@@ -6,6 +6,7 @@
 let router = require('express').Router();
 let passport = require('passport');
 let facebookAuth = require('../lib/authresource').facebookAuth;
+let confirmTempUser = require('../lib/authresource').confirmTempUser;
 let validateLoginForm = require('../middleware/middleware').validateLoginForm;
 
 // Routes---------------------------------------------------------------------------------------------------------------
@@ -74,6 +75,24 @@ router.route('/facebook')
         });
     });
 
+router.route('/email-verification/:URL')
+    .get((req, res, next) => {
+        console.log('got here to verification place');
+        let url = req.params.URL;
+
+        confirmTempUser(url)
+            .then((response) => {
+                res.json({
+                    success: true,
+                    summary: 'You have successfully logged in!',
+                    token : response.token,
+                    user: response.userData
+                });
+            })
+            .catch((error) => {
+                return next(error);
+            });
+    });
 
 // Exports-------------------------------------------------------------------------------------------------------------
 module.exports = router;

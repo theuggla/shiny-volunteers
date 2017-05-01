@@ -5,7 +5,9 @@ let passport = require('passport');
 let LocalStrategy = require('passport-local').Strategy;
 let Volunteer = require('../models/Volunteer');
 let Organization = require('../models/Organization');
+let TempUser = require('../models/TempUser');
 let jwt = require('jsonwebtoken');
+let verify = require('./verificationresource').verify;
 
 
 /**
@@ -35,7 +37,7 @@ passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password
 
                                     return done(err);
                                 } else {
-                                    createNewUser({
+                                    createNewTempUser({
                                         info: {
                                             email: email.trim(),
                                             role: 'organization'
@@ -79,7 +81,7 @@ passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password
 
                                     return done(err);
                                 } else {
-                                    createNewUser({
+                                    createNewTempUser({
                                         info: {
                                             email: email.trim(),
                                             role: 'volunteer'
@@ -338,6 +340,92 @@ function tryLogin(user, password) {
 }
 
 /**
+ * Creates a new temporary user, to be saved while waiting for email verification.
+ * @param user {Object} an object with information about the user to create.
+ * @returns {Promise} that resolves with the newly created user or rejects with an error.
+ */
+function createNewTempUser(user) {
+    return new Promise((resolve, reject) => {
+        let newUser;
+
+        newUser = new TempUser({
+            info  : {
+                email       : user.info.email,
+                roles       : [user.info.role]
+            },
+            local : {
+                email       : user.local.email
+            },
+            profile : {
+                isComplete  : false
+            }
+        });
+
+        verify.createTempUser(newUser, function(err, existingPersistentUser, newTempUser) {
+            if (err) {
+                reject(new Error('something went wrong'));
+            }
+
+            if (existingPersistentUser) {
+                reject(new Error('user already exists'));
+            }
+
+            if (newTempUser) {
+                let URL = newTempUser[verify.options.URLFieldName];
+
+                verify.sendVerificationEmail(newTempUser.info.email, URL, function(err, info) {
+                    if (err) {
+                        reject(new Error('fail'));
+                    }
+                    resolve({message: 'yes'});
+                });
+
+            } else {
+                reject(new Error('user already signed up. check your email.'));
+            }
+        });
+
+    });
+}
+
+/**
+ * Transfer a temporary user from the temporary collection to the persistent
+ * user collection, removing the URL assigned to it.
+ *
+ * @func confirmTempUser
+ * @param {string} url - the randomly generated URL assigned to a unique email
+ */
+module.exports.confirmTempUser = function(url) {
+    return new Promise((resolve, reject) => {
+        let persistantUser;
+
+        TempUser.findOne({GENERATED_VERIFYING_URL: url})
+            .then((tempUserData) => {
+                // temp user is found (i.e. user accessed URL before their data expired)
+                if (tempUserData) {
+                    return createNewUser(JSON.parse(JSON.stringify(tempUserData)));
+                }
+            })
+            .then((user) => {
+                persistantUser = user;
+            })
+            .then(() => {
+                return TempUser.remove({GENERATED_VERIFYING_URL: url});
+            })
+            .then(() => {
+                let result = {
+                    userData: persistantUser.info,
+                    token: getJWT(persistantUser)
+                };
+                resolve(result);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+};
+
+/**
  * Creates a new user.
  * @param user {Object} an object with information about the user to create.
  * @returns {Promise} that resolves with the newly created user or rejects with an error.
@@ -385,5 +473,6 @@ function createNewUser(user) {
             .catch((error) => {
                 reject(error);
             });
+
     });
 }
