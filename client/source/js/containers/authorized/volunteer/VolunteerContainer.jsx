@@ -40,8 +40,8 @@ class VolunteerContainer extends AuthorizedComponent {
                 </div>
                 <div className="main-space">
                 <Switch>
-                    <Route path={`${this.props.match.path}/matches`}  component={MatchPage}/>
-                    <Route path={`${this.props.match.path}/applications`}  component={ApplicationsPage}/>
+                    <Route path={`${this.props.match.path}/matches`} render={(props) => (<MatchPage {...props}/>)}/>
+                    <Route path={`${this.props.match.path}/applications`}  render={(props) => (<ApplicationsPage {...props}/>)}/>
                     <Route path={`${this.props.match.path}/profile`}  component={ProfilePage}/>
                     <Route path={`${this.props.match.path}/logout`} render={() => ( Auth.deauthenticateUser() ? (<Redirect to={'/'}/>) : (<Redirect to={`${this.props.match.path}/matches`}/>) )} />
                     <Redirect path={`${this.props.match.path}/`} to={`${this.props.match.path}/matches`}/>

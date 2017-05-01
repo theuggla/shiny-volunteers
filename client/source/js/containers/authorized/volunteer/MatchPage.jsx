@@ -1,17 +1,22 @@
 import React from 'react';
 import CircularProgress from 'material-ui/CircularProgress';
+import AddIcon from 'material-ui/svg-icons//content/add-circle-outline';
+
 import NeedsList from '../../../components/authorized/NeedsList.jsx';
 import Auth from '../../../modules/Auth';
 import axios from 'axios';
 
-class OurNeedsPage extends React.Component {
+class MatchPage extends React.Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
             needs: null,
+            errors: {}
         };
+
+        this.applyForMatch = this.applyForMatch.bind(this);
     }
 
     componentWillMount() {
@@ -34,18 +39,21 @@ class OurNeedsPage extends React.Component {
             });
     }
 
-    applyForMatch() {
-        axios({
-            method: 'POST',
-            url: '/volunteer/apply',
-            headers: {'Authorization': `bearer ${Auth.getToken()}`},
-        })
-            .then((response) => {
-                console.log(response);
+    applyForMatch(id) {
+            axios({
+                method: 'POST',
+                url: '/volunteer/applications',
+                headers: {'Authorization': `bearer ${Auth.getToken()}`},
+                data: {
+                    id: id,
+                }
             })
-            .catch((error) => {
-                console.log(error);
-            });
+                .then((response) => {
+                    this.props.history.push('/volunteer/applications');
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
     }
 
     render() {
@@ -53,7 +61,10 @@ class OurNeedsPage extends React.Component {
             this.state.needs ? (
                     <NeedsList className="needs-page"
                                needs={this.state.needs}
-                               onNeedClick={this.applyForMatch}
+                               clickable={true}
+                               onClick={this.applyForMatch}
+                               confirmPrompt="your information will be sent out to the organization."
+                               icon={<AddIcon />}
                     />) : (<CircularProgress />)
         );
     }
@@ -62,5 +73,5 @@ class OurNeedsPage extends React.Component {
 
 
 //Exports.
-export default OurNeedsPage;
+export default MatchPage;
 

@@ -7,6 +7,7 @@ let router = require('express').Router();
 let checkIfAuthorized = require('../middleware/middleware').checkIfAuthorized;
 let Need = require('../models/Need');
 let mailer = require('../lib/emailresource');
+let volunteers = require('../lib/volunteerhandlingresource');
 
 // Routes---------------------------------------------------------------------------------------------------------------
 router.use(checkIfAuthorized);
@@ -17,47 +18,61 @@ router.route('/profile')
     })
     .post((req, res, next) => {
         let user = req.user;
-        user.profile = req.body;
-        user.save()
+        let profile = req.body;
+        volunteers.updateProfile(user, profile)
             .then(() => {
                 res.redirect('/volunteer/profile');
+            })
+            .catch((error) =>{
+                return next(error);
             });
     });
 
 router.route('/match')
     .get((req, res, next) => {
         let user = req.user;
-        Need
-            .find({
-                skills: {$in: user.profile.skills}
+        volunteers.getMatches(user)
+            .then((matches) => {
+                res.json({needs: matches});
             })
-            .limit(10)
-            .sort({ occupation: -1 })
-            .select({
-                skills          : 1,
-                title           : 1,
-                description     : 1,
-                shortDesc       : 1,
-                expiryDate      : 1
-            })
-            .then((result) => {
-                res.json({needs: result});
+            .catch((error) =>{
+                return next(error);
             });
     });
 
-router.route('/apply')
+router.route('/applications')
     .get((req, res, next) => {
-        res.json({message: 'success in sending email'});
-    })
-    .post((req, res, next) => {
         let user = req.user;
+        console.log('getting applications');
 
-        mailer.sendMail()
+        volunteers.getApplications(user)
             .then((result) => {
-                res.redirect('/volunteer/apply');
+            console.log('returning got applications: ');
+            console.log(result);
+                res.json({applications: result});
             })
             .catch((error) => {
-                res.json({message: 'a fail'});
+                return next(error);
+            });
+    })
+    .post((req, res) => {
+        let user = req.user;
+        let need;
+
+        Need.findById(req.body.id)
+            .then((result) => {
+                need = result;
+
+                return volunteers.updateApplications(user, need);
+            })
+            .then(() => {
+                return Promise.all([mailer.sendMailToUser(user, need), mailer.sendApplicationMail(need)]);
+            })
+            .then(() => {
+                res.redirect('/volunteer/applications');
+            })
+            .catch(() => {
+                res.json({message: 'something seems to have gone wrong with your application. please try again later.'});
             });
     });
 

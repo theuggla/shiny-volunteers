@@ -17,24 +17,53 @@ let auth = {
 
 let mailsender = nodemailer.createTransport(sendgrid(auth));
 
+// Models.
+let email = {
+    from: 'do-not-reply@spark-the-revolution.com',
+    to: [],
+    subject: 'Your sparkly application'
+};
 
-module.exports.sendMail = function() {
-    let email = {
-        from: 'do-not-reply@spark-the-revolution.com',
-        to: ['mopooy@gmail.com'],
-        subject: 'Hey you, awesome sendgridder!',
-        html: '<b>Wow Big powerful letters</b>'
-    };
+let userHtmlModel = {
+    preTitle: '<b>Thanks for applying for the ',
+    postTitle: ' need</b>',
+    body: '<p>The organization has been forwarded your profile and will be in contact as soon as possible.</p>'
+};
+let applicationHtmlModel;
+
+// Mail functions.
+module.exports.sendMailToUser = function(user, need) {
+
+    email.to.push(user.info.email);
+    email.html = userHtmlModel.preTitle + '"' + need.title + '"' + userHtmlModel.postTitle + userHtmlModel.body;
+
     return new Promise((resolve, reject) => {
         mailsender.sendMail(email, (err, info) => {
                 if (err) {
-                    console.log('Error: ' + err);
                     reject(err);
                 }
                 else {
-                    console.log('Response: ' + info);
                     resolve(info);
                 }
             });
+    });
+};
+
+module.exports.sendApplicationMail = function(user, need) {
+
+    email.to.push(user.info.email);
+
+    return new Promise((resolve, reject) => {
+        console.log('sending mail to org');
+        resolve();
+        /*
+        mailsender.sendMail(email, (err, info) => {
+            if (err) {
+                reject(err);
+            }
+            else {
+                resolve(info);
+            }
+        });*/
     });
 };

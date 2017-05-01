@@ -21,6 +21,20 @@ let style = {
 };
 
 class VolunteerNav extends Component {
+    componentWillReceiveProps(nextProps) {
+            switch (nextProps.history.location.pathname) {
+                case '/volunteer/matches':
+                    this.select(0);
+                    break;
+                case '/volunteer/applications':
+                    this.select(1);
+                    break;
+                case 'volunteer/profile':
+                    this.select(2);
+                    break;
+            }
+    }
+
     constructor(props) {
         super(props);
     }
@@ -33,6 +47,7 @@ class VolunteerNav extends Component {
     };
 
     select = (index) => {
+        console.log('made it here');
         let match = (index === 0) ? matchesIconActive : matchesIcon;
         let applications = (index === 1) ? applicationsIconActive : applicationsIcon;
         let profile = (index === 2) ? profileIconActive : profileIcon;
