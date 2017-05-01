@@ -10,7 +10,6 @@ import FrontEndContainer from '../../unauthorized/FrontEndContainer.jsx';
 import OrganizationNav from '../../../components/authorized/organization/OrganizationNav.jsx';
 import OurNeedsPage from './OurNeedsPage.jsx';
 import AddNeedPage from './AddNeedPage.jsx';
-import EditNeedPage from './EditNeedPage.jsx';
 
 const muiTheme = getMuiTheme({
     bottomNavigation: {
@@ -42,7 +41,6 @@ class OrganizationContainer extends AuthorizedComponent {
                     <div className="main-space">
                      <Switch>
                             <Route path={`${this.props.match.path}/needs/add`}  component={AddNeedPage}/>
-                            <Route path={`${this.props.match.path}/needs/edit`}  component={EditNeedPage}/>
                             <Route path={`${this.props.match.path}/needs`}  component={OurNeedsPage}/>
                             <Route path={`${this.props.match.path}/logout`} render={() => ( Auth.deauthenticateUser() ? (<Redirect to={'/'}/>) : (<Redirect to={`${this.props.match.path}/needs`}/>) )} />
                             <Redirect path={`${this.props.match.path}/`} to={`${this.props.match.path}/needs`}/>

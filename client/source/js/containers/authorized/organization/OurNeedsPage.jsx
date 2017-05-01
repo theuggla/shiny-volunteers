@@ -1,5 +1,7 @@
 import React from 'react';
 import CircularProgress from 'material-ui/CircularProgress';
+import RemoveIcon from 'material-ui/svg-icons//content/clear';
+
 import NeedsList from '../../../components/authorized/NeedsList.jsx';
 import Auth from '../../../modules/Auth';
 import axios from 'axios';
@@ -12,6 +14,8 @@ class OurNeedsPage extends React.Component {
         this.state = {
             needs: null,
         };
+
+        this.removeNeed = this.removeNeed.bind(this);
     }
 
     componentWillMount() {
@@ -34,11 +38,32 @@ class OurNeedsPage extends React.Component {
             });
     }
 
+    removeNeed(id) {
+        axios({
+            method: 'DELETE',
+            url: '/organization/needs',
+            headers: {'Authorization': `bearer ${Auth.getToken()}`},
+            data: {
+                id: id,
+            }
+        })
+            .then((response) => {
+                this.props.history.push('/organization/needs');
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
     render() {
         return (
             this.state.needs ? (
                     <NeedsList className="needs-page"
-                                 needs={this.state.needs}
+                               needs={this.state.needs}
+                               clickable={true}
+                               onClick={this.removeNeed}
+                               confirmPrompt="confirming will delete the need permanently."
+                               icon={<RemoveIcon />}
                     />) : (<CircularProgress />)
         );
     }
