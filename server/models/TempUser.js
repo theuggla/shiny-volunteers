@@ -15,7 +15,8 @@ let TempUserSchema = new Schema({
         roles: {
             type: [String],
             default: ['temp']
-        }
+        },
+        completed: Boolean
     },
     local: {
         email: {
@@ -26,9 +27,10 @@ let TempUserSchema = new Schema({
                 },
                 message: 'email is not valid'
             }
-        },
-        password: String
-    }
+        }
+    },
+    GENERATED_VERIFYING_URL: String,
+    password: String
 });
 
 let TempUser = mongoose.model('TempUser', TempUserSchema);

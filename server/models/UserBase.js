@@ -17,7 +17,8 @@ module.exports = function(paths) {
                 unique: true,
                 sparse: true
             },
-            roles: [String]
+            roles: [String],
+            completed: Boolean
         },
         local: {
             email: {

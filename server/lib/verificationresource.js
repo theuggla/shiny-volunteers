@@ -6,6 +6,7 @@ function connect() {
     verify.configure({
         verificationURL: process.env.SITE_URL + '/email-verification/${URL}',
         persistentUserModel: TempUser,
+        tempUserModel: TempUser,
         tempUserCollection: 'tempusers',
 
         transportOptions: {
@@ -23,8 +24,6 @@ function connect() {
         },
         emailFieldName: 'local.email'
     }, () => {});
-
-    verify.generateTempUserModel(TempUser, () => {});
 
 }
 

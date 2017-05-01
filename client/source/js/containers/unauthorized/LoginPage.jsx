@@ -43,8 +43,13 @@ class LoginPage extends React.Component {
                 this.setState({
                     errors: {}
                 });
-                auth.authenticateUser(response.data.token, response.data.user.roles);
-                this.props.history.push('/' + response.data.user.roles[0]);
+                auth.authenticateUser(response.data.token, response.data.user.roles, response.data.user.complete);
+
+                if (response.data.user.roles.indexOf('temp') === -1) {
+                    this.props.history.push('/' + response.data.user.roles[0]);
+                } else {
+                    this.props.history.push('/');
+                }
             })
             .catch((error) => {
                 const errors = error.response ? error.response.data.errors ? error.response.data.errors : error.response.data : {summary: 'you seem to be offline'};

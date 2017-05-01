@@ -12,6 +12,7 @@ let helmet = require('helmet');
 let passport = require('passport');
 let favicon = require('serve-favicon');
 let db = require('./lib/dbresource');
+let auth = require('./lib/authresource');
 let verify = require('./lib/verificationresource');
 let login = require('./routes/login');
 let volunteer = require('./routes/volunteer');
@@ -28,7 +29,6 @@ let cwd = __dirname ? __dirname : process.cwd();
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 let staticPath = path.join(cwd, (process.env.NODE_ENV === 'production' ? '/../client/dist' : '/../client/debug'));
 require('dotenv').config({silent: process.env.NODE_ENV === 'production'});
-require('./lib/authresource');
 
 app.set('port', port);
 db.connect();
@@ -58,6 +58,24 @@ app.use(helmet());
 app.use(passport.initialize());
 
 // Routes------------------------------------------------------------------------------------------------------------
+
+app.get('/email-verification/:URL', (req, res, next) => {
+    console.log('got here to verification place');
+    let url = req.params.URL;
+
+    auth.confirmTempUser(url)
+        .then((response) => {
+            res.json({
+                success: true,
+                summary: 'You have successfully confirmed your account!',
+                token : response.token,
+                user: response.userData
+            });
+        })
+        .catch((error) => {
+            return next(error);
+        });
+});
 
 app.use('/login', login);
 app.use('/volunteer', volunteer);

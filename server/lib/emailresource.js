@@ -33,42 +33,48 @@ let applicationHtmlModel;
 
 // Mail functions.
 module.exports.sendMailToUser = function(user, need) {
-    console.log('in mailsender');
+    let usermail = email;
 
-    email.to.push(user.info.email);
-    email.html = userHtmlModel.preTitle + '"' + need.title + '"' + userHtmlModel.postTitle + userHtmlModel.body;
+    usermail.to.push(user.info.email);
+    usermail.html = userHtmlModel.preTitle + '"' + need.title + '"' + userHtmlModel.postTitle + userHtmlModel.body;
 
     return new Promise((resolve, reject) => {
-        mailsender.sendMail(email, (err, info) => {
-            console.log('will be sending mail to user');
+        if (user.info.email !== 'vol@vol.com') {
+            mailsender.sendMail(usermail, (err, info) => {
                 if (err) {
-                    console.log('got error');
                     console.log(err);
                     reject(err);
                 }
                 else {
-                    console.log('that went well');
                     resolve(info);
                 }
             });
+        } else {
+            resolve();
+        }
     });
 };
 
-module.exports.sendApplicationMail = function(user, need) {
+module.exports.sendApplicationMail = function(user, need, applicant) {
+    let usermail = email;
 
-    email.to.push(user.info.email);
+    usermail.to.push(user.info.email);
+    usermail.html = userHtmlModel.preTitle + '"' + need.title + '"' + userHtmlModel.postTitle + userHtmlModel.body;
+
+    usermail.to.push(user.info.email);
 
     return new Promise((resolve, reject) => {
-        console.log('sending mail to org');
-        resolve();
-        /*
-        mailsender.sendMail(email, (err, info) => {
-            if (err) {
-                reject(err);
+        if (user.info.email !== 'org@org.com') {
+            mailsender.sendMail(usermail, (err, info) => {
+                if (err) {
+                    reject(err);
+                }
+                else {
+                    resolve(info);
+                }
+            });
+        } else {
+                resolve();
             }
-            else {
-                resolve(info);
-            }
-        });*/
     });
 };

@@ -351,14 +351,16 @@ function createNewTempUser(user) {
         newUser = new TempUser({
             info  : {
                 email       : user.info.email,
-                roles       : [user.info.role]
+                roles       : [user.info.role, 'temp'],
+                completed   : false
             },
             local : {
                 email       : user.local.email
             },
             profile : {
                 isComplete  : false
-            }
+            },
+            password        : user.password
         });
 
         verify.createTempUser(newUser, function(err, existingPersistentUser, newTempUser) {
@@ -401,7 +403,8 @@ module.exports.confirmTempUser = function(url) {
 
         TempUser.findOne({GENERATED_VERIFYING_URL: url})
             .then((tempUserData) => {
-                // temp user is found (i.e. user accessed URL before their data expired)
+            console.log(tempUserData);
+
                 if (tempUserData) {
                     return createNewUser(JSON.parse(JSON.stringify(tempUserData)));
                 }

@@ -24,8 +24,8 @@ const App = () => (
             <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
                 <div>
                     <Switch>
-                        <Route path="/volunteer" render={(props) => (<VolunteerContainer {...props} routes={[{authorize: ['volunteer']}]}/>)} />
-                        <Route path="/organization" render={(props) => (<OrganizationContainer {...props} routes={[{authorize: ['organization']}]}/>)} />
+                        <Route path="/volunteer" render={(props) => ( Auth.isUserAuthenticated() ? (<VolunteerContainer {...props} routes={[{authorize: ['volunteer']}]}/>) : (<FrontEndContainer />) )} />
+                        <Route path="/organization" render={(props) => ( Auth.isUserAuthenticated() ? (<OrganizationContainer {...props} routes={[{authorize: ['organization']}]}/>) : (<FrontEndContainer />))} />
                         <Route path="/" render={() => ( Auth.isUserAuthenticated() ? (<Redirect to={Auth.getAuthRoles()[0]}/>) : (<FrontEndContainer />))} />
                     </Switch>
                 </div>

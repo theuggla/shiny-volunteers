@@ -34,12 +34,21 @@ router.post('/local', validateLoginForm, (req, res, next) => {
             }
         }
 
-        return res.json({
-            success: true,
-            summary: 'You have successfully logged in!',
-            token: token,
-            user: userData
-        });
+        if (userData.roles.indexOf('temp') === -1) {
+            return res.json({
+                success: true,
+                summary: 'You have successfully logged in!',
+                token: token,
+                user: userData
+            });
+        } else {
+            return res.json({
+                success: true,
+                summary: 'You have successfully logged in!',
+                token: token,
+                user: userData
+            });
+        }
 
     })(req, res, next);
 });
@@ -75,24 +84,6 @@ router.route('/facebook')
         });
     });
 
-router.route('/email-verification/:URL')
-    .get((req, res, next) => {
-        console.log('got here to verification place');
-        let url = req.params.URL;
-
-        confirmTempUser(url)
-            .then((response) => {
-                res.json({
-                    success: true,
-                    summary: 'You have successfully confirmed your account!',
-                    token : response.token,
-                    user: response.userData
-                });
-            })
-            .catch((error) => {
-                return next(error);
-            });
-    });
 
 // Exports-------------------------------------------------------------------------------------------------------------
 module.exports = router;

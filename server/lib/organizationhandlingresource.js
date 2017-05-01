@@ -1,5 +1,5 @@
 /**
- * Volunteer-handling things.
+ * Organization-handling things.
  */
 
 // Requires.

@@ -8,6 +8,7 @@ import { Link, Route, Switch, Redirect } from 'react-router-dom';
 import Auth from '../../modules/Auth';
 
 import Welcome from '../../components/unauthorized/Welcome.jsx';
+import Confirm from '../../components/unauthorized/Confirm.jsx';
 import LoginPage from './LoginPage.jsx';
 import About from '../../components/unauthorized/About.jsx';
 
@@ -22,7 +23,7 @@ const Container = ({ match }) => (
                         <Switch>
                             <Route path="/login/:role"  render={(props) => (<LoginPage {...props}/>)}/>
                             <Route path="/about" component={About}/>
-                            <Route path="/" render={(props) => ( Auth.isUserAuthenticated() ? (<Redirect to='/'/>) : (<Welcome history={props.history}/>))} />
+                            <Route path="/" render={(props) => ( Auth.isUserAuthenticated() ? (<Redirect to='/'/>) : Auth.isTemp() ? (<Confirm history={props.history}/>) : (<Welcome history={props.history}/>))} />
                         </Switch>
                     </div>
                 <div className="bottom-bar">

@@ -6,8 +6,9 @@ class Auth {
      * Save an authenticated user in a cookie.
      * @param {string} token the users JWT token
      * @param {[string]} roles an array of roles the user is authenticated as
+     * @param {string} isComplete a boolean indicating weather the user's profile is complete and the user is confirmed.
      */
-    static authenticateUser(token, roles) {
+    static authenticateUser(token, roles, isComplete) {
         if (!Array.isArray(roles)) {
             roles = [roles];
         }
@@ -18,7 +19,7 @@ class Auth {
             }
         });
 
-        Cookies.set('currentUser', {token: token, roles: roles}, {expires: 30});
+        Cookies.set('currentUser', {token: token, roles: roles, isComplete: isComplete}, {expires: 30});
     }
 
     /**
@@ -26,7 +27,7 @@ class Auth {
      * @returns {boolean} true if the user is authenticated.
      */
     static isUserAuthenticated() {
-        return Cookies.get('currentUser') !== undefined;
+        return Cookies.get('currentUser') !== undefined && JSON.parse(Cookies.get('currentUser')).roles.indexOf('temp') === -1;
     }
 
     /**
@@ -62,6 +63,15 @@ class Auth {
         } else {
             return [];
         }
+    }
+
+    /**
+     * Returns a boolean indicating whether the user is temporary.
+     * @returns {boolean} true if the user is temporary
+     */
+
+    static isTemp() {
+        return Auth.getAuthRoles().indexOf('temp') !== -1;
     }
 
 }
