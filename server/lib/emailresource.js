@@ -33,16 +33,21 @@ let applicationHtmlModel;
 
 // Mail functions.
 module.exports.sendMailToUser = function(user, need) {
+    console.log('in mailsender');
 
     email.to.push(user.info.email);
     email.html = userHtmlModel.preTitle + '"' + need.title + '"' + userHtmlModel.postTitle + userHtmlModel.body;
 
     return new Promise((resolve, reject) => {
         mailsender.sendMail(email, (err, info) => {
+            console.log('will be sending mail to user');
                 if (err) {
+                    console.log('got error');
+                    console.log(error);
                     reject(err);
                 }
                 else {
+                    console.log('that went well');
                     resolve(info);
                 }
             });

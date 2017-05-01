@@ -11,8 +11,8 @@ function connect() {
         transportOptions: {
             service: 'SendGrid',
             auth: {
-                api_key: process.env.SENDGRID_PASSWORD,
-                api_user: process.env.SENDGRID_USERNAME
+                user: process.env.SENDGRID_USERNAME,
+                pass: process.env.SENDGRID_PASSWORD
             }
         },
         verifyMailOptions: {
