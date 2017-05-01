@@ -41,11 +41,8 @@ class OurNeedsPage extends React.Component {
     removeNeed(id) {
         axios({
             method: 'DELETE',
-            url: '/organization/needs',
+            url: '/organization/needs/' + id,
             headers: {'Authorization': `bearer ${Auth.getToken()}`},
-            data: {
-                id: id,
-            }
         })
             .then((response) => {
                 this.props.history.push('/organization/needs');

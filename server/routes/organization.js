@@ -6,6 +6,7 @@
 let router = require('express').Router();
 let checkIfAuthorized = require('../middleware/middleware').checkIfAuthorized;
 let Need = require('../models/Need');
+let organization = require('../lib/organizationhandlingresource');
 
 // Routes---------------------------------------------------------------------------------------------------------------
 router.use(checkIfAuthorized);
@@ -13,51 +14,38 @@ router.use(checkIfAuthorized);
 router.route('/needs')
     .get((req, res, next) => {
         let user = req.user;
-            Need
-            .find({_creator: user._id})
-                .then((result) => {
-                    let mappedResult = result.map((need) => {
-                        return {
-                            _id             : need._id,
-                            skills          : need.skills,
-                            title           : need.title,
-                            description     : need.description,
-                            shortDesc       : need.shortDesc,
-                            expiryDate      : need.expiryDate.toLocaleDateString()
-                        };
-                    });
+        organization.getNeeds(user)
+            .then((needs) => {
+                res.json({needs: needs});
+            })
+            .catch((error) =>{
+                return next(error);
+            });
 
-                    res.json({needs: mappedResult});
-                });
     })
     .post((req, res, next) => {
         let user = req.user;
-        let dotIndex = req.body.description.indexOf('.');
-        let cutOfDesc = (dotIndex < 100 && dotIndex > 20) ? dotIndex : 80;
-        let need = new Need({
-            _creator        : user._id,
-            skills          : req.body.skills,
-            title           : req.body.title,
-            description     : req.body.description,
-            shortDesc       : req.body.description.slice(0, cutOfDesc) + ' (...)'
-        });
-
-        need.save()
-            .then((savedNeed) => {
-                user.needs.push(savedNeed._id);
-                return user.save();
+        let need = req.body;
+        organization.addNeed(user, need)
+            .then(() => {
+                res.end();
             })
-            .then((user) => {
-                res.redirect('/organization/needs');
-            })
-            .catch((error) => {
-                return res.json({error: 'Error saving the need'});
+            .catch((error) =>{
+                return next(error);
             });
     });
 
 router.route('/needs/:id')
-    .get((req, res, next) => {
-        res.json({success: true, message: 'here be specific need'});
+    .delete((req, res, next) => {
+        let user = req.user;
+        let id = req.params.id;
+        organization.removeNeed(user, id)
+            .then(() => {
+                res.end();
+            })
+            .catch((error) =>{
+                return next(error);
+            });
     });
 
 // Exports-------------------------------------------------------------------------------------------------------------

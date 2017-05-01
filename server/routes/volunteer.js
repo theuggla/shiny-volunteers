@@ -43,12 +43,9 @@ router.route('/match')
 router.route('/applications')
     .get((req, res, next) => {
         let user = req.user;
-        console.log('getting applications');
 
         volunteers.getApplications(user)
             .then((result) => {
-            console.log('returning got applications: ');
-            console.log(result);
                 res.json({applications: result});
             })
             .catch((error) => {
