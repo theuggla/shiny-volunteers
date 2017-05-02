@@ -74,7 +74,7 @@ module.exports.sendApplicationMail = function(user, need, applicant) {
                 }
             });
         } else {
-                resolve();
-            }
+            resolve();
+        }
     });
 };

@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 
 import FrontEndContainer from '../FrontEndContainer.jsx';
 import { Link } from 'react-router-dom'

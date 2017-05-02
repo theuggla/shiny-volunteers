@@ -1,5 +1,6 @@
 let path = require('path');
 let webpack = require('webpack');
+let nodeExternals = require('webpack-node-externals');
 let HTMLWebpackPlugin = require('html-webpack-plugin');
 let ExtractTextPlugin = require('extract-text-webpack-plugin');
 let CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -18,6 +19,7 @@ let config = {
         path: DEBUG,
         filename: '[name].min.js'
     },
+    externals: [nodeExternals({whitelist: ['dotenv']})],
     module: {
         loaders: [
             {
@@ -61,7 +63,7 @@ let config = {
                 to: 'service-worker.js'
             }
 
-        ]),
+        ])
     ]
 };
 

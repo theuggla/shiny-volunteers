@@ -12,7 +12,7 @@ webpackConfig.module.loaders.concat([
         query: {
             presets: ['react', 'airbnb', 'es2015', 'stage-0']
         },
-        test: /\.(js|jsx)$/,
+        test: /\.(js|jsx)$/
     }
 ]);
 
@@ -34,16 +34,18 @@ module.exports = function(config) {
             }
         },
         browserNoActivityTimeout: 100000,
-        browsers: ['Firefox'],
+        browsers: ['Chrome'],
         client: {
             captureConsole: true
         },
-        files: ['webpack.tests.js'],
+        files: [
+            './webpack.client.tests.js'
+        ],
         frameworks: ['mocha', 'chai'],
         preprocessors: {
-            'webpack.tests.js': ['webpack', 'sourcemap', 'babel']
+            './webpack.client.tests.js': ['webpack', 'sourcemap', 'babel']
         },
-        reporters: ['dots'],
+        reporters: ['mocha'],
         singleRun: true,
         webpack: webpackConfig
 
