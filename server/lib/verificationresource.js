@@ -4,7 +4,7 @@ let verify = require('email-verification')(mongoose);
 
 function connect() {
     verify.configure({
-        verificationURL: process.env.SITE_URL + '/email-verification/${URL}',
+        verificationURL: process.env.SITE_URL + '/login/email-verification/${URL}',
         persistentUserModel: TempUser,
         tempUserModel: TempUser,
         tempUserCollection: 'tempusers',

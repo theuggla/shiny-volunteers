@@ -4,6 +4,7 @@
 
 let Volunteer = require('../models/Volunteer');
 let Organization = require('../models/Organization');
+let db = require('../lib/dbresource');
 let jwt = require('jsonwebtoken');
 
 /**
@@ -86,4 +87,21 @@ module.exports.validateLoginForm = function(req, res, next) {
     }
 
     return next();
+};
+
+/**
+ *  Check for database connection.
+ */
+module.exports.isDatabaseConnected = function(req, res, next) {
+    const errors = {};
+    let summary = 'We have lost connection to the database. Please try again later.';
+
+    if (db.isConnected) {
+        return next();
+    } else {
+        return res.status(500).send({
+            summary,
+            errors
+        });
+    }
 };

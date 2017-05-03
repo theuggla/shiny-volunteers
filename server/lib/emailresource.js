@@ -2,79 +2,66 @@
  * Module to handle the email sending.
  */
 
-
 // Requires.
-let nodemailer = require('nodemailer');
-let sendgrid = require('nodemailer-sendgrid-transport');
+let helper = require('sendgrid').mail;
+let fromEmail = new helper.Email('do-not-reply@sparktherevolution.com');
+let sg = require('sendgrid')(process.env.SENDGRID_API_KEY);
 
-// Configs.
-let auth = {
-    auth: {
-        api_key: process.env.SENDGRID_PASSWORD,
-        api_user: process.env.SENDGRID_USERNAME
-    }
-};
-
-let mailsender = nodemailer.createTransport(sendgrid(auth));
-
-// Models.
-let email = {
-    from: 'do-not-reply@spark-the-revolution.com',
-    to: [],
-    subject: 'Your sparkly application'
-};
-
-let userHtmlModel = {
-    preTitle: '<b>Thanks for applying for the ',
-    postTitle: ' need</b>',
-    body: '<p>The organization has been forwarded your profile and will be in contact as soon as possible.</p>'
-};
-let applicationHtmlModel;
 
 // Mail functions.
 module.exports.sendMailToUser = function(user, need) {
-    let usermail = email;
+    let toEmail = new helper.Email(user.info.email);
+    let subject = 'Thanks for your application!';
+    let content = new helper.Content('text/plain', 'We have  forwarded your application regarding the ' + need.title + ' to the concerned organization together with your profile, and they will be in touch as soon as possible.');
+    let mail = new helper.Mail(fromEmail, subject, toEmail, content);
 
-    usermail.to.push(user.info.email);
-    usermail.html = userHtmlModel.preTitle + '"' + need.title + '"' + userHtmlModel.postTitle + userHtmlModel.body;
+    let request = sg.emptyRequest({
+        method: 'POST',
+        path: '/v3/mail/send',
+        body: mail.toJSON()
+    });
+
 
     return new Promise((resolve, reject) => {
         if (user.info.email !== 'vol@vol.com') {
-            mailsender.sendMail(usermail, (err, info) => {
-                if (err) {
-                    console.log(err);
-                    reject(err);
+            sg.API(request, (error, response) => {
+                if (error) {
+                    console.log('error in vol');
+                    console.log(error);
+                    console.log(error.response);
+                    console.log(error.response.body.errors);
+                    reject(error);
                 }
-                else {
-                    resolve(info);
-                }
+                resolve(response);
             });
-        } else {
-            resolve();
         }
     });
 };
 
 module.exports.sendApplicationMail = function(user, need, applicant) {
-    let usermail = email;
+    let toEmail = new helper.Email(user.info.email);
+    let subject = 'Someone wants to help you!';
+    let content = new helper.Content('text/plain', 'You have recieved an application for the ' + need.title + ' from the following user: \n' + JSON.stringify(applicant.profile) + ' \n Please contact them on ' + applicant.info.email + ' as soon as possible. Cheers!');
+    let mail = new helper.Mail(fromEmail, subject, toEmail, content);
 
-    usermail.to.push(user.info.email);
-    usermail.html = userHtmlModel.preTitle + '"' + need.title + '"' + userHtmlModel.postTitle + userHtmlModel.body;
+    let request = sg.emptyRequest({
+        method: 'POST',
+        path: '/v3/mail/send',
+        body: mail.toJSON()
+    });
 
-    usermail.to.push(user.info.email);
 
     return new Promise((resolve, reject) => {
-        if (user.info.email !== 'org@org.com') {
-            mailsender.sendMail(usermail, (err, info) => {
-                if (err) {
-                    reject(err);
+        if (user.info.email !== 'vol@vol.com') {
+            sg.API(request, (error, response) => {
+                if (error) {
+                    console.log('error in org');
+                    console.log(error);
+                    console.log(error.response.body.errors);
+                    reject(error);
                 }
-                else {
-                    resolve(info);
-                }
+                resolve(response);
             });
-        } else {
-            resolve();
         }
     });
 };

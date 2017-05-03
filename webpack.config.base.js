@@ -1,6 +1,4 @@
 let path = require('path');
-let webpack = require('webpack');
-let nodeExternals = require('webpack-node-externals');
 let HTMLWebpackPlugin = require('html-webpack-plugin');
 let ExtractTextPlugin = require('extract-text-webpack-plugin');
 let CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -13,13 +11,12 @@ let DEBUG = path.join(cwd, 'client/debug/');
 let config = {
     devtool: 'source-map',
     entry: {
-        main: DEV + 'js/app.jsx',
+        main: DEV + 'js/app.jsx'
     },
     output: {
         path: DEBUG,
         filename: '[name].min.js'
     },
-    externals: [nodeExternals({whitelist: ['dotenv']})],
     module: {
         loaders: [
             {

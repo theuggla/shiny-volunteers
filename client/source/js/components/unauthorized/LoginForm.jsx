@@ -2,6 +2,7 @@ import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import FacebookLogin from 'react-facebook-login';
 import TextField from 'material-ui/TextField';
+import Snackbar from 'material-ui/Snackbar';
 
 const styles = {
     floatingLabelStyle: {
@@ -18,11 +19,17 @@ const SignUpForm = ({
     onSubmit,
     onChange,
     onFacebookLogin,
+    onPopupConfirm,
+    processSignup,
     errors,
     user,
-    allowFacebook
+    allowFacebook,
+    signup,
+    popup,
+    popupAction,
+    popupMessage
 }) => (
-        <form className="login-form" action="/login/local" method="POST" onSubmit={onSubmit}>
+        <form className="login-form" action="/login/local" method="POST" onSubmit={ signup ? processSignup : onSubmit}>
 
             {errors.summary && <p className="error-message">{errors.summary}</p>}
 
@@ -51,8 +58,21 @@ const SignUpForm = ({
                 />
             </div>
 
+            {signup && <div className="field-line">
+                <TextField
+                    floatingLabelText="confirm password"
+                    type="password"
+                    name="passwordConfirm"
+                    onChange={onChange}
+                    errorText={errors.passwordConfirm}
+                    value={user.passwordConfirm}
+                    floatingLabelStyle={styles.floatingLabelStyle}
+                    inputStyle={styles.inputStyle}
+                />
+            </div>}
+
             <div className="button-line">
-                <RaisedButton type="submit" label="Login" primary />
+                <RaisedButton type="submit" label={signup ? "Signup" : "Login"} primary />
             </div>
 
 
@@ -67,6 +87,13 @@ const SignUpForm = ({
                     cssClass="facebook-button"
                 />
             </div> }
+
+            <Snackbar
+                open={popup}
+                message={popupMessage}
+                action={popupAction}
+                onActionTouchTap={onPopupConfirm}
+            />
 
         </form>
 );

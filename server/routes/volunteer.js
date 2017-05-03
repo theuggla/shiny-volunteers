@@ -6,6 +6,7 @@
 let router = require('express').Router();
 let checkIfAuthorized = require('../middleware/middleware').checkIfAuthorized;
 let Need = require('../models/Need');
+let Organization = require('../models/Organization');
 let mailer = require('../lib/emailresource');
 let volunteers = require('../lib/volunteerhandlingresource');
 
@@ -54,6 +55,7 @@ router.route('/applications')
     })
     .post((req, res) => {
         let user = req.user;
+        let creator;
         let need;
 
         Need.findById(req.body.id)
@@ -63,7 +65,14 @@ router.route('/applications')
                 return volunteers.updateApplications(user, need);
             })
             .then(() => {
-                return Promise.all([mailer.sendMailToUser(user, need), mailer.sendApplicationMail(need)]);
+            console.log('i am here at least');
+                Organization.findById(need._creator)
+                    .then((org) => {
+                        creator = org;
+                        console.log('got creator');
+                        console.log(creator);
+                        return Promise.all([mailer.sendMailToUser(user, need), mailer.sendApplicationMail(creator, need, user)]);
+                    });
             })
             .then(() => {
                 res.redirect('/volunteer/applications');

@@ -2,7 +2,6 @@
  * A module to set up and handle the database.
  */
 let mongoose = require('mongoose');
-
 let isConnected = true;
 
 /**

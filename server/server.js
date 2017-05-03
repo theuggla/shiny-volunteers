@@ -59,24 +59,6 @@ app.use(passport.initialize());
 
 // Routes------------------------------------------------------------------------------------------------------------
 
-app.get('/email-verification/:URL', (req, res, next) => {
-    console.log('got here to verification place');
-    let url = req.params.URL;
-
-    auth.confirmTempUser(url)
-        .then((response) => {
-            res.json({
-                success: true,
-                summary: 'You have successfully confirmed your account!',
-                token : response.token,
-                user: response.userData
-            });
-        })
-        .catch((error) => {
-            return next(error);
-        });
-});
-
 app.use('/login', login);
 app.use('/volunteer', volunteer);
 app.use('/organization', organization);

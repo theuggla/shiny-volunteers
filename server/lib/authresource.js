@@ -37,22 +37,10 @@ passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password
 
                                     return done(err);
                                 } else {
-                                    createNewTempUser({
-                                        info: {
-                                            email: email.trim(),
-                                            role: 'organization'
-                                        },
-                                        local: {
-                                            email: email.trim(),
-                                            password: password
-                                        }
-                                    })
-                                        .then((createdUser) => {
-                                            return done(null, getJWT(createdUser), createdUser.info);
-                                        })
-                                        .catch((error) => {
-                                            return done(error);
-                                        });
+                                    let err = new Error('User does not exist. Do you want to create user?');
+                                    err.name = 'NoSuchUserError';
+
+                                    return done(err);
                                 }
                             });
                     }
@@ -81,24 +69,14 @@ passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password
 
                                     return done(err);
                                 } else {
-                                    createNewTempUser({
-                                        info: {
-                                            email: email.trim(),
-                                            role: 'volunteer'
-                                        },
-                                        facebook: {},
-                                        local: {
-                                            email: email.trim(),
-                                            password: password
-                                        }
-                                    })
-                                        .then((user) => {
-                                            return done(null, getJWT(user), user.info);
-                                        })
-                                        .catch((error) => {
-                                            return done(error);
-                                        });
+                                    let err = new Error('User does not exist. Do you want to create user?');
+                                    err.name = 'NoSuchUserError';
+
+                                    return done(err);
                                 }
+                            })
+                            .catch((error) => {
+                                return done(error);
                             });
                     }
                 })
@@ -109,8 +87,7 @@ passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password
         default:
             return done(new Error('No such role.'));
     }
-})
-);
+}));
 
 /**
  * Facebook login handler.
@@ -344,14 +321,14 @@ function tryLogin(user, password) {
  * @param user {Object} an object with information about the user to create.
  * @returns {Promise} that resolves with the newly created user or rejects with an error.
  */
-function createNewTempUser(user) {
+module.exports.createNewTempUser = function(user) {
     return new Promise((resolve, reject) => {
         let newUser;
 
         newUser = new TempUser({
             info  : {
                 email       : user.info.email,
-                roles       : [user.info.role, 'temp'],
+                roles       : [user.info.role],
                 completed   : false
             },
             local : {
@@ -363,7 +340,7 @@ function createNewTempUser(user) {
             password        : user.password
         });
 
-        verify.createTempUser(newUser, function(err, existingPersistentUser, newTempUser) {
+        verify.createTempUser(newUser, (err, existingPersistentUser, newTempUser) => {
             if (err) {
                 reject(new Error('something went wrong'));
             }
@@ -375,7 +352,7 @@ function createNewTempUser(user) {
             if (newTempUser) {
                 let URL = newTempUser[verify.options.URLFieldName];
 
-                verify.sendVerificationEmail(user.info.email, URL, function(err, info) {
+                verify.sendVerificationEmail(user.info.email, URL, (err, info) => {
                     if (err) {
                         reject(new Error('fail'));
                     }
@@ -403,16 +380,15 @@ module.exports.confirmTempUser = function(url) {
 
         TempUser.findOne({GENERATED_VERIFYING_URL: url})
             .then((tempUserData) => {
-            console.log(tempUserData);
-
-                if (tempUserData) {
-                    return createNewUser(JSON.parse(JSON.stringify(tempUserData)));
+                if (!tempUserData) {
+                    reject(new Error('verification link has expired'));
                 }
+
+                return createNewUser(JSON.parse(JSON.stringify(tempUserData)));
             })
-            .then((user) => {
-                persistantUser = user;
-            })
-            .then(() => {
+            .then((createdUser) => {
+                persistantUser = createdUser;
+
                 return TempUser.remove({GENERATED_VERIFYING_URL: url});
             })
             .then(() => {
@@ -434,14 +410,20 @@ module.exports.confirmTempUser = function(url) {
  * @returns {Promise} that resolves with the newly created user or rejects with an error.
  */
 function createNewUser(user) {
+    console.log('in create user with');
+    console.log(user);
     return new Promise((resolve, reject) => {
         let newUser;
 
-        if (user.info.role === 'volunteer') {
+        user.info.roles = user.info.role ? [user.info.role] : user.info.roles;
+        user.facebook = user.facebook ? user.facebook : {};
+        user.local = user.local ? user.local : {};
+
+        if (user.info.roles[0] === 'volunteer') {
             newUser = new Volunteer({
                 info  : {
                     email       : user.info.email,
-                    roles       : [user.info.role]
+                    roles       : user.info.roles
                 },
                 local : {
                     email       : user.local.email
@@ -458,7 +440,7 @@ function createNewUser(user) {
             newUser = new Organization({
                 info  : {
                     email       : user.info.email,
-                    roles       : [user.info.role]
+                    roles       : user.info.roles
                 },
                 local : {
                     email       : user.local.email
