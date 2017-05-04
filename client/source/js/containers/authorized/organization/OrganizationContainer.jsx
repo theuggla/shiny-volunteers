@@ -41,7 +41,8 @@ class OrganizationContainer extends AuthorizedComponent {
             <MuiThemeProvider muiTheme={muiTheme}>
                 <div className="organization-app app-container">
                     <div className="app-bar">
-                        <Link id="logout-link" to={`${this.props.match.path}/logout`}><img src="/assets/logo.png" style={{maxHeight: '10vh'}}/></Link>
+                        <Link id="main-link" to={`${this.props.match.path}/`}><img src="/assets/logo.png" style={{maxHeight: '10vh'}}/></Link>
+                        <Link id="logout-link" to={`${this.props.match.path}/logout`}>/>LOG OUT</Link>
                     </div>
                     <div className="main-space">
                         <Switch>

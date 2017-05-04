@@ -45,7 +45,7 @@ class ConfirmDialog extends React.Component {
                 onTouchTap={this.handleClose}
             />,
             <FlatButton
-                label="Confrm"
+                label="Confirm"
                 primary={true}
                 onTouchTap={this.handleConfirm}
             />,

@@ -10,8 +10,6 @@ const ProfileForm = ({
     profile,
 }) => (
     <form className="profile-form" action="/volunteer/profile" method="POST" onSubmit={onSubmit}>
-        <h2>My Profile</h2>
-
         {errors.summary && <p className="error-message">{errors.summary}</p>}
 
         <div className="field-line">

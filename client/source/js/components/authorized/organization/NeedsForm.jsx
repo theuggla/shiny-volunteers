@@ -20,8 +20,6 @@ const NeedsForm = ({
     need,
 }) => (
     <form className="need-form" action="/organization/needs" method="POST" onSubmit={onSubmit}>
-        <h2>Need</h2>
-
         {errors.summary && <p className="error-message">{errors.summary}</p>}
 
         <div className="field-line">

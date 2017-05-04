@@ -12,6 +12,9 @@ const styles = {
     inputStyle: {
         textAlign: 'center',
         color: '#F5F5F5'
+    },
+    snackbarStyle: {
+        maxWidth: '100%'
     }
 };
 
@@ -93,6 +96,7 @@ const SignUpForm = ({
                 message={popupMessage}
                 action={popupAction}
                 onActionTouchTap={onPopupConfirm}
+                style:={style.snackbarStyle}
             />
 
         </form>
