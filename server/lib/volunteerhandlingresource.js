@@ -11,14 +11,15 @@ function getMatches(user) {
     return new Promise((resolve, reject) => {
         Need
             .find({
-                skills: {$in: user.profile.skills},
+                skillsNeeded: {$in: user.profile.skills},
                 _id: {$not: {$in: user.applications}}
             })
             .sort({expiryDate: -1})
             .select({
                 title           : 1,
                 description     : 1,
-                skills          : 1,
+                skillsNeeded    : 1,
+                skillsRequired  : 1,
                 location        : 1,
                 timePerOccasion : 1,
                 recurring       : 1,
@@ -76,11 +77,15 @@ function getApplications(user) {
 
                 let mappedResult = result.applications.map((need) => {
                     return {
-                        _id: need._id,
-                        title: need.title,
-                        description: need.description,
-                        skills: need.skills,
-                        expiryDate: need.expiryDate.toLocaleDateString()
+                        _id             : need._id,
+                        title           : need.title,
+                        description     : need.description,
+                        skillsNeeded    : need.skillsNeeded,
+                        skillsRequired  : need.skillsRequired,
+                        location        : need.location,
+                        timePerOccasion : need.timePerOccasion,
+                        recurring       : need.recurring,
+                        oneOff          : need.oneOff
                     };
                 });
 

@@ -59,7 +59,7 @@ class Need extends React.Component {
                             </ListItem>,
                             <ListItem
                                 primaryText='skills needed'
-                                nestedItems={this.props.need.skills.map((skill) => (
+                                nestedItems={this.props.need.skillsNeeded.map((skill) => (
                                     <p>
                                         {skill}
                                     </p>))}

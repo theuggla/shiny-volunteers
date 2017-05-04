@@ -11,8 +11,6 @@ function getNeeds(user) {
         Need
             .find({_creator: user._id})
             .then((result) => {
-            console.log('returning');
-            console.log(result[0]);
                 return result.map((need) => {
                     return {
                         _id             : need._id,
