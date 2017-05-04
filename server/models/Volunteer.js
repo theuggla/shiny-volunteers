@@ -12,10 +12,12 @@ let userBase = require('./UserBase');
  */
 let volunteerSchema = userBase({
     profile: {
-        isComplete: Boolean,
+        location: String,
         skills: [String],
         interests: [String],
-        timePerVisit: Number
+        timePerOccasion: Number,
+        recurring: Boolean,
+        oneOff: Boolean
     },
     applications: [{type: Schema.Types.ObjectId, ref: 'Need'}],
     facebook: {

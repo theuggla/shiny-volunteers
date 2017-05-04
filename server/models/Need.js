@@ -14,7 +14,13 @@ let needSchema = new mongoose.Schema({
     title           : String,
     description     : String,
     expiryDate      : {type: Date, default: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1)},
-    skills          : [String]
+    skillsNeeded    : [String],
+    skillsDesired   : [String],
+    location        : String,
+    categories      : String,
+    timePerOccasion : Number,
+    recurring       : Boolean,
+    oneOff          : Boolean
 });
 
 /**
