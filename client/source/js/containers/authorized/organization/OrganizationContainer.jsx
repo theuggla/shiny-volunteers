@@ -17,6 +17,17 @@ const muiTheme = getMuiTheme({
     },
 });
 
+let styles = {
+    logout: {
+        position: 'fixed',
+        right: '0',
+        top: '0',
+        padding: '1em',
+        fontVariant: 'small-caps',
+        color: 'white'
+    }
+};
+
 
 class OrganizationContainer extends AuthorizedComponent {
 
@@ -38,7 +49,7 @@ class OrganizationContainer extends AuthorizedComponent {
                 <div className="organization-app app-container">
                     <div className="app-bar">
                         <Link id="main-link" to={`${this.props.match.path}/`}><img src="/assets/logo.png" style={{maxHeight: '10vh'}}/></Link>
-                        <Link id="logout-link" to={`${this.props.match.path}/logout`}>LOG OUT</Link>
+                        <Link id="logout-link" to={`${this.props.match.path}/logout`} style={styles.logout}>LOG OUT</Link>
                     </div>
                     <div className="main-space">
                         <Switch>
