@@ -49,10 +49,13 @@ module.exports = function(paths) {
             bcrypt.hash(password, null, null, (err, hash) => {
                 if (err) {
                     reject(err);
+                } else {
+                    this.local.password = hash;
+                    this.save()
+                        .then(() => {
+                            resolve(this);
+                        });
                 }
-                this.local.password = hash;
-                this.save();
-                resolve(this);
             });
         });
     };

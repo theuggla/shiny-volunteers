@@ -15,45 +15,7 @@ let volunteerSchema = userBase({
         isComplete: Boolean,
         skills: [String],
         interests: [String],
-        timePerWeek: Number,
-        available: {
-            monday: {
-                morning: Boolean,
-                day: Boolean,
-                evening: Boolean
-            },
-            tuesday: {
-                morning: Boolean,
-                day: Boolean,
-                evening: Boolean
-            },
-            wednesday: {
-                morning: Boolean,
-                day: Boolean,
-                evening: Boolean
-            },
-            thursday: {
-                morning: Boolean,
-                day: Boolean,
-                evening: Boolean
-            },
-            friday: {
-                morning: Boolean,
-                day: Boolean,
-                evening: Boolean
-            },
-            saturday: {
-                morning: Boolean,
-                day: Boolean,
-                evening: Boolean
-            },
-            sunday: {
-                morning: Boolean,
-                day: Boolean,
-                evening: Boolean
-            }
-        }
-
+        timePerVisit: Number
     },
     applications: [{type: Schema.Types.ObjectId, ref: 'Need'}],
     facebook: {

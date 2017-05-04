@@ -19,6 +19,11 @@ const muiTheme = getMuiTheme({
 
 
 class OrganizationContainer extends AuthorizedComponent {
+    state = {
+        openPopup: false,
+        popupMessage: ''
+    };
+
     constructor(props) {
         super(props);
 
@@ -39,12 +44,16 @@ class OrganizationContainer extends AuthorizedComponent {
                         <Link id="logout-link" to={`${this.props.match.path}/logout`}><img src="/assets/logo.png" style={{maxHeight: '10vh'}}/></Link>
                     </div>
                     <div className="main-space">
-                     <Switch>
+                        <Switch>
                             <Route path={`${this.props.match.path}/needs/add`}  component={AddNeedPage}/>
                             <Route path={`${this.props.match.path}/needs`}  component={OurNeedsPage}/>
                             <Route path={`${this.props.match.path}/logout`} render={() => ( Auth.deauthenticateUser() ? (<Redirect to={'/'}/>) : (<Redirect to={`${this.props.match.path}/needs`}/>) )} />
                             <Redirect path={`${this.props.match.path}/`} to={`${this.props.match.path}/needs`}/>
-                     </Switch>
+                        </Switch>
+                        <Snackbar
+                            open={this.state.openPopup}
+                            message={this.state.popupMessage}
+                        />
                     </div>
                     <OrganizationNav match={this.props.match} history={this.props.history}/>
                 </div>

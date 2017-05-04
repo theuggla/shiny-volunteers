@@ -26,10 +26,6 @@ module.exports.sendMailToUser = function(user, need) {
         if (user.info.email !== 'vol@vol.com') {
             sg.API(request, (error, response) => {
                 if (error) {
-                    console.log('error in vol');
-                    console.log(error);
-                    console.log(error.response);
-                    console.log(error.response.body.errors);
                     reject(error);
                 }
                 resolve(response);
@@ -55,9 +51,6 @@ module.exports.sendApplicationMail = function(user, need, applicant) {
         if (user.info.email !== 'vol@vol.com') {
             sg.API(request, (error, response) => {
                 if (error) {
-                    console.log('error in org');
-                    console.log(error);
-                    console.log(error.response.body.errors);
                     reject(error);
                 }
                 resolve(response);

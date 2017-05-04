@@ -27,10 +27,10 @@ let TempUserSchema = new Schema({
                 },
                 message: 'email is not valid'
             }
-        }
+        },
+        password: String
     },
-    GENERATED_VERIFYING_URL: String,
-    password: String
+    GENERATED_VERIFYING_URL: String
 });
 
 let TempUser = mongoose.model('TempUser', TempUserSchema);

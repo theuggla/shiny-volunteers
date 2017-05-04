@@ -21,7 +21,6 @@ router.post('/local', validateLoginForm, isDatabaseConnected, (req, res, next) =
     if (req.body) {
         return passport.authenticate('local', (err, token, userData) => {
             if (err) {
-                console.error(err);
                 switch (err.name) {
                     case 'IncorrectCredentialsError': {
                         return res.status(400).json({
@@ -50,21 +49,12 @@ router.post('/local', validateLoginForm, isDatabaseConnected, (req, res, next) =
                 }
             }
 
-            if (userData.roles.indexOf('temp') === -1) {
-                return res.json({
-                    success: true,
-                    summary: 'You have successfully logged in!',
-                    token: token,
-                    user: userData
-                });
-            } else {
-                return res.json({
-                    success: true,
-                    summary: 'You have successfully logged in!',
-                    token: token,
-                    user: userData
-                });
-            }
+            return res.json({
+                success: true,
+                summary: 'You have successfully logged in!',
+                token: token,
+                user: userData
+            });
 
         })(req, res, next);
     }
@@ -77,6 +67,10 @@ router.post('/local', validateLoginForm, isDatabaseConnected, (req, res, next) =
 
 router.post('/local/signup', validateLoginForm, isDatabaseConnected, (req, res, next) => {
     let user = req.body;
+
+    console.log('signing up user');
+    console.log(user);
+    console.log('user has password: ' + user.password);
 
     createNewTempUser({
         info: {

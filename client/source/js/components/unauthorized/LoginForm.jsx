@@ -72,7 +72,7 @@ const SignUpForm = ({
             </div>}
 
             <div className="button-line">
-                <RaisedButton type="submit" label={signup ? "Signup" : "Login"} primary />
+                <RaisedButton type="submit" label={signup ? "Sign up" : "Log in"} primary />
             </div>
 
 

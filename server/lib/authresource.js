@@ -21,11 +21,14 @@ passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password
             isOrganization({email: email})
                 .then((user) => {
                     if (user) {
+                        console.log('found user');
                         tryLogin(user, password)
                             .then((loggedInUser) => {
+                            console.log('succeeded in logging in');
                                 return done(null, getJWT(loggedInUser), loggedInUser.info);
                             })
                             .catch((error) => {
+                            console.log('should not be here in error');
                                 return done(error);
                             });
                     } else {
@@ -50,6 +53,7 @@ passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password
                 });
             break;
         case 'volunteer':
+            console.log('should not be here, in volunteer case');
             isVolunteer({email: email})
                 .then((user) => {
                     if (user) {
@@ -87,6 +91,8 @@ passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password
         default:
             return done(new Error('No such role.'));
     }
+
+    console.log('maybe this is the problem, here below the switchstatement?');
 }));
 
 /**
@@ -181,24 +187,6 @@ module.exports.facebookAuth = function (profile) {
         });
 };
 
-// Put the user in the database.
-passport.serializeUser((userJWT, done) => {
-    return done(null, userJWT);
-});
-
-// Retrieve the user from the database.
-passport.deserializeUser((userJWT, done) => {
-    let decoded = jwt.verify(userJWT, process.env.JWT_SECRET);
-
-    Volunteer.findById(decoded.sub, (err, user) => {
-        if (err) {
-            return done(err);
-        }
-
-        return done(null, user);
-    });
-});
-
 /**
  * Generates a JWT to send back for authentication.
  * @param user the user to generate the token for.
@@ -283,36 +271,46 @@ function isOrganization(user) {
  * @returns {Promise} a promise that resolves with the logged in user or rejects with an error.
  */
 function tryLogin(user, password) {
+    console.log('will be trying to login user');
+    console.log(user);
     return new Promise((resolve, reject) => {
         if (user.local && user.local.password) {
+            console.log('user has local password');
+            console.log('will be comparing ' + password.trim());
             user.comparePassword(password.trim())
                 .then((isMatch) => {
+                console.log('got result ' + isMatch);
                     if (!isMatch) {
                         let error = new Error('Incorrect password');
                         error.name = 'IncorrectCredentialsError';
 
+                        console.log('no match, rejecting with error');
                         reject(error);
+                    } else {
+                        console.log('match, resolving with user: ');
+                        console.log(user);
+                        resolve(user);
                     }
-
-                    resolve(user);
+                })
+                .catch((err) => {
+                console.log('an unrelated error, will reject; ');
+                console.log(error);
+                    reject(err);
+                });
+        } else {
+            // User exists with a Facebook login an no Local login.
+            user.local.email = user.info.email;
+            user.save()
+                .then((savedUser) => {
+                    return savedUser.hashPasswordAndSave(password);
+                })
+                .then((savedUser) => {
+                    resolve(savedUser);
                 })
                 .catch((err) => {
                     reject(err);
                 });
         }
-
-        // User exists with a Facebook login an no Local login.
-        user.local.email = user.info.email;
-        user.save()
-            .then((savedUser) => {
-                return savedUser.hashPasswordAndSave(password);
-            })
-            .then((savedUser) => {
-                resolve(savedUser);
-            })
-            .catch((err) => {
-                reject(err);
-            });
     });
 }
 
@@ -332,17 +330,21 @@ module.exports.createNewTempUser = function(user) {
                 completed   : false
             },
             local : {
-                email       : user.local.email
+                email       : user.local.email,
+                password    : user.local.password
             },
             profile : {
                 isComplete  : false
-            },
-            password        : user.password
+            }
         });
 
         verify.createTempUser(newUser, (err, existingPersistentUser, newTempUser) => {
             if (err) {
-                reject(new Error('something went wrong'));
+                if (err.code === 11000) {
+                    reject(new Error('user already signed up. check your email.'));
+                } else {
+                    reject(new Error('something went wrong'));
+                }
             }
 
             if (existingPersistentUser) {
@@ -359,13 +361,11 @@ module.exports.createNewTempUser = function(user) {
                     resolve(newTempUser);
                 });
 
-            } else {
-                reject(new Error('user already signed up. check your email.'));
             }
         });
 
     });
-}
+};
 
 /**
  * Transfer a temporary user from the temporary collection to the persistent
@@ -450,12 +450,21 @@ function createNewUser(user) {
 
         newUser.save()
             .then((savedUser) => {
-                return savedUser.local.email ? savedUser.hashPasswordAndSave(user.password) : Promise.resolve(savedUser);
+            console.log('saved user: ');
+            console.log(newUser);
+            console.log('got saved user: ');
+            console.log(savedUser);
+            console.log('will be hashing password if ' + savedUser.local.email);
+            console.log('hashing password: ' + user.local.password);
+                return savedUser.local.email ? savedUser.hashPasswordAndSave(user.local.password) : Promise.resolve(savedUser);
             })
             .then((savedUser) => {
+            console.log('password hashed, returning user: ');
+            console.log(savedUser);
                 resolve(savedUser);
             })
             .catch((error) => {
+            console.log('got some sort of hashing error');
                 reject(error);
             });
 
