@@ -7,7 +7,6 @@ let router = require('express').Router();
 let passport = require('passport');
 let cwd = __dirname ? __dirname : process.cwd();
 let path = require('path');
-let indexfile = path.join(cwd, (process.env.NODE_ENV === 'production' ? './../../client/dist' : './../../client/debug')) + '/index.html';
 
 let facebookAuth = require('../lib/authresource').facebookAuth;
 let createNewTempUser = require('../lib/authresource').createNewTempUser;
@@ -67,10 +66,6 @@ router.post('/local', validateLoginForm, isDatabaseConnected, (req, res, next) =
 
 router.post('/local/signup', validateLoginForm, isDatabaseConnected, (req, res, next) => {
     let user = req.body;
-
-    console.log('signing up user');
-    console.log(user);
-    console.log('user has password: ' + user.password);
 
     createNewTempUser({
         info: {

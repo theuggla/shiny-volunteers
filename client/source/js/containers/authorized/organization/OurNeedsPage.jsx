@@ -13,6 +13,7 @@ class OurNeedsPage extends React.Component {
 
         this.state = {
             needs: null,
+            errors: {}
         };
 
         this.removeNeed = this.removeNeed.bind(this);
@@ -31,6 +32,7 @@ class OurNeedsPage extends React.Component {
 
             })
             .catch((error) => {
+            console.log(error);
                 const errors = error.response ? error.response.data.errors ? error.response.data.errors : error.response.data : {summary: 'you seem to be offline'};
                 this.setState({
                     errors: errors

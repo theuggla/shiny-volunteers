@@ -21,14 +21,11 @@ passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password
             isOrganization({email: email})
                 .then((user) => {
                     if (user) {
-                        console.log('found user');
                         tryLogin(user, password)
                             .then((loggedInUser) => {
-                            console.log('succeeded in logging in');
                                 return done(null, getJWT(loggedInUser), loggedInUser.info);
                             })
                             .catch((error) => {
-                            console.log('should not be here in error');
                                 return done(error);
                             });
                     } else {
@@ -53,7 +50,6 @@ passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password
                 });
             break;
         case 'volunteer':
-            console.log('should not be here, in volunteer case');
             isVolunteer({email: email})
                 .then((user) => {
                     if (user) {
@@ -91,8 +87,6 @@ passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password
         default:
             return done(new Error('No such role.'));
     }
-
-    console.log('maybe this is the problem, here below the switchstatement?');
 }));
 
 /**
@@ -271,30 +265,20 @@ function isOrganization(user) {
  * @returns {Promise} a promise that resolves with the logged in user or rejects with an error.
  */
 function tryLogin(user, password) {
-    console.log('will be trying to login user');
-    console.log(user);
     return new Promise((resolve, reject) => {
         if (user.local && user.local.password) {
-            console.log('user has local password');
-            console.log('will be comparing ' + password.trim());
             user.comparePassword(password.trim())
                 .then((isMatch) => {
-                console.log('got result ' + isMatch);
                     if (!isMatch) {
                         let error = new Error('Incorrect password');
                         error.name = 'IncorrectCredentialsError';
 
-                        console.log('no match, rejecting with error');
                         reject(error);
                     } else {
-                        console.log('match, resolving with user: ');
-                        console.log(user);
                         resolve(user);
                     }
                 })
                 .catch((err) => {
-                console.log('an unrelated error, will reject; ');
-                console.log(error);
                     reject(err);
                 });
         } else {
@@ -410,8 +394,6 @@ module.exports.confirmTempUser = function(url) {
  * @returns {Promise} that resolves with the newly created user or rejects with an error.
  */
 function createNewUser(user) {
-    console.log('in create user with');
-    console.log(user);
     return new Promise((resolve, reject) => {
         let newUser;
 
@@ -450,21 +432,12 @@ function createNewUser(user) {
 
         newUser.save()
             .then((savedUser) => {
-            console.log('saved user: ');
-            console.log(newUser);
-            console.log('got saved user: ');
-            console.log(savedUser);
-            console.log('will be hashing password if ' + savedUser.local.email);
-            console.log('hashing password: ' + user.local.password);
                 return savedUser.local.email ? savedUser.hashPasswordAndSave(user.local.password) : Promise.resolve(savedUser);
             })
             .then((savedUser) => {
-            console.log('password hashed, returning user: ');
-            console.log(savedUser);
                 resolve(savedUser);
             })
             .catch((error) => {
-            console.log('got some sort of hashing error');
                 reject(error);
             });
 

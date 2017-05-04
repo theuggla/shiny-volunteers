@@ -23,7 +23,7 @@ const Container = ({ match }) => (
                         <Switch>
                             <Route path="/login/:role"  render={(props) => (<LoginPage {...props}/>)}/>
                             <Route path="/about" component={About}/>
-                            <Route path="/" render={(props) => ( Auth.isUserAuthenticated() ? (<Redirect to='/'/>) : Auth.isTemp() ? (<Confirm history={props.history}/>) : (<Welcome history={props.history}/>))} />
+                            <Route path="/" render={(props) => ((<Welcome history={props.history}/>))} />
                         </Switch>
                     </div>
                 <div className="bottom-bar">

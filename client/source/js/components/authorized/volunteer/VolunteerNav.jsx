@@ -47,7 +47,6 @@ class VolunteerNav extends Component {
     };
 
     select = (index) => {
-        console.log('made it here');
         let match = (index === 0) ? matchesIconActive : matchesIcon;
         let applications = (index === 1) ? applicationsIconActive : applicationsIcon;
         let profile = (index === 2) ? profileIconActive : profileIcon;

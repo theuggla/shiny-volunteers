@@ -96,7 +96,7 @@ const SignUpForm = ({
                 message={popupMessage}
                 action={popupAction}
                 onActionTouchTap={onPopupConfirm}
-                style:={style.snackbarStyle}
+                style={styles.snackbarStyle}
             />
 
         </form>

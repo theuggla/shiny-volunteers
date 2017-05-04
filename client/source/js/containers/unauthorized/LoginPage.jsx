@@ -65,6 +65,7 @@ class LoginPage extends React.Component {
                 this.props.history.push('/' + response.data.user.roles[0]);
             })
             .catch((error) => {
+            console.log(error);
                 if (error.response.status === 404) {
                     this.setState({popup: true, popupAction: "sign up", popupMessage: error.response.data.summary});
                 } else {

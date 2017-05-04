@@ -5,7 +5,7 @@
 
 
 // Keep track of the cache.
-let CACHE_VERSION = 'v13';
+let CACHE_VERSION = 'v15';
 
 
 self.addEventListener('install', (event) => {
@@ -37,9 +37,9 @@ self.addEventListener('install', (event) => {
 // Clear out the cache if service worker is updated.
 self.addEventListener('activate', (event) => {
     event.waitUntil(
-        caches.keys().then(function (cacheNames) {
+        caches.keys().then((cacheNames) => {
             return Promise.all(
-                cacheNames.map(function (cacheName) {
+                cacheNames.map((cacheName) => {
                     if (cacheName !== CACHE_VERSION) {
                         return caches.delete(cacheName);
                     }
