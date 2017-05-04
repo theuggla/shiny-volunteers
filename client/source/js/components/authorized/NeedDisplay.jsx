@@ -20,6 +20,7 @@ class Need extends React.Component {
     }
 
     render() {
+        {console.log(this.props.need)}
         return (
             this.props.clickable ? (
                     <div className="need-display">
@@ -38,7 +39,7 @@ class Need extends React.Component {
                                 </ListItem>,
                                 <ListItem
                                     primaryText='skills needed'
-                                    nestedItems={this.props.need.skills.map((skill) => (
+                                    nestedItems={this.props.need.skillsNeeded.map((skill) => (
                                         <p>
                                             {skill}
                                         </p>))}

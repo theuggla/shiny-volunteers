@@ -22,6 +22,9 @@ class AddNeedPage extends React.Component {
         const need = this.state.need;
         need[field] = event.target.value;
 
+        console.log('setting state');
+        console.log(need);
+
         this.setState({
             need: need
         });
@@ -29,6 +32,8 @@ class AddNeedPage extends React.Component {
 
     processForm(event) {
         event.preventDefault();
+        console.log('sending');
+        console.log(this.state.need);
         axios({
             method: 'POST',
             url: '/organization/needs',

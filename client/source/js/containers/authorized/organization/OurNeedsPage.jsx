@@ -26,6 +26,8 @@ class OurNeedsPage extends React.Component {
             headers: {'Authorization': `bearer ${Auth.getToken()}`},
         })
             .then((response) => {
+            console.log('got response');
+            console.log(response.data.needs);
                 this.setState({
                     needs: response.data.needs
                 });

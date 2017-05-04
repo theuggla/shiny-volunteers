@@ -49,8 +49,9 @@ const NeedsForm = ({
         <div className="field-line">
             <SkillPicker
                 onChange={onChange}
-                values={need.skills}
-                hintText="select the skills you need"
+                name="skillsNeeded"
+                values={need.skillsNeeded}
+                hintText="select the skills you require"
             />
         </div>
 

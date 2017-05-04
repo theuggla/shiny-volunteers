@@ -11,13 +11,19 @@ function getNeeds(user) {
         Need
             .find({_creator: user._id})
             .then((result) => {
+            console.log('returning');
+            console.log(result[0]);
                 return result.map((need) => {
                     return {
                         _id             : need._id,
-                        skills          : need.skills,
                         title           : need.title,
                         description     : need.description,
-                        expiryDate      : need.expiryDate.toLocaleDateString()
+                        skillsNeeded    : need.skillsNeeded,
+                        skillsDesired   : need.skillsDesired,
+                        location        : need.location,
+                        timePerOccasion : need.timePerOccasion,
+                        recurring       : need.recurring,
+                        oneOff          : need.oneOff
                     };
                 });
 
@@ -35,9 +41,9 @@ function addNeed(user, need) {
     return new Promise((resolve, reject) => {
         let newNeed = new Need({
             _creator        : user._id,
-            skills          : need.skills,
             title           : need.title,
-            description     : need.description
+            description     : need.description,
+            skillsNeeded    : need.skillsNeeded
         });
 
         newNeed.save()

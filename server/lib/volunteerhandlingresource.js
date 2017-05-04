@@ -16,10 +16,13 @@ function getMatches(user) {
             })
             .sort({expiryDate: -1})
             .select({
-                skills          : 1,
                 title           : 1,
                 description     : 1,
-                expiryDate      : 1
+                skills          : 1,
+                location        : 1,
+                timePerOccasion : 1,
+                recurring       : 1,
+                oneOff          : 1
             })
             .then((result) => {
                 resolve(result);
