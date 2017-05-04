@@ -14,6 +14,7 @@ const ProfileForm = ({
 
         <div className="field-line">
             <SkillPicker
+                name="skills"
                 onChange={onChange}
                 values={profile.skills}
                 hintText="select your skills"

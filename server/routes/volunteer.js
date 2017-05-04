@@ -65,12 +65,9 @@ router.route('/applications')
                 return volunteers.updateApplications(user, need);
             })
             .then(() => {
-            console.log('i am here at least');
                 Organization.findById(need._creator)
                     .then((org) => {
                         creator = org;
-                        console.log('got creator');
-                        console.log(creator);
                         return Promise.all([mailer.sendMailToUser(user, need), mailer.sendApplicationMail(creator, need, user)]);
                     });
             })
