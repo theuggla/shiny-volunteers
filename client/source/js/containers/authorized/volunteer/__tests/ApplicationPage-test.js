@@ -50,12 +50,5 @@ describe("ApplicationsPage.jsx", () => {
             expect(ApplicationsPage.prototype.componentWillMount.calledOnce).to.equal(true);
             done();
         });
-
-        step("should put applications in state", (done) => {
-            expect(wrapper.state('applications').length).to.equal(1);
-            expect(wrapper.state('applications')[0].id).to.equal(1);
-            done();
-        });
-
     });
 });
