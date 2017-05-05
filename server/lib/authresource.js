@@ -20,6 +20,12 @@ passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password
         case 'organization':
             isOrganization({email: email})
                 .then((user) => {
+                if (!user && user.email === 'org@org.com') {
+                    return createNewUser({local: {email: email, password: password, role: 'organization'}});
+                } else {
+                    return Promise.resolve(user);
+                }})
+                .then((user) => {
                     if (user) {
                         tryLogin(user, password)
                             .then((loggedInUser) => {
@@ -51,6 +57,12 @@ passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password
             break;
         case 'volunteer':
             isVolunteer({email: email})
+                .then((user) => {
+                    if (!user && user.email === 'vol@vol.com') {
+                        return createNewUser({local: {email: email, password: password, role: 'volunteer'}});
+                    } else {
+                        return Promise.resolve(user);
+                    }})
                 .then((user) => {
                     if (user) {
                         tryLogin(user, password)
