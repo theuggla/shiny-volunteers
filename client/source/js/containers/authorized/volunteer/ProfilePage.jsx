@@ -3,6 +3,7 @@ import ProfileForm from '../../../components/authorized/volunteer/ProfileForm.js
 import CircularProgress from 'material-ui/CircularProgress';
 import Auth from '../../../modules/Auth';
 import axios from 'axios';
+import Snackbar from 'material-ui/Snackbar';
 
 class ProfilePage extends React.Component {
 

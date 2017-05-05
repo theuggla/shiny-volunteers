@@ -40,6 +40,7 @@ router.post('/local', validateLoginForm, isDatabaseConnected, (req, res, next) =
                         });
                     }
                     default: {
+                        console.log(err);
                         return res.status(400).json({
                             success: false,
                             summary: 'Could not process the form.'
