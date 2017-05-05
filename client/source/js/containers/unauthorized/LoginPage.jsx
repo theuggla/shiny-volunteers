@@ -65,9 +65,8 @@ class LoginPage extends React.Component {
                 this.props.history.push('/' + response.data.user.roles[0]);
             })
             .catch((error) => {
-            console.log(error);
-                if (error.response.status === 404) {
-                    this.setState({popup: true, popupAction: "sign up", popupMessage: error.response.data.summary});
+                if (error.response && error.response.status === 404) {
+                    this.setState({popup: true, popupAction: "sign up", popupMessage: error.response.data.summary + ' Sign up user?'});
                 } else {
                     const errors = error.response ? error.response.data.errors ? error.response.data.errors : error.response.data : {summary: 'you seem to be offline'};
                     this.setState({

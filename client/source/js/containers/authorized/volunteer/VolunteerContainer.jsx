@@ -16,6 +16,13 @@ const muiTheme = getMuiTheme({
     bottomNavigation: {
         selectedColor: '#F50057',
     },
+    menuItem: {
+        selectedTextColor: '#0097A7',
+    },
+    tableRow: {
+        selectedColor: 'inherit',
+    },
+
 });
 
 let styles = {

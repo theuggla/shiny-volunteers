@@ -84,7 +84,19 @@ router.post('/local/signup', validateLoginForm, isDatabaseConnected, (req, res, 
             });
         })
         .catch((error) => {
-            return next(error);
+            if (error.name === 'DuplicateUserError') {
+                return res.status(400).json({
+                    success: false,
+                    summary: error.message
+                });
+            } else if (error.name === 'DuplicateUserError') {
+                return res.status(400).json({
+                    success: false,
+                    summary: error.message
+                });
+            } else {
+                return next(error);
+            }
         });
 });
 

@@ -5,10 +5,7 @@
 import React from 'react';
 import { Link, Route, Switch, Redirect } from 'react-router-dom';
 
-import Auth from '../../modules/Auth';
-
 import Welcome from '../../components/unauthorized/Welcome.jsx';
-import Confirm from '../../components/unauthorized/Confirm.jsx';
 import LoginPage from './LoginPage.jsx';
 import About from '../../components/unauthorized/About.jsx';
 

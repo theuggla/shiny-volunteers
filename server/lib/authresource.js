@@ -37,7 +37,7 @@ passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password
 
                                     return done(err);
                                 } else {
-                                    let err = new Error('User does not exist. Do you want to create user?');
+                                    let err = new Error('User does not exist.');
                                     err.name = 'NoSuchUserError';
 
                                     return done(err);
@@ -325,7 +325,9 @@ module.exports.createNewTempUser = function(user) {
         verify.createTempUser(newUser, (err, existingPersistentUser, newTempUser) => {
             if (err) {
                 if (err.code === 11000) {
-                    reject(new Error('user already signed up. check your email.'));
+                    let err = new Error('user already signed up. check your email.');
+                    err.name = 'DuplicateUserError';
+                    reject(err);
                 } else {
                     reject(new Error('something went wrong'));
                 }
@@ -365,7 +367,9 @@ module.exports.confirmTempUser = function(url) {
         TempUser.findOne({GENERATED_VERIFYING_URL: url})
             .then((tempUserData) => {
                 if (!tempUserData) {
-                    reject(new Error('verification link has expired'));
+                    let err = new Error('verificationlink has expired.');
+                    err.name = 'ExpiredVerificationError';
+                    reject(err);
                 }
 
                 return createNewUser(JSON.parse(JSON.stringify(tempUserData)));

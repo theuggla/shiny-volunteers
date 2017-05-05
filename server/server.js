@@ -73,7 +73,7 @@ app.use((req, res) => {
 // 500
 app.use((err, req, res, next) => {
     console.error(err);
-    res.status(500).end();
+    res.status(500).json({message: err.message});
 });
 
 // Start the server----------------------------------------------------------------------------------------------------

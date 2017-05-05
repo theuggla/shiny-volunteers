@@ -13,8 +13,12 @@ const styles = {
         textAlign: 'center',
         color: '#F5F5F5',
     },
-    snackbarStyle: {
-        maxWidth: '100%'
+    snackbarBodyStyle: {
+        height: 'auto',
+        lineHeight: '1.8em'
+    },
+    snackbarContentStyle: {
+        padding: '1em'
     }
 };
 
@@ -96,7 +100,9 @@ const SignUpForm = ({
                 message={popupMessage}
                 action={popupAction}
                 onActionTouchTap={onPopupConfirm}
-                style={styles.snackbarStyle}
+                bodyStyle={styles.snackbarBodyStyle}
+                contentStyle={styles.snackbarContentStyle}
+                className="signup-popup"
             />
 
         </form>

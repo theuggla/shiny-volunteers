@@ -19,9 +19,18 @@ import VolunteerContainer from './containers/authorized/volunteer/VolunteerConta
 import OrganizationContainer from './containers/authorized/organization/OrganizationContainer.jsx';
 import '../css/style.css';
 
+
+const muiTheme = getMuiTheme(darkBaseTheme, {
+    snackbar: {
+        textColor: 'white',
+        backgroundColor: '#212121',
+        actionColor: '#C51162'
+    }
+});
+
 const App = () => (
     <HashRouter >
-            <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+            <MuiThemeProvider muiTheme={muiTheme}>
                 <div>
                     <Switch>
                         <Route path="/volunteer" render={(props) => ( Auth.isUserAuthenticated() ? (<VolunteerContainer {...props} routes={[{authorize: ['volunteer']}]}/>) : (<FrontEndContainer />) )} />

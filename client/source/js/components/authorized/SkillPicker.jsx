@@ -11,6 +11,12 @@ const selectableSkills = [
     {value: 5, name: 'Funding'},
 ];
 
+let styles = {
+    skillItemStyles: {
+        textAlign: 'left'
+    }
+};
+
 class SkillPicker extends Component {
 
     constructor(props) {
@@ -45,17 +51,6 @@ class SkillPicker extends Component {
         this.props.onChange(changeEvent);
     };
 
-    selectionRenderer = (values) => {
-        switch (values.length) {
-            case 0:
-                return '';
-            case 1:
-                return selectableSkills[values[0]].name;
-            default:
-                return `${values.length} skills selected`;
-        }
-    };
-
     menuItems(skills) {
         return skills.map((skill) => (
             <MenuItem
@@ -74,7 +69,7 @@ class SkillPicker extends Component {
                 hintText={this.props.hintText}
                 value={this.state.values}
                 onChange={this.handleChange}
-                selectionRenderer={this.selectionRenderer}
+                style={styles.skillItemStyles}
             >
                 {this.menuItems(selectableSkills)}
             </SelectField>

@@ -47,7 +47,6 @@
     "mongoose": "^4.9.3",
     "mongoose-find-or-create": "^1.2.0",
     "nodemailer": "^4.0.1",
-    "nodemailer-sendgrid-transport": "^0.2.0",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
     "passport-local": "^1.0.0",

@@ -49,11 +49,6 @@ html, body, div {
     padding: 0;
     font-family: 'Roboto', sans-serif !important;
     text-transform: lowercase;
-    text-align: center;
-}
-
-.needs-list div {
-    text-align: left;
 }
 
 img {
@@ -97,6 +92,7 @@ a:hover {
 
 .app-bar {
     background-color: #00BCD4;
+    text-align: center;
     max-height: 15vh;
     z-index: 100;
     padding: 0;
@@ -191,7 +187,6 @@ a:hover {
 form {
     flex: 1;
 }
-
 
 /*end authorized volunteer pages*/
 /*end specific styles*/
