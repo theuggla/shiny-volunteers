@@ -5,8 +5,6 @@
 // Requires.
 let router = require('express').Router();
 let passport = require('passport');
-let cwd = __dirname ? __dirname : process.cwd();
-let path = require('path');
 
 let facebookAuth = require('../lib/authresource').facebookAuth;
 let createNewTempUser = require('../lib/authresource').createNewTempUser;

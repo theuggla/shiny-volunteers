@@ -1,78 +1,106 @@
+/**
+ * A navigation component to visually
+ * keep track of the user's navigation.
+ */
+
+// Imports ------------------------------------------------------------------------------------------------------------
 import React, {Component} from 'react';
+
 import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigation';
 import FontIcon from 'material-ui/FontIcon';
 
-const matchesIcon = <FontIcon className="material-icons"><img src="/assets/icons/matches-icon-grey.png" style={{maxHeight: '70%'}}/></FontIcon>;
-const matchesIconActive = <FontIcon className="material-icons"><img src="/assets/icons/matches-icon-red.png" style={{maxHeight: '70%'}}/></FontIcon>;
-const applicationsIcon = <FontIcon className="material-icons"><img src="/assets/icons/applications-icon-grey.png" style={{maxHeight: '70%'}}/></FontIcon>;
-const applicationsIconActive = <FontIcon className="material-icons"><img src="/assets/icons/applications-icon-red.png" style={{maxHeight: '70%'}}/></FontIcon>;
-const profileIcon = <FontIcon className="material-icons"><img src="/assets/icons/profile-icon-grey.png" style={{maxHeight: '70%'}}/></FontIcon>;
-const profileIconActive = <FontIcon className="material-icons"><img src="/assets/icons/profile-icon-red.png" style={{maxHeight: '70%'}}/></FontIcon>;
+import styles from '../../../ReactStyles';
 
-let style = {
-    height: '12vh',
-    maxHeight: '12vh',
-    width: '100%',
-    position: 'fixed',
-    left: 0,
-    bottom: 0,
-    paddingBottom: '3vh',
-    zIndex: '10'
-};
+// Variables ----------------------------------------------------------------------------------------------------------
+const matchesIcon = <FontIcon><img src="/assets/icons/matches-icon-grey.png" style={styles.navIcon}/></FontIcon>;
+const matchesIconActive = <FontIcon><img src="/assets/icons/matches-icon-red.png" style={styles.navIcon}/></FontIcon>;
+const applicationsIcon = <FontIcon><img src="/assets/icons/applications-icon-grey.png" style={styles.navIcon}/></FontIcon>;
+const applicationsIconActive = <FontIcon><img src="/assets/icons/applications-icon-red.png" style={styles.navIcon}/></FontIcon>;
+const profileIcon = <FontIcon><img src="/assets/icons/profile-icon-grey.png" style={styles.navIcon}/></FontIcon>;
+const profileIconActive = <FontIcon><img src="/assets/icons/profile-icon-red.png" style={styles.navIcon}/></FontIcon>;
 
+// Class --------------------------------------------------------------------------------------------------------------
+
+/**
+ * Visually keeps track of the volunteer-navigation and pushes new locations to the history object.
+ */
 class VolunteerNav extends Component {
-    componentWillReceiveProps(nextProps) {
-            switch (nextProps.history.location.pathname) {
-                case '/volunteer/matches':
-                    this.select(0);
-                    break;
-                case '/volunteer/applications':
-                    this.select(1);
-                    break;
-                case 'volunteer/profile':
-                    this.select(2);
-                    break;
-            }
-    }
-
+    /**
+     * Passes on props and sets initial state.
+     * @param props {Object} will be passed on.
+     */
     constructor(props) {
         super(props);
+        this.state = this.select(props.history.location);
     }
 
-    state = {
-        selectedIndex: 0,
-        matchesIcon: matchesIconActive,
-        applicationsIcon: applicationsIcon,
-        profileIcon: profileIcon
-    };
+    /**
+     * Updates the selected navigation-item
+     * based on the new window location.
+     * @param nextProps {Object} the props the component is about to receive.
+     */
+    componentWillReceiveProps(nextProps) {
+        this.updateNav(this.select(nextProps.history.location));
+    }
 
-    select = (index) => {
+    /**
+     * Changes state depending on the window location.
+     * @param location {Object} the location-object to base the change on.
+     */
+    select(location) {
+        let index;
+        let state;
+
+        switch (location.pathname) {
+            case '/volunteer/matches':
+                index = 0;
+                break;
+            case '/volunteer/applications':
+                index = 1;
+                break;
+            case '/volunteer/profile':
+                index = 2;
+                break;
+        }
+
         let match = (index === 0) ? matchesIconActive : matchesIcon;
         let applications = (index === 1) ? applicationsIconActive : applicationsIcon;
         let profile = (index === 2) ? profileIconActive : profileIcon;
 
-
-        this.setState({
+        state = {
             selectedIndex: index,
             matchesIcon: match,
             applicationsIcon: applications,
             profileIcon: profile
-        });
-    };
+        };
 
+        return state;
+    }
+
+    /**
+     * Update the navigation's state.
+     * @param state {Object} the new state to set.
+     */
+    updateNav(state) {
+        this.setState(state);
+    }
+
+    /**
+     * @returns {Conponent} A BottomNavigationComponent with three BottomNavigationItems
+     * that reacts to location change.
+     */
     render() {
         return (
                 <BottomNavigation
                     className="volunteer-nav"
                     selectedIndex={this.state.selectedIndex}
-                    style={style}
+                    style={styles.navigationStyle}
                 >
                     <BottomNavigationItem
                         label="matches"
                         icon={this.state.matchesIcon}
                         onTouchTap={() =>
                         {
-                            this.select(0);
                             this.props.history.push(`${this.props.match.path}/matches`);
                         }}
                     />
@@ -81,7 +109,6 @@ class VolunteerNav extends Component {
                         icon={this.state.applicationsIcon}
                         onTouchTap={() =>
                         {
-                            this.select(1);
                             this.props.history.push(`${this.props.match.path}/applications`);
                         }}
                     />
@@ -90,7 +117,6 @@ class VolunteerNav extends Component {
                         icon={this.state.profileIcon}
                         onTouchTap={() =>
                         {
-                            this.select(2);
                             this.props.history.push(`${this.props.match.path}/profile`);
                         }}
                     />
@@ -99,4 +125,5 @@ class VolunteerNav extends Component {
     }
 }
 
+// Exports ------------------------------------------------------------------------------------------------------------
 export default VolunteerNav;

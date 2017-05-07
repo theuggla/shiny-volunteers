@@ -1,31 +1,54 @@
+/**
+ * Component to display provided needs in a table.
+ * Does not save state.
+ */
+
+// Imports ------------------------------------------------------------------------------------------------------------
 import React from 'react';
-import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+
+import {Table, TableBody} from 'material-ui/Table';
+
+import styles from '../../ReactStyles';
 
 import Need from './NeedDisplay.jsx';
 
+// Class --------------------------------------------------------------------------------------------------------------
 
-const NeedsList = ({needs, onClick, clickable, icon, confirmPrompt}) => (
+/**
+ * Component that displays a table of needs or a text, if no needs are provided.
+ * If the needs are marked as being an action-need, an icon will be shown to initiate the action
+ * and a confirm-window will appear to ask the user to confirm the action with the provided prompt.
+ *
+ * @param needs {[Object]} the needs to display.
+ * @param noNeedsText {String} the text to display if there are no needs.
+ * @param action {boolean} whether to show an action button for the need.
+ * @param onClick {function} the action to take when the button is clicked.
+ * @param icon {Component} the icon-component to use for the action button.
+ * @param confirmPrompt {String} the text to show when the user is asked to conform the action.
+ * @param errors {Object} the error state of the wrapping component.
+ */
+const NeedsList = ({needs, noNeedsText, onClick, action, icon, confirmPrompt, errors}) => (
         <div className="needs-list">
-            <Table
-                height="60vh"
-                width="90vw"
-            >
+            {errors.summary && <p style={styles.error}>{errors.summary}</p>}
+
+            {(needs.length === 0) && <p style={styles.noNeeds}>{noNeedsText}</p> }
+
+            {(needs.length > 0) && (
+            <Table style={styles.needsList}>
                 <TableBody
-                    deselectOnClickaway={true}
+                    selectable={false}
                     showRowHover={true}
                     stripedRows={true}
                     displayRowCheckbox={false}
                 >
                     {needs.map( (need) => (
-                        <TableRow key={need._id}>
-                            <TableRowColumn key={need._id}>
-                                <Need onClick={onClick} need={need} clickable={clickable} icon={icon} confirmPrompt={confirmPrompt}/>
-                            </TableRowColumn>
-                        </TableRow>
+                        <Need onClick={onClick} need={need} action={action} icon={icon} confirmPrompt={confirmPrompt}/>
                     ))}
                 </TableBody>
             </Table>
+            )}
         </div>
     );
 
+// Exports ------------------------------------------------------------------------------------------------------------
 export default NeedsList;

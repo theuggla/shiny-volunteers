@@ -1,8 +1,25 @@
+/**
+ * A profile-form component.
+ * A form that wraps different form components
+ * and passes the state on to the wrapper component.
+ */
+
+
+// Imports ------------------------------------------------------------------------------------------------------------
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import SkillPicker from '../SkillPicker.jsx';
 
+// Class --------------------------------------------------------------------------------------------------------------
+
+/**
+ * Returns a Form-component with no state that can display the error state of the parent-object.
+ * @param onSubmit {function} what to do when the form is submitted.
+ * @param onChange {function} what to do when a form-component within the form is changed.
+ * @param errors {Object} the error state of the parent object.
+ * @param profile {Object} the already saved profile.
+ */
 const ProfileForm = ({
     onSubmit,
     onChange,
@@ -21,9 +38,6 @@ const ProfileForm = ({
             />
         </div>
 
-        <div className="field-line">
-        </div>
-
         <div className="button-line">
             <RaisedButton type="submit" label="Save" primary />
         </div>
@@ -31,4 +45,5 @@ const ProfileForm = ({
     </form>
 );
 
+// Exports ------------------------------------------------------------------------------------------------------------
 export default ProfileForm;

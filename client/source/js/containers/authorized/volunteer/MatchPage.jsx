@@ -1,24 +1,39 @@
+/**
+ * Container component that controls the display of the matches between the user's preferences
+ * and their needs.
+ */
+
+// Imports ------------------------------------------------------------------------------------------------------------
 import React from 'react';
+
 import CircularProgress from 'material-ui/CircularProgress';
-import AddIcon from 'material-ui/svg-icons//content/add-circle-outline';
+import AddIcon from 'material-ui/svg-icons/content/add-circle-outline';
 import Snackbar from 'material-ui/Snackbar';
 
-import NeedsList from '../../../components/authorized/NeedsList.jsx';
 import Auth from '../../../modules/Auth';
 import axios from 'axios';
+import styles from '../../../ReactStyles';
 
-let styles = {
-    snackbarBodyStyle: {
-        height: 'auto',
-        lineHeight: '1.8em'
-    },
-    loadcontainerStyles: {
-        textAlign: 'center'
-    }
-};
+import NeedsList from '../../../components/authorized/NeedsList.jsx';
 
+// Variables--------------------------------------------------------------------------------------------------------------
+let noNeedsText = "there are no matches for you at the moment. either your profile is not filled in or no " +
+        "organization has a need that matches your preferences. hang in there.";
+let confirmPrompt = "your information will be sent out to the organization.";
+let serverErrorMessage = "we seem to not be getting a response. ";
+
+// Class---------------------------------------------------------------------------------------------------------------
+
+/**
+ * Controls the state of the list of matches
+ * and communicates with the server.
+ */
 class MatchPage extends React.Component {
 
+    /**
+     * Passes on props, binds methods and sets initial state.
+     * @param props {Object} will be passed on.
+     */
     constructor(props) {
         super(props);
 
@@ -31,6 +46,11 @@ class MatchPage extends React.Component {
         this.applyForMatch = this.applyForMatch.bind(this);
     }
 
+    /**
+     * Makes a call to the server to get the current matched needs for the logged in user.
+     * If no response from server within five seconds, sets offline popup
+     * to true.
+     */
     componentWillMount() {
         let responseTimeout = setTimeout(() => {
             this.setState({offlinePopup: true});
@@ -42,7 +62,7 @@ class MatchPage extends React.Component {
             headers: {'Authorization': `bearer ${Auth.getToken()}`},
         })
             .then((response) => {
-            clearTimeout(responseTimeout);
+                clearTimeout(responseTimeout);
 
                 this.setState({
                     offlinePopup: false,
@@ -51,14 +71,16 @@ class MatchPage extends React.Component {
 
             })
             .catch((error) => {
-                const errors = error.response ? error.response.data.errors ? error.response.data.errors : error.response.data : {summary: 'are you offline?'};
-                this.setState({
-                    errors: errors
-                });
+                this.state.errors = error.response ? error.response.data.errors ? error.response.data.errors : error.response.data : {summary: 'are you offline?'};
             });
 
     }
 
+    /**
+     * Makes an application for a need against the server.
+     * Redirects the user to the applications-page when the data has been sent.
+     * @param id {string} The id of the need to apply for.
+     */
     applyForMatch(id) {
             axios({
                 method: 'POST',
@@ -72,35 +94,45 @@ class MatchPage extends React.Component {
                     this.props.history.push('/volunteer/applications');
                 })
                 .catch((error) => {
-                    console.log(error);
+                    const errors = error.response ? error.response.data.errors ? error.response.data.errors : error.response.data : {summary: 'you seem to be offline'};
+                    this.setState({
+                        errors: errors
+                    });
                 });
     }
 
+    /**
+     * Renders the list when the match information has been received from the server
+     * and a loading symbol with a potential offline popup for user communication
+     * until then.
+     * @returns {Component} A NeedsList with an action that lets you apply for matches.
+     * or a CircularProgress Component.
+     */
     render() {
         return (
             this.state.needs ? (
-                    <NeedsList className="needs-page"
+                    <NeedsList
                                needs={this.state.needs}
-                               clickable={true}
+                               errors={this.state.errors}
+                               action={true}
                                onClick={this.applyForMatch}
-                               confirmPrompt="your information will be sent out to the organization."
+                               confirmPrompt={confirmPrompt}
+                               noNeedsText={noNeedsText}
                                icon={<AddIcon />}
                     />) : (
-                    <div style={styles.loadcontainerStyles}>
+                    <div style={styles.loadcontainer}>
                         <CircularProgress />
                         <Snackbar
-                            message={"we seem to not be getting a response. " + this.state.errors.summary}
+                            message={serverErrorMessage + this.state.errors.summary}
                             open={this.state.offlinePopup}
-                            bodyStyle={styles.snackbarBodyStyle}
+                            bodyStyle={styles.snackbarBody}
                         />
                     </div>
                 )
         );
     }
-
 }
 
-
-//Exports.
+// Exports--------------------------------------------------------------------------------------------------------------
 export default MatchPage;
 

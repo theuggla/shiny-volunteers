@@ -1,18 +1,31 @@
+/**
+ * A need-form component.
+ * A form that wraps different form components
+ * and passes the state on to the wrapper component.
+ */
+
+// Imports -----------------------------------------------------------------------------------------------------------
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
+import styles from '../../../ReactStyles';
+
 import SkillPicker from '../SkillPicker.jsx';
 
-const styles = {
-    floatingLabelStyle: {
-        textAlign: 'center'
-    },
-    inputStyle: {
-        textAlign: 'center',
-    }
-};
+// Variables ----------------------------------------------------------------------------------------------------------
+let requiredSkillsHint = "select the skills you require";
 
+
+// CLass --------------------------------------------------------------------------------------------------------------
+
+/**
+ * Returns a Form-component with no state that can display the error state of the parent-object.
+ * @param onSubmit {function} what to do when the form is submitted.
+ * @param onChange {function} what to do when a form-component within the form is changed.
+ * @param errors {Object} the error state of the parent object.
+ * @param need {Object} the need-object to update..
+ */
 const NeedsForm = ({
     onSubmit,
     onChange,
@@ -29,8 +42,8 @@ const NeedsForm = ({
                 errorText={errors.title}
                 onChange={onChange}
                 value={need.title}
-                floatingLabelStyle={styles.floatingLabelStyle}
-                inputStyle={styles.inputStyle}
+                floatingLabelStyle={styles.centerText}
+                inputStyle={styles.centerText}
             />
         </div>
 
@@ -41,8 +54,8 @@ const NeedsForm = ({
                 errorText={errors.description}
                 onChange={onChange}
                 value={need.description}
-                floatingLabelStyle={styles.floatingLabelStyle}
-                inputStyle={styles.inputStyle}
+                floatingLabelStyle={styles.centerText}
+                inputStyle={styles.centerText}
             />
         </div>
 
@@ -51,15 +64,15 @@ const NeedsForm = ({
                 onChange={onChange}
                 name="skillsNeeded"
                 values={need.skillsNeeded}
-                hintText="select the skills you require"
+                hintText={requiredSkillsHint}
             />
         </div>
 
         <div className="button-line">
             <RaisedButton type="submit" label="Save" primary />
         </div>
-
     </form>
 );
 
+// Exports ------------------------------------------------------------------------------------------------------------
 export default NeedsForm;

@@ -1,75 +1,105 @@
+/**
+ * A component for the display of a singe need.
+ */
+
+// Imports ------------------------------------------------------------------------------------------------------------
 import React from 'react';
-import {List, ListItem} from 'material-ui/List';
+
+import {TableRow, TableRowColumn} from 'material-ui/Table';
 import IconButton from 'material-ui/IconButton';
+import CollapseIcon from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
+import ExpandIcon from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
+
+import styles from '../../ReactStyles';
 
 import ConfirmDialog from '../ConfirmDialog.jsx';
 
-class Need extends React.Component {
-    state = {
-        open: false,
-    };
+// Class --------------------------------------------------------------------------------------------------------------
 
+/**
+ * Displays a single need.
+ * Keeps state to know if the need is
+ * expanded or not in the list and if the confirm prompt is open.
+ */
+class Need extends React.Component {
+
+    /**
+     * Passes on props, sets initial state and binds functions..
+     * @param props {Object} will be passed on.
+     */
     constructor(props) {
         super(props);
+
+        this.state = {
+            open: false,
+            confirmOpen: false
+        };
+
+        this.expandIcon = <ExpandIcon />;
 
         this.onConfirm = this.onConfirm.bind(this);
     }
 
+    /**
+     * Called when the action is confirmed on the need.
+     * Passes the id of the need on to the provided onConfirm-function.
+     */
     onConfirm() {
         this.props.onClick(this.props.need._id);
     }
 
+    /**
+     * Toggles the expand-icon and state of the need.
+     */
+    toggleExpand() {
+        let open = !(this.state.open);
+        this.setState({open: open});
+        this.expandIcon = this.state.open ? <ExpandIcon /> : <CollapseIcon />;
+    }
+
+    /**
+     * Displays the need.
+     * @returns {Component} the need displayed as an expandable TableRow component
+     * with or without an action-button.
+     */
     render() {
-        {console.log(this.props.need)}
         return (
-            this.props.clickable ? (
-                    <div className="need-display">
-                        <ListItem
-                            primaryText={this.props.need.title}
-                            leftIcon={
-                                <IconButton style={{padding: '1em'}} onTouchTap={() => {
-                                    this.setState({open: true});
-                                }}>
-                                    {this.props.icon}
-                                </IconButton>
-                            }
-                            nestedItems={[
-                                <ListItem>
-                                    <p>{this.props.need.description}</p>
-                                </ListItem>,
-                                <ListItem
-                                    primaryText='skills needed'
-                                    nestedItems={this.props.need.skillsNeeded.map((skill) => (
-                                        <p>
-                                            {skill}
-                                        </p>))}
-                                />
-                            ]}
-                        />
-                        <ConfirmDialog onConfirm={this.onConfirm} open={this.state.open} text={this.props.confirmPrompt}/>
-                    </div>
-                ) :
-                (<div className="need-display">
-                    <ListItem
-                        primaryTogglesNestedList={true}
-                        primaryText={this.props.need.title}
-                        nestedItems={[
-                            <ListItem>
-                                <p>{this.props.need.description}</p>
-                            </ListItem>,
-                            <ListItem
-                                primaryText='skills needed'
-                                nestedItems={this.props.need.skillsNeeded.map((skill) => (
-                                    <p>
+            <TableRow key={this.props.need._id} selectable={false} style={styles.needDisplayRow}>
+                        <TableRowColumn style={styles.needActionDisplayColumn}>
+                            <IconButton style={styles.needActionIcon} onTouchTap={() => {
+                                if (this.props.action) {
+                                    this.setState({confirmOpen: true})
+                                }
+                            }}>
+                                {this.props.icon}
+                            </IconButton>
+                        </TableRowColumn>
+                        <TableRowColumn key={this.props.need._id} style={styles.needDisplayColumn}>
+                            <h3>{this.props.need.title}</h3>
+                            {(this.state.open) &&
+                            (<div>
+                            <p>{this.props.need.description}</p>
+                            <ul>
+                                {this.props.need.skillsNeeded.map((skill) => (
+                                    <li>
                                         {skill}
-                                    </p>))}
-                            />
-                        ]}
-                    />
-                </div>)
-        );
+                                    </li>))
+                                }
+                            </ul>
+                            </div>)
+                            }
+                        </TableRowColumn>
+                        <TableRowColumn style={styles.needActionDisplayColumn}>
+                            <IconButton style={styles.needActionIcon} onTouchTap={() => {
+                                this.toggleExpand();}} >
+                                {this.expandIcon}
+                            </IconButton>
+                        </TableRowColumn>
+                {this.props.action && <ConfirmDialog onConfirm={this.onConfirm} open={this.state.confirmOpen} text={this.props.confirmPrompt}/>}
+            </TableRow>
+        )
     }
 }
 
-
+// Exports ------------------------------------------------------------------------------------------------------------
 export default Need;

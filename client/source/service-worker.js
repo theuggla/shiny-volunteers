@@ -5,7 +5,7 @@
 
 
 // Keep track of the cache.
-let CACHE_VERSION = 'v15';
+let CACHE_VERSION = 'v17';
 
 
 self.addEventListener('install', (event) => {

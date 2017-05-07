@@ -1,15 +1,40 @@
+/**
+ * A modal confirm-daalog that takes a passed in prompt
+ * and an onConfirm function.
+ */
+
+// Imports ------------------------------------------------------------------------------------------------------------
 import React from 'react';
+
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 
+import styles from '../ReactStyles';
+
+// Class -------------------------------------------------------------------------------------------------------------
+
 /**
- * A modal dialog can only be closed by selecting one of the actions.
+ * A Confirm Popup-dialog.
  */
 class ConfirmDialog extends React.Component {
-    state = {
-        open: false,
-    };
 
+    /**
+     * Sets state and passes on the props.
+     * @param props {Object} the props to pass on.
+     */
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            open: false,
+        };
+    }
+
+    /**
+     * Opens or closes the dialog depending
+     * on the props recieved.
+     * @param nextProps
+     */
     componentWillReceiveProps(nextProps) {
         if (nextProps.open !== this.props.open) {
             if (nextProps.open) {
@@ -20,23 +45,34 @@ class ConfirmDialog extends React.Component {
         }
     }
 
-    constructor(props) {
-        super(props);
-    }
-
+    /**
+     * Sets state to open.
+     */
     handleOpen = () => {
         this.setState({open: true});
     };
 
+    /**
+     * Sets state to closed.
+     */
     handleClose = () => {
         this.setState({open: false});
     };
 
+    /**
+     * Closes the dialog and
+     * calles the passed in onConfirm-function.
+     */
     handleConfirm = () => {
         this.handleClose();
         this.props.onConfirm();
     };
 
+    /**
+     * Renders a modal dialog with a
+     * cancel and a confirm button, and the passed in prompt.
+     * @returns {Component} the dialog.
+     */
     render() {
         const actions = [
             <FlatButton
@@ -57,6 +93,7 @@ class ConfirmDialog extends React.Component {
                     actions={actions}
                     modal={true}
                     open={this.state.open}
+                    style={styles.centerText}
                 >
                     {this.props.text}
                 </Dialog>
@@ -64,4 +101,5 @@ class ConfirmDialog extends React.Component {
     }
 }
 
+// Exports ------------------------------------------------------------------------------------------------------------
 export default ConfirmDialog;
