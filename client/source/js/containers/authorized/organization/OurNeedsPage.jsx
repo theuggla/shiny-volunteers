@@ -42,7 +42,8 @@ class OurNeedsPage extends React.Component {
             offlinePopup: false,
             errors: {
                 summary: ""
-            }
+            },
+            reload: false
         };
 
         this.removeNeed = this.removeNeed.bind(this);
@@ -88,7 +89,7 @@ class OurNeedsPage extends React.Component {
             headers: {'Authorization': `bearer ${Auth.getToken()}`},
         })
             .then((response) => {
-                window.location.reload();
+                this.setState({reload: true});
             })
             .catch((error) => {
                 const errors = error.response ? error.response.data.errors ? error.response.data.errors : error.response.data : {summary: 'you seem to be offline'};
