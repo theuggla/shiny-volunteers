@@ -5,19 +5,23 @@
 
 
 // Keep track of the cache.
-let CACHE_VERSION = 'v17';
+let CACHE_VERSION = 'v18';
+let STATIC_CACHE = 'static';
+
+let expectedCaches = [CACHE_VERSION, STATIC_CACHE];
 
 
 self.addEventListener('install', (event) => {
     // Store some files on first load.
 
     function onInstall () {
-        return caches.open(CACHE_VERSION)
+        return caches.open(STATIC_CACHE)
             .then((cache) => cache.addAll([
                 '/main.min.js',
                 '/stylesheets/styles.css',
                 '/index.html',
                 '/assets/logo.png',
+                '/assets/favicon.ico',
                 '/assets/intro-bg.jpg',
                 '/assets/icons/add-need-icon-grey.png',
                 '/assets/icons/add-need-icon-red.png',
@@ -37,15 +41,14 @@ self.addEventListener('install', (event) => {
 // Clear out the cache if service worker is updated.
 self.addEventListener('activate', (event) => {
     event.waitUntil(
-        caches.keys().then((cacheNames) => {
-            return Promise.all(
-                cacheNames.map((cacheName) => {
-                    if (cacheName !== CACHE_VERSION) {
-                        return caches.delete(cacheName);
+        caches.keys()
+            .then((keys) => Promise.all(
+                keys.map((key) => {
+                    if (!expectedCaches.includes(key)) {
+                        return caches.delete(key);
                     }
                 })
-            );
-        })
+            ))
     );
 });
 
@@ -53,17 +56,6 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
     function onFetch (event) {
         let request = event.request;
-        let acceptHeader = request.headers.get('Accept');
-        let resourceType = 'static';
-        let cacheKey;
-
-        if (acceptHeader.indexOf('text/html') !== -1) { // Make different cashes for different content to retrieve later.
-            resourceType = 'content';
-        } else if (acceptHeader.indexOf('image') !== -1) {
-            resourceType = 'image';
-        }
-
-        cacheKey = resourceType;
 
         event.respondWith(
             fromNetwork(event.request, 1000)
@@ -74,7 +66,7 @@ self.addEventListener('fetch', (event) => {
                         return Promise.reject(event);
                     }
 
-                    return addToCache(cacheKey, request, response);
+                    return addToCache(CACHE_VERSION, request, response);
                 })
                 .catch(() => fetchFromCache(event))
                 .catch(() => fetch(request)));
@@ -93,8 +85,8 @@ self.addEventListener('fetch', (event) => {
     }
 
     // Get responses from cache.
-    function fetchFromCache (event) {
-        return caches.match(event.request).then((response) => {
+    function fetchFromCache (fetchevent) {
+        return caches.match(fetchevent.request).then((response) => {
             if (!response) {
                 throw Error('${event.request.url} not found in cache');
             }
