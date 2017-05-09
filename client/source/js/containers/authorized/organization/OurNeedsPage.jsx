@@ -17,7 +17,7 @@ import styles from '../../../ReactStyles';
 import NeedsList from '../../../components/authorized/NeedsList.jsx';
 
 // Variables--------------------------------------------------------------------------------------------------------------
-let noNeedsText = "you haven't registered any needs yet yet! think of what you need and go add something " +
+let noNeedsText = "you haven't registered any needs yet! think of what you need and go add something " +
     "under the add-need-tab.";
 let confirmPrompt = "confirming will remove the need permanently";
 let serverErrorMessage = "we seem to not be getting a response. ";

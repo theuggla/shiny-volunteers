@@ -68,6 +68,9 @@ module.exports = {
     needActionIcon: {
         padding: '1em'
     },
+    descriptionArea: {
+        textAlign: 'left'
+    },
     centerText: {
         textAlign: 'center'
     }

@@ -1,22 +1,7 @@
 /*fonts*/
 @font-face {
-    font-family: 'veteran_typewriterregular';
-    src: url("../assets/fonts/veteran_typewriter-webfont.woff") format('woff');
-    font-weight: normal;
-    font-style: normal;
-
-}
-
-@font-face {
-    font-family: 'journalregular';
-    src: url("../assets/fonts/journal-webfont.woff") format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
     font-family: 'glyphicons';
-    src: url("../assets/fonts/glyphicons-halflings-regular.woff") format('woff');
+    src: url("../assets/fonts/Glyphicon/glyphicons-halflings-regular.woff") format('woff');
     font-weight: normal;
     font-style: normal;
 

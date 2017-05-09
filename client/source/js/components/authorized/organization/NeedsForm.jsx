@@ -16,7 +16,6 @@ import SkillPicker from '../SkillPicker.jsx';
 // Variables ----------------------------------------------------------------------------------------------------------
 let requiredSkillsHint = "select the skills you require";
 
-
 // CLass --------------------------------------------------------------------------------------------------------------
 
 /**
@@ -24,7 +23,7 @@ let requiredSkillsHint = "select the skills you require";
  * @param onSubmit {function} what to do when the form is submitted.
  * @param onChange {function} what to do when a form-component within the form is changed.
  * @param errors {Object} the error state of the parent object.
- * @param need {Object} the need-object to update..
+ * @param need {Object} the need-object to update.
  */
 const NeedsForm = ({
     onSubmit,
@@ -51,11 +50,11 @@ const NeedsForm = ({
             <TextField
                 floatingLabelText="description"
                 name="description"
+                multiLine={true}
                 errorText={errors.description}
                 onChange={onChange}
                 value={need.description}
-                floatingLabelStyle={styles.centerText}
-                inputStyle={styles.centerText}
+                style={styles.descriptionArea}
             />
         </div>
 
