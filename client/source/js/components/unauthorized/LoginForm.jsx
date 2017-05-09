@@ -49,6 +49,7 @@ const SignUpForm = ({
                     value={user.email}
                     floatingLabelStyle={styles.floatingLabelStyle}
                     inputStyle={styles.inputStyle}
+                    autoFocus={(!signup)}
                 />
             </div>
 
@@ -62,6 +63,7 @@ const SignUpForm = ({
                     value={user.password}
                     floatingLabelStyle={styles.floatingLabelStyle}
                     inputStyle={styles.inputStyle}
+                    autoFocus={false}
                 />
             </div>
 
@@ -75,6 +77,7 @@ const SignUpForm = ({
                     value={user.passwordConfirm}
                     floatingLabelStyle={styles.floatingLabelStyle}
                     inputStyle={styles.inputStyle}
+                    autoFocus={(signup)}
                 />
             </div>}
 
