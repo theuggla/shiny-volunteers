@@ -54,7 +54,7 @@ const NeedsForm = ({
                 errorText={errors.description}
                 onChange={onChange}
                 value={need.description}
-                style={styles.descriptionArea}
+                style={styles.addNeedForm.descriptionArea}
             />
         </div>
 

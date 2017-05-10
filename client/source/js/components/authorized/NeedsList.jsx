@@ -31,10 +31,10 @@ const NeedsList = ({needs, noNeedsText, onClick, action, icon, confirmPrompt, er
         <div className="needs-list">
             {errors.summary && <p style={styles.error}>{errors.summary}</p>}
 
-            {(needs.length === 0) && <p style={styles.noNeeds}>{noNeedsText}</p> }
+            {(needs.length === 0) && <p style={styles.needsDisplay.noNeeds}>{noNeedsText}</p> }
 
             {(needs.length > 0) && (
-            <Table style={styles.needsList}>
+            <Table style={styles.needsDisplay.needsList}>
                 <TableBody
                     selectable={false}
                     showRowHover={true}

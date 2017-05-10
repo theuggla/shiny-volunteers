@@ -123,7 +123,7 @@ class OurNeedsPage extends React.Component {
                         <Snackbar
                             message={serverErrorMessage + this.state.errors.summary}
                             open={this.state.offlinePopup}
-                            bodyStyle={styles.snackbarBody}
+                            bodyStyle={styles.internalPopup.snackbarBody}
                         />
                     </div>
                 )

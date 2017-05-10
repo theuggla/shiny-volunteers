@@ -2,19 +2,25 @@
  * Front-end container, routes to the Welcome, About and Login-components.
  */
 
+// Imports ------------------------------------------------------------------------------------------------------------
 import React from 'react';
 import { Link, Route, Switch, Redirect } from 'react-router-dom';
+
+import style from '../../ReactStyles';
 
 import Welcome from '../../components/unauthorized/Welcome.jsx';
 import LoginPage from './LoginPage.jsx';
 import About from '../../components/unauthorized/About.jsx';
 
-import style from '../../ReactStyles';
+// Class --------------------------------------------------------------------------------------------------------------
 
+/**
+ * Routes the user and renders different components based on window location.
+ */
 const Container = ({ match }) => (
             <div className="front-end app-container">
                 <div className="top-bar">
-                    <Link id="start-link" to="/"><img src="/assets/logo.png" style={style.logo}/></Link>
+                    <Link id="start-link" to="/"><img src="/assets/logo.png" style={style.topbar.logo}/></Link>
                 </div>
                     <div className="main-space-front">
                         <Switch>
@@ -29,4 +35,5 @@ const Container = ({ match }) => (
             </div>
 );
 
+// Exports ------------------------------------------------------------------------------------------------------------
 export default Container;

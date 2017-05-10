@@ -12,12 +12,12 @@ import FontIcon from 'material-ui/FontIcon';
 import styles from '../../../ReactStyles';
 
 // Variables ----------------------------------------------------------------------------------------------------------
-const matchesIcon = <FontIcon><img src="/assets/icons/matches-icon-grey.png" style={styles.navIcon}/></FontIcon>;
-const matchesIconActive = <FontIcon><img src="/assets/icons/matches-icon-red.png" style={styles.navIcon}/></FontIcon>;
-const applicationsIcon = <FontIcon><img src="/assets/icons/applications-icon-grey.png" style={styles.navIcon}/></FontIcon>;
-const applicationsIconActive = <FontIcon><img src="/assets/icons/applications-icon-red.png" style={styles.navIcon}/></FontIcon>;
-const profileIcon = <FontIcon><img src="/assets/icons/profile-icon-grey.png" style={styles.navIcon}/></FontIcon>;
-const profileIconActive = <FontIcon><img src="/assets/icons/profile-icon-red.png" style={styles.navIcon}/></FontIcon>;
+const matchesIcon = <FontIcon><img src="/assets/icons/matches-icon-grey.png" style={styles.navigation.navIcon}/></FontIcon>;
+const matchesIconActive = <FontIcon><img src="/assets/icons/matches-icon-red.png" style={styles.navigation.navIcon}/></FontIcon>;
+const applicationsIcon = <FontIcon><img src="/assets/icons/applications-icon-grey.png" style={styles.navigation.navIcon}/></FontIcon>;
+const applicationsIconActive = <FontIcon><img src="/assets/icons/applications-icon-red.png" style={styles.navigation.navIcon}/></FontIcon>;
+const profileIcon = <FontIcon><img src="/assets/icons/profile-icon-grey.png" style={styles.navigation.navIcon}/></FontIcon>;
+const profileIconActive = <FontIcon><img src="/assets/icons/profile-icon-red.png" style={styles.navigation.navIcon}/></FontIcon>;
 
 // Class --------------------------------------------------------------------------------------------------------------
 
@@ -94,7 +94,7 @@ class VolunteerNav extends Component {
                 <BottomNavigation
                     className="volunteer-nav"
                     selectedIndex={this.state.selectedIndex}
-                    style={styles.navigationStyle}
+                    style={styles.navigation.navigationStyle}
                 >
                     <BottomNavigationItem
                         label="matches"

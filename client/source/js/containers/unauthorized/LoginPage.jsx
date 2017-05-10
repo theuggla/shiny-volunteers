@@ -1,11 +1,28 @@
+/**
+ * Container-component that wraps the login form.
+ * Will render the form and pass down state as props.
+ */
+
+// Imports -------------------------------------------------------------------------------------------------------------
 import React from 'react';
 import axios from 'axios';
 
-import LoginForm from '../../components/unauthorized/LoginForm.jsx';
 import auth from '../../modules/Auth';
 
-class LoginPage extends React.Component {
+import LoginForm from '../../components/unauthorized/LoginForm.jsx';
 
+// Class --------------------------------------------------------------------------------------------------------------
+
+/**
+ * Container that controls the state of the Login Form
+ * And sends the data to the server.
+ * Renders a loading symbol or the form.
+ */
+class LoginPage extends React.Component {
+    /**
+     *
+     * @param props
+     */
     constructor(props) {
         super(props);
 
@@ -29,6 +46,10 @@ class LoginPage extends React.Component {
         this.facebookLogin = this.facebookLogin.bind(this);
     }
 
+    /**
+     *
+     * @param event
+     */
     changeUser(event) {
         this.setState({
             errors: {}
@@ -43,10 +64,18 @@ class LoginPage extends React.Component {
         });
     }
 
+    /**
+     *
+     * @param event
+     */
     changeToSignup(event) {
         this.setState({signup: true, popup: false});
     }
 
+    /**
+     *
+     * @param event
+     */
     processLoginForm(event) {
         event.preventDefault();
 
@@ -76,6 +105,10 @@ class LoginPage extends React.Component {
             });
     }
 
+    /**
+     *
+     * @param event
+     */
     processSignupForm(event) {
         event.preventDefault();
 
@@ -110,6 +143,10 @@ class LoginPage extends React.Component {
         }
     }
 
+    /**
+     *
+     * @param response
+     */
     facebookLogin(response) {
         if (response.name) {
             axios.post('/login/facebook', response)
@@ -129,6 +166,10 @@ class LoginPage extends React.Component {
         }
     }
 
+    /**
+     *
+     * @returns {XML}
+     */
     render() {
         return (
             <LoginForm className="login-page"
@@ -151,5 +192,5 @@ class LoginPage extends React.Component {
 }
 
 
-//Exports.
+// Exports ------------------------------------------------------------------------------------------------------------
 export default LoginPage;

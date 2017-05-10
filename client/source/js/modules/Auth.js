@@ -47,7 +47,6 @@ class Auth {
      * Get a token value from a cookie.
      * @returns {string} the token
      */
-
     static getToken() {
         if (Auth.isUserAuthenticated()) {
             return JSON.parse(Cookies.get('currentUser')).token;
@@ -60,7 +59,6 @@ class Auth {
      * Get the roles the current user is authenticated as.
      * @returns {[string]} the roles
      */
-
     static getAuthRoles() {
         if (Auth.isUserAuthenticated()) {
             return JSON.parse(Cookies.get('currentUser')).roles;

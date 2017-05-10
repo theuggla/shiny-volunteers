@@ -12,10 +12,10 @@ import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigati
 import styles from '../../../ReactStyles';
 
 // Variables ----------------------------------------------------------------------------------------------------------
-const needsIcon = <FontIcon className="material-icons"><img src="/assets/icons/matches-icon-grey.png" style={styles.navIcon}/></FontIcon>;
-const needsIconActive = <FontIcon className="material-icons"><img src="/assets/icons/matches-icon-red.png" style={styles.navIcon}/></FontIcon>;
-const addNeedIcon = <FontIcon className="material-icons"><img src="/assets/icons/add-need-icon-grey.png" style={styles.navIcon}/></FontIcon>;
-const addNeedIconActive = <FontIcon className="material-icons"><img src="/assets/icons/add-need-icon-red.png" style={styles.navIcon}/></FontIcon>;
+const needsIcon = <FontIcon className="material-icons"><img src="/assets/icons/matches-icon-grey.png" style={styles.navigation.navIcon}/></FontIcon>;
+const needsIconActive = <FontIcon className="material-icons"><img src="/assets/icons/matches-icon-red.png" style={styles.navigation.navIcon}/></FontIcon>;
+const addNeedIcon = <FontIcon className="material-icons"><img src="/assets/icons/add-need-icon-grey.png" style={styles.navigation.navIcon}/></FontIcon>;
+const addNeedIconActive = <FontIcon className="material-icons"><img src="/assets/icons/add-need-icon-red.png" style={styles.navigation.navIcon}/></FontIcon>;
 
 /**
  * Visually keeps track of the organization-navigation and pushes new locations to the history object.
@@ -85,7 +85,7 @@ class OrganizationNav extends Component {
             <BottomNavigation
                 className ="organization-nav"
                 selectedIndex={this.state.selectedIndex}
-                style={styles.navigationStyle}
+                style={styles.navigation.navigationStyle}
             >
                 <BottomNavigationItem
                     label="needs"

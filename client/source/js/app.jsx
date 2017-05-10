@@ -1,23 +1,29 @@
 /**
  * Starting point of the application.
- * Redirects the user to logged in screen if authenticated.
- */
+ * Redirects the user to logged in screen if authenticated,
+ * or renders the unauthenticated container component if not.
+ * Renders the app into the HTML.
+ * */
 
+// Imports ------------------------------------------------------------------------------------------------------------
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { HashRouter, Route, Switch, Redirect } from 'react-router-dom'
 import injectTapEventPlugin from 'react-tap-event-plugin';
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-injectTapEventPlugin();
 
 import Auth from './modules/Auth';
+import '../css/style.css';
 
 import FrontEndContainer from './containers/unauthorized/FrontEndContainer.jsx';
 import VolunteerContainer from './containers/authorized/volunteer/VolunteerContainer.jsx';
 import OrganizationContainer from './containers/authorized/organization/OrganizationContainer.jsx';
-import '../css/style.css';
+
+// Config -------------------------------------------------------------------------------------------------------------
+injectTapEventPlugin();
 
 
 const muiTheme = getMuiTheme(darkBaseTheme, {
@@ -28,6 +34,7 @@ const muiTheme = getMuiTheme(darkBaseTheme, {
     }
 });
 
+// Class --------------------------------------------------------------------------------------------------------------
 const App = () => (
     <HashRouter >
             <MuiThemeProvider muiTheme={muiTheme}>
@@ -42,5 +49,5 @@ const App = () => (
     </HashRouter>
 );
 
-
+// Render -------------------------------------------------------------------------------------------------------------
 ReactDOM.render(<App />, document.getElementById('container'));

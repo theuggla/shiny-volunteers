@@ -64,9 +64,9 @@ class Need extends React.Component {
      */
     render() {
         return (
-            <TableRow key={this.props.need._id} selectable={false} style={styles.needDisplayRow}>
-                        <TableRowColumn style={styles.needActionDisplayColumn}>
-                            <IconButton style={styles.needActionIcon} onTouchTap={() => {
+            <TableRow key={this.props.need._id} selectable={false} style={styles.needsDisplay.needDisplayRow}>
+                        <TableRowColumn style={styles.needsDisplay.needActionDisplayColumn}>
+                            <IconButton style={styles.needsDisplay.needActionIcon} onTouchTap={() => {
                                 if (this.props.action) {
                                     this.setState({confirmOpen: true})
                                 }
@@ -74,7 +74,7 @@ class Need extends React.Component {
                                 {this.props.icon}
                             </IconButton>
                         </TableRowColumn>
-                        <TableRowColumn key={this.props.need._id} style={styles.needDisplayColumn}>
+                        <TableRowColumn key={this.props.need._id} style={styles.needsDisplay.needDisplayColumn}>
                             <h3>{this.props.need.title}</h3>
                             {(this.state.open) &&
                             (<div>
@@ -89,8 +89,8 @@ class Need extends React.Component {
                             </div>)
                             }
                         </TableRowColumn>
-                        <TableRowColumn style={styles.needActionDisplayColumn}>
-                            <IconButton style={styles.needActionIcon} onTouchTap={() => {
+                        <TableRowColumn style={styles.needsDisplay.needActionDisplayColumn}>
+                            <IconButton style={styles.needsDisplay.needActionIcon} onTouchTap={() => {
                                 this.toggleExpand();}} >
                                 {this.expandIcon}
                             </IconButton>

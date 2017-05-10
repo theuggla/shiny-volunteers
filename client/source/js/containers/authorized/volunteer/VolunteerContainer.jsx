@@ -72,8 +72,8 @@ class VolunteerContainer extends AuthorizedComponent {
             <MuiThemeProvider muiTheme={muiTheme}>
             <div className="volunteer-app app-container">
                 <div className="app-bar">
-                    <Link id="main-link" to={`${this.props.match.path}/`}><img src="/assets/logo.png" style={styles.internalLogo}/></Link>
-                    <Link id="logout-link" to={`${this.props.match.path}/logout`} style={styles.logout}>LOG OUT</Link>
+                    <Link id="main-link" to={`${this.props.match.path}/`}><img src="/assets/logo.png" style={styles.topbar.internalLogo}/></Link>
+                    <Link id="logout-link" to={`${this.props.match.path}/logout`} style={styles.topbar.logout}>LOG OUT</Link>
                 </div>
                 <div className="main-space">
                 <Switch>

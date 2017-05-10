@@ -67,8 +67,6 @@ class ProfilePage extends React.Component {
 
             })
             .catch((error) => {
-                console.log(error);
-                console.log(error.response);
                 this.state.errors = error.response ? error.response.data.errors ? error.response.data.errors : error.response.data : {summary: 'are you offline?'};
             });
     }
@@ -135,7 +133,7 @@ class ProfilePage extends React.Component {
                     <Snackbar
                         message={"we seem to not be getting a response. " + this.state.errors.summary}
                         open={this.state.offlinePopup}
-                        bodyStyle={styles.snackbarBody}
+                        bodyStyle={styles.internalPopup.snackbarBody}
                     />
                 </div>
             )

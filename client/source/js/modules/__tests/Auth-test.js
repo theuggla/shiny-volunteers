@@ -5,7 +5,7 @@
 const Auth = require('./../Auth');
 let Cookies = require('js-cookie');
 
-describe('Auth module', () => {
+describe('Auth.js', () => {
     const TOKEN = 'test-token';
     const ROLES = ['volunteer'];
 
@@ -48,12 +48,12 @@ describe('Auth module', () => {
             Cookies.remove('currentUser');
         });
 
-        it('should return false', (done) => {
+        it('should return false when user is not authenticated', (done) => {
             expect(Auth.isUserAuthenticated()).to.equal(false);
             done();
         });
 
-        it('should return true', (done) => {
+        it('should return true when user is authenticated', (done) => {
             Auth.authenticateUser(TOKEN, ROLES);
             expect(Auth.isUserAuthenticated()).to.equal(true);
             done();
@@ -83,7 +83,7 @@ describe('Auth module', () => {
             Cookies.remove('currentUser');
         });
 
-        it('should return the token', (done) => {
+        it('should return the user\'s token', (done) => {
             Auth.authenticateUser(TOKEN, ROLES);
             expect(Auth.getToken()).to.equal(TOKEN);
             done();
