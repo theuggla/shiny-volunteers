@@ -46,9 +46,8 @@ module.exports.sendApplicationMail = function(user, need, applicant) {
         body: mail.toJSON()
     });
 
-
     return new Promise((resolve, reject) => {
-        if (user.info.email !== 'vol@vol.com') {
+        if (user.info.email !== 'org@org.com') {
             sg.API(request, (error, response) => {
                 if (error) {
                     reject(error);

@@ -24,7 +24,6 @@ function connect() {
         },
         emailFieldName: 'local.email'
     }, () => {});
-
 }
 
 module.exports = {
