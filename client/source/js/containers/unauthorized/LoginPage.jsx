@@ -20,8 +20,8 @@ import LoginForm from '../../components/unauthorized/LoginForm.jsx';
  */
 class LoginPage extends React.Component {
     /**
-     *
-     * @param props
+     * Passes on props, binds methods and sets initial state.
+     * @param props {Object} will be passed on.
      */
     constructor(props) {
         super(props);
@@ -47,8 +47,9 @@ class LoginPage extends React.Component {
     }
 
     /**
-     *
-     * @param event
+     * Controls state of the login-form components.
+     * Resets any errors on change.
+     * @param event {Object} The event that fires when a component is changed.
      */
     changeUser(event) {
         this.setState({
@@ -65,16 +66,19 @@ class LoginPage extends React.Component {
     }
 
     /**
-     *
-     * @param event
+     * Sets the form's state to a signup-form.
+     * @param event {Object} The event that fires when a user confirms signup.
      */
     changeToSignup(event) {
         this.setState({signup: true, popup: false});
     }
 
     /**
-     *
-     * @param event
+     * Sends the add login form-data to the server.
+     * Redirects the user if successful in logging in.
+     * Sets error state if something goes wrong.
+     * Or sets signup-popup to true of the user does not exist.
+     * @param event {Object} The event that fires when the form is submitted.
      */
     processLoginForm(event) {
         event.preventDefault();
@@ -106,8 +110,9 @@ class LoginPage extends React.Component {
     }
 
     /**
-     *
-     * @param event
+     * Sends the add login form-data to the server if the passwords match.
+     * Sets a popup-state to true asking the user to confirm the registration via email.
+     * @param event {Object} The event that fires when the form is submitted.
      */
     processSignupForm(event) {
         event.preventDefault();
@@ -144,7 +149,8 @@ class LoginPage extends React.Component {
     }
 
     /**
-     *
+     * Handles the facebook login when a response is received from facebook.
+     * Redirects the user to the proper authorized pages, and remembers the authenticated user.
      * @param response
      */
     facebookLogin(response) {
@@ -167,8 +173,7 @@ class LoginPage extends React.Component {
     }
 
     /**
-     *
-     * @returns {XML}
+     * @returns {Component} a LoginForm
      */
     render() {
         return (
