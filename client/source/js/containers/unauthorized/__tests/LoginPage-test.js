@@ -4,8 +4,9 @@
  */
 
 import React from 'react';
+import ReactDOM from 'react-dom';
+import TestUtils from 'react-addons-test-utils'
 import { shallow , mount} from 'enzyme';
-import sinon from 'sinon';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 const muiTheme = getMuiTheme();
 
@@ -21,21 +22,91 @@ let MockAdapter = require('axios-mock-adapter');
 let mock = new MockAdapter(axios);
 
 mock.onPost('/login/local').reply(function(config) {
+    let data = JSON.parse(config.data);
+    let email = data.email;
+    let password = data.password;
+    let volunteer = data.role === 'volunteer';
+
+    let correctPass = false;
+    let registred = true;
+    let correctRole = true;
+
+    let volunteerUser = {
+        token: 'testtoken',
+        user: {
+            roles: ['volunteer'],
+            complete: false
+        }
+    };
+
+    let errorResponse = {
+        errors: {
+            summary: 'wrong password'
+        }
+    };
+
     return new Promise((resolve, reject) => {
-        resolve([500, { errors: {summary: 'something went wrong'}}]);
+        switch (password) {
+            case 'correct':
+                correctPass = true;
+                break;
+            case 'incorrect':
+                correctPass = false;
+                break;
+        }
+
+        switch (email) {
+            case 'org@test.com':
+                debugger;
+                registred = true;
+                correctRole = !volunteer;
+                break;
+            case 'vol@test.com':
+                registred = true;
+                correctRole = volunteer;
+                break;
+            case 'correct@test.com':
+                registred = true;
+                break;
+            case 'incorrect@test.com':
+                registred = false;
+                break;
+        }
+
+        if (registred && correctPass && correctRole) {
+            resolve([200, volunteerUser]);
+        } else if (registred && !correctPass) {
+            resolve([400, errorResponse]);
+        } else if (!correctRole) {
+            errorResponse.errors.summary = 'wrong role';
+            resolve([400, errorResponse]);
+        } else if (!registred) {
+            errorResponse.errors.summary = 'user not in system';
+            resolve([404, errorResponse]);
+        }
     });
+});
+
+mock.onPost('/login/local/signup').reply(function(config) {
+    resolve([200, {summary: 'success'}]);
 });
 
 
 describe("LoginPage", () => {
-    const matchMock = {params: {path: '/login'}};
-    const historyMock = [];
+    const matchMockVolunteer = {params: {path: '/login', role: 'volunteer'}};
+    let historyMock = [];
+
     const wrapper = mount(
-        <LoginPage match={matchMock} history={historyMock} />, {
+        <LoginPage match={matchMockVolunteer} history={historyMock} />, {
         context: {
             muiTheme
         },
         childContextTypes: {muiTheme: React.PropTypes.object}
+    });
+
+    beforeEach("reset history", () => {
+        historyMock = [];
+        wrapper.setProps({history: historyMock});
     });
 
 
@@ -52,18 +123,18 @@ describe("LoginPage", () => {
         });
     });
 
-    describe("Login", () => {
+    describe("Login with correct credentials", () => {
         step("Fill in email and password", function(done) {
             const emailInput = wrapper.find("[name='email']");
             const passwordInput = wrapper.find("[name='password']");
-            emailInput.simulate("change", {target: {name: 'email', value: "test@test.com"}});
-            passwordInput.simulate("change", {target: {name: 'password', value: "test"}});
+            emailInput.simulate("change", {target: {name: 'email', value: "correct@test.com"}});
+            passwordInput.simulate("change", {target: {name: 'password', value: "correct"}});
             done();
         });
 
         step("it should set the new user state", function(done) {
-            expect(wrapper.state('user').password).to.equal("test");
-            expect(wrapper.state('user').email).to.equal("test@test.com");
+            expect(wrapper.state('user').email).to.equal("correct@test.com");
+            expect(wrapper.state('user').password).to.equal("correct");
             done();
         });
 
@@ -73,10 +144,207 @@ describe("LoginPage", () => {
             setTimeout(done, 1000);
         });
 
-        step("Error message", function(done) {
+        step("Do not display error message", function(done) {
+            const errorMessage = wrapper.find('.error-message');
+            expect(errorMessage.exists()).to.equal(false);
+            done();
+        });
+    });
+
+    describe("Login with wrong password", () => {
+        step("Fill in email and password", function(done) {
+            const emailInput = wrapper.find("[name='email']");
+            const passwordInput = wrapper.find("[name='password']");
+            emailInput.simulate("change", {target: {name: 'email', value: "correct@test.com"}});
+            passwordInput.simulate("change", {target: {name: 'password', value: "incorrect"}});
+            done();
+        });
+
+        step("Submit the form", function(done) {
+            const form = wrapper.find(".login-form");
+            form.simulate("submit");
+            setTimeout(done, 1000);
+        });
+
+        step("Display error message", function(done) {
             const errorMessage = wrapper.find('.error-message');
             expect(errorMessage.exists()).to.equal(true);
             done();
         });
+
+        step("Correct error message", function(done) {
+            const errorMessage = wrapper.find('.error-message');
+            expect(errorMessage.text()).to.equal('wrong password');
+            done();
+        });
+
+        step("Do not redirect", function(done) {
+            expect(historyMock.length).to.equal(0);
+            done();
+        });
     });
+
+    describe("Login as organization with email that belongs to volunteer", () => {
+        wrapper.setProps({match: {params: {role: 'organization'}}});
+
+        step("Fill in email and password", function(done) {
+            const emailInput = wrapper.find("[name='email']");
+            const passwordInput = wrapper.find("[name='password']");
+            emailInput.simulate("change", {target: {name: 'email', value: "vol@test.com"}});
+            passwordInput.simulate("change", {target: {name: 'password', value: "correct"}});
+            done();
+        });
+
+        step("Submit the form", function(done) {
+            const form = wrapper.find(".login-form");
+            form.simulate("submit");
+            setTimeout(done, 1000);
+        });
+
+        step("Display error message", function(done) {
+            const errorMessage = wrapper.find('.error-message');
+            expect(errorMessage.exists()).to.equal(true);
+            done();
+        });
+
+        step("Correct error message", function(done) {
+            const errorMessage = wrapper.find('.error-message');
+            expect(errorMessage.text()).to.equal('wrong role');
+            done();
+        });
+
+        step("Do not redirect", function(done) {
+            expect(historyMock.length).to.equal(0);
+            done();
+        });
+    });
+
+    describe("Login with email that is not in system, refuse signup", () => {
+        step("Fill in email and password", function(done) {
+            const emailInput = wrapper.find("[name='email']");
+            const passwordInput = wrapper.find("[name='password']");
+            emailInput.simulate("change", {target: {name: 'email', value: "incorrect@test.com"}});
+            passwordInput.simulate("change", {target: {name: 'password', value: "correct"}});
+            done();
+        });
+
+        step("Submit the form", function(done) {
+            const form = wrapper.find(".login-form");
+            form.simulate("submit");
+            setTimeout(done, 1000);
+        });
+
+        step("No error message", function(done) {
+            const errorMessage = wrapper.find('.error-message');
+            expect(errorMessage.exists()).to.equal(false);
+            done();
+        });
+
+        step("Find popup", function(done) {
+            const popup = wrapper.find('.popup');
+            expect(popup.exists()).to.equal(true);
+            done();
+        });
+    });
+
+    describe("Login with email that is not in system, accept signup, passwords does not match", () => {
+        step("Fill in email and password", function(done) {
+            const emailInput = wrapper.find("[name='email']");
+            const passwordInput = wrapper.find("[name='password']");
+            emailInput.simulate("change", {target: {name: 'email', value: "incorrect@test.com"}});
+            passwordInput.simulate("change", {target: {name: 'password', value: "correct"}});
+            done();
+        });
+
+        step("Submit the form", function(done) {
+            const form = wrapper.find(".login-form");
+            form.simulate("submit");
+            setTimeout(done, 1000);
+        });
+
+        step("No error message", function(done) {
+            const errorMessage = wrapper.find('.error-message');
+            expect(errorMessage.exists()).to.equal(false);
+            done();
+        });
+
+        step("Find popup", function(done) {
+            const popup = wrapper.find('.popup');
+            expect(popup.exists()).to.equal(true);
+            done();
+        });
+
+        step("Accept signup", function(done) {
+            wrapper.setState({signup: true});
+            done();
+        });
+
+        step("Fill in confirmed password", function(done) {
+            const confirmPasswordInput = wrapper.find("[name='passwordConfirm']");
+            confirmPasswordInput.simulate("change", {target: {name: 'password', value: "incorrect"}});
+            done();
+        });
+
+        step("Submit the form", function(done) {
+            const form = wrapper.find(".login-form");
+            form.simulate("submit");
+            setTimeout(done, 1000);
+        });
+
+        step("Display error message", function(done) {
+            const errorMessage = wrapper.find('.error-message');
+            expect(errorMessage.exists()).to.equal(true);
+            done();
+        });
+
+        step("Correct error message", function(done) {
+            const errorMessage = wrapper.find('.error-message');
+            expect(errorMessage.text()).to.equal('retype your passwords');
+            done();
+        });
+    });
+
+    describe("Login with email that is not in system, accept signup, passwords match", () => {
+
+        wrapper.setState({signup: false});
+
+        step("Fill in email and password", function(done) {
+            const emailInput = wrapper.find("[name='email']");
+            const passwordInput = wrapper.find("[name='password']");
+            emailInput.simulate("change", {target: {name: 'email', value: "incorrect@test.com"}});
+            passwordInput.simulate("change", {target: {name: 'password', value: "correct"}});
+            done();
+        });
+
+        step("Submit the form", function(done) {
+            const form = wrapper.find(".login-form");
+            form.simulate("submit");
+            setTimeout(done, 1000);
+        });
+
+        step("Find popup", function(done) {
+            const popup = wrapper.find('.popup');
+            expect(popup.exists()).to.equal(true);
+            done();
+        });
+
+        step("Accept signup", function(done) {
+            wrapper.setState({signup: true});
+            done();
+        });
+
+        step("Fill in confirmed password", function(done) {
+            const confirmPasswordInput = wrapper.find("[name='passwordConfirm']");
+            confirmPasswordInput.simulate("change", {target: {name: 'password', value: "correct"}});
+            done();
+        });
+
+        step("Submit the form", function(done) {
+            const form = wrapper.find(".login-form");
+            form.simulate("submit");
+            setTimeout(done, 1000);
+        });
+
+    });
+
 });

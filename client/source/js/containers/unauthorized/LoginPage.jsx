@@ -83,6 +83,8 @@ class LoginPage extends React.Component {
     processLoginForm(event) {
         event.preventDefault();
 
+        debugger;
+
         axios.post('/login/local', {
             email: this.state.user.email,
             password: this.state.user.password,
@@ -94,8 +96,7 @@ class LoginPage extends React.Component {
                 });
 
                 auth.authenticateUser(response.data.token, response.data.user.roles, response.data.user.complete);
-
-                this.props.history.push('/' + response.data.user.roles[0]);
+                if (this) this.props.history.push('/' + response.data.user.roles[0]);
             })
             .catch((error) => {
                 if (error.response && error.response.status === 404) {

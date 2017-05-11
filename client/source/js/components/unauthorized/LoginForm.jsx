@@ -114,6 +114,7 @@ const LoginForm = ({
             </div> }
 
             <Snackbar
+                className="popup"
                 open={popup}
                 message={popupMessage}
                 action={popupAction}
