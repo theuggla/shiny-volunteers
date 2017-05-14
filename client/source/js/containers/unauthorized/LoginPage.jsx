@@ -83,8 +83,6 @@ class LoginPage extends React.Component {
     processLoginForm(event) {
         event.preventDefault();
 
-        debugger;
-
         axios.post('/login/local', {
             email: this.state.user.email,
             password: this.state.user.password,

@@ -4,22 +4,19 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import TestUtils from 'react-addons-test-utils'
 import { shallow , mount} from 'enzyme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-const muiTheme = getMuiTheme();
-
-require('mocha-steps');
 
 import LoginPage from '../LoginPage.jsx';
 import LoginForm from '../../../components/unauthorized/LoginForm.jsx';
 
+require('mocha-steps');
 
 let axios = require('axios');
 let MockAdapter = require('axios-mock-adapter');
 
 let mock = new MockAdapter(axios);
+const muiTheme = getMuiTheme();
 
 mock.onPost('/login/local').reply(function(config) {
     let data = JSON.parse(config.data);
@@ -88,7 +85,9 @@ mock.onPost('/login/local').reply(function(config) {
 });
 
 mock.onPost('/login/local/signup').reply(function(config) {
-    resolve([200, {summary: 'success'}]);
+    return new Promise ((resolve, reject) => {
+        resolve([200, {summary: 'success'}]);
+    });
 });
 
 
@@ -107,6 +106,10 @@ describe("LoginPage", () => {
     beforeEach("reset history", () => {
         historyMock = [];
         wrapper.setProps({history: historyMock});
+    });
+
+    beforeEach("reset state", () => {
+        wrapper.setState({signup: false});
     });
 
 
@@ -280,12 +283,14 @@ describe("LoginPage", () => {
         });
 
         step("Fill in confirmed password", function(done) {
+            wrapper.setState({signup: true});
             const confirmPasswordInput = wrapper.find("[name='passwordConfirm']");
-            confirmPasswordInput.simulate("change", {target: {name: 'password', value: "incorrect"}});
+            confirmPasswordInput.simulate("change", {target: {name: 'passwordConfirm', value: "incorrect"}});
             done();
         });
 
         step("Submit the form", function(done) {
+            wrapper.setState({signup: true});
             const form = wrapper.find(".login-form");
             form.simulate("submit");
             setTimeout(done, 1000);
@@ -305,8 +310,6 @@ describe("LoginPage", () => {
     });
 
     describe("Login with email that is not in system, accept signup, passwords match", () => {
-
-        wrapper.setState({signup: false});
 
         step("Fill in email and password", function(done) {
             const emailInput = wrapper.find("[name='email']");
@@ -334,17 +337,24 @@ describe("LoginPage", () => {
         });
 
         step("Fill in confirmed password", function(done) {
+            wrapper.setState({signup: true});
             const confirmPasswordInput = wrapper.find("[name='passwordConfirm']");
-            confirmPasswordInput.simulate("change", {target: {name: 'password', value: "correct"}});
+            confirmPasswordInput.simulate("change", {target: {name: 'passwordConfirm', value: "correct"}});
             done();
         });
 
         step("Submit the form", function(done) {
+            wrapper.setState({signup: true});
             const form = wrapper.find(".login-form");
             form.simulate("submit");
             setTimeout(done, 1000);
         });
 
+        step("Confirm success", function(done) {
+            wrapper.setState({signup: true});
+            expect(wrapper.state('popupMessage')).to.equal('success');
+            done();
+        });
     });
 
 });

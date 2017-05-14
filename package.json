@@ -69,6 +69,7 @@
     "babel-preset-react": "^6.23.0",
     "babel-preset-stage-0": "^6.24.1",
     "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
     "cheerio": "^0.22.0",
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.28.0",

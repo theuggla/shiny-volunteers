@@ -37,9 +37,8 @@ router.route('/needs')
 
 router.route('/needs/:id')
     .delete((req, res, next) => {
-        let user = req.user;
         let id = req.params.id;
-        organization.removeNeed(user, id)
+        organization.removeNeed(id)
             .then(() => {
                 res.end();
             })

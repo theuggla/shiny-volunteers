@@ -11,8 +11,8 @@ let mongoose = require('mongoose');
 let needSchema = new mongoose.Schema({
     _creator        : {type: String, ref: 'Organization'},
     applicants      : [{type: String, ref: 'Volunteer'}],
-    title           : String,
-    description     : String,
+    title           : {type: String, required: true},
+    description     : {type: String, required: true},
     expiryDate      : {type: Date, default: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1)},
     skillsNeeded    : [String],
     skillsDesired   : [String],

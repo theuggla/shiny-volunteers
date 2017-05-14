@@ -2,6 +2,8 @@
  * Tests for the models.
  */
 
+let expect = require('chai').expect;
+
 let Need = require('../models/Need');
 let Organization = require('../models/Organization');
 let TempUser = require('../models/TempUser');

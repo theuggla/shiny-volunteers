@@ -30,7 +30,10 @@ function connect() {
     });
 
     // Connect to the database
-    mongoose.connect(process.env.MONGODB_URI);
+    mongoose.connect(process.env.MONGODB_URI)
+        .catch((error) => {
+            console.error(error);
+        });
 }
 
 // Exports.

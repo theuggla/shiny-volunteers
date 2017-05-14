@@ -2,30 +2,15 @@
  * Organization-handling things.
  */
 
-// Requires.
-let Need = require('../models/Need');
+// Requires-----------------------------------------------------------------------------------------------------------
+let needs = require('./needhandlingresource');
 
 // Functions----------------------------------------------------------------------------------------------------------
 function getNeeds(user) {
     return new Promise((resolve, reject) => {
-        Need
-            .find({_creator: user._id})
-            .then((result) => {
-                return result.map((need) => {
-                    return {
-                        _id             : need._id,
-                        title           : need.title,
-                        description     : need.description,
-                        skillsNeeded    : need.skillsNeeded,
-                        skillsDesired   : need.skillsDesired,
-                        location        : need.location,
-                        timePerOccasion : need.timePerOccasion,
-                        recurring       : need.recurring,
-                        oneOff          : need.oneOff
-                    };
-                });
+        let query = {_creator: user._id};
 
-            })
+        needs.getNeeds(query)
             .then((result) => {
                 resolve(result);
             })
@@ -37,19 +22,14 @@ function getNeeds(user) {
 
 function addNeed(user, need) {
     return new Promise((resolve, reject) => {
-        let newNeed = new Need({
+        let newNeed = {
             _creator        : user._id,
             title           : need.title,
             description     : need.description,
             skillsNeeded    : need.skillsNeeded
-        });
+        };
 
-        newNeed.save()
-            .then((savedNeed) => {
-                user.needs.push(savedNeed._id);
-
-                return user.save();
-            })
+        needs.addNeed(newNeed)
             .then(() => {
                 resolve();
             })
@@ -59,10 +39,9 @@ function addNeed(user, need) {
     });
 }
 
-function removeNeed(user, id) {
+function removeNeed(id) {
     return new Promise((resolve, reject) => {
-        Need
-            .remove({_id: id})
+        needs.removeNeed(id)
             .then((result) => {
                 resolve(result);
             })
@@ -71,8 +50,6 @@ function removeNeed(user, id) {
             });
     });
 }
-
-
 
 // Exports-------------------------------------------------------------------------------------------------------------
 module.exports = {
