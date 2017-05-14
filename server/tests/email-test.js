@@ -11,7 +11,7 @@ describe('Email module', () => {
 
     describe('sendMailToUser', () => {
 
-        it('Should work', (done) => {
+        it('should work', (done) => {
             expect(2).to.equal(2);
             done();
         });

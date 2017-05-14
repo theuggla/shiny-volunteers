@@ -9,7 +9,7 @@ let mongoose = require('mongoose');
  * Set up additional parameters for the Volunteer-User.
  */
 let needSchema = new mongoose.Schema({
-    _creator        : {type: String, ref: 'Organization'},
+    _creator        : {type: String, ref: 'Organization', required: true},
     applicants      : [{type: String, ref: 'Volunteer'}],
     title           : {type: String, required: true},
     description     : {type: String, required: true},
@@ -17,7 +17,7 @@ let needSchema = new mongoose.Schema({
     skillsNeeded    : [String],
     skillsDesired   : [String],
     location        : String,
-    categories      : String,
+    categories      : [String],
     timePerOccasion : Number,
     recurring       : Boolean,
     oneOff          : Boolean

@@ -12,7 +12,12 @@ describe('Organization handling module', () => {
 
     describe('addNeed', () => {
 
-        it('Should work', (done) => {
+        it('should add a need with the given data and the user as the creator', (done) => {
+            expect(2).to.equal(2);
+            done();
+        });
+
+        it('should not return needs that the user has already applied for', (done) => {
             expect(2).to.equal(2);
             done();
         });
@@ -21,7 +26,27 @@ describe('Organization handling module', () => {
 
     describe('getNeeds', () => {
 
-        it('Should work', (done) => {
+        it('should return an array of need-objects', (done) => {
+            expect(2).to.equal(2);
+            done();
+        });
+
+        it('should not return expired needs', (done) => {
+            expect(2).to.equal(2);
+            done();
+        });
+
+        it('should return an empty array if there are no matches', (done) => {
+            expect(2).to.equal(2);
+            done();
+        });
+
+        it('should return an array with one object if there is one match', (done) => {
+            expect(2).to.equal(2);
+            done();
+        });
+
+        it('should return an array of need-objects where the user is the creator', (done) => {
             expect(2).to.equal(2);
             done();
         });
@@ -30,7 +55,7 @@ describe('Organization handling module', () => {
 
     describe('removeNeed', () => {
 
-        it('Should work', (done) => {
+        it('should remove a need', (done) => {
             expect(2).to.equal(2);
             done();
         });

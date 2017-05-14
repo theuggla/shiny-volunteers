@@ -2,11 +2,14 @@
  * Defines middlewares.
  */
 
+// Requires ----------------------------------------------------------------------------------------------------------
 let Volunteer = require('../models/Volunteer');
 let Organization = require('../models/Organization');
 let db = require('../lib/dbresource');
 let jwt = require('jsonwebtoken');
 
+
+// Middlewares -------------------------------------------------------------------------------------------------------
 /**
  *  The Auth Checker middleware function.
  */

@@ -12,7 +12,7 @@ function connect() {
     let db = mongoose.connection;
 
     // Use native promises
-    mongoose.Promise = Promise;
+    mongoose.Promise = global.Promise;
 
     db.on('error', () => {
         isConnected = false;

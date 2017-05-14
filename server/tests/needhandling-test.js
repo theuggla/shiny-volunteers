@@ -8,6 +8,9 @@ chai.use(chaiAsPromised);
 let expect = chai.expect;
 let sinon = require('sinon');
 
+let db = require('../lib/dbresource');
+if (!db.isConnected) db.connect();
+
 let addNeed = require('../lib/needhandlingresource').addNeed;
 let getNeeds = require('../lib/needhandlingresource').getNeeds;
 let removeNeed = require('../lib/needhandlingresource').removeNeed;
@@ -20,7 +23,8 @@ describe('Need handling module', () => {
     let needOne = {
         _creator: 'testcreator',
         title: 'test',
-        description: 'test'
+        description: 'test',
+        expiryDate: new Date(Date.now())
     };
 
     let needTwo = {
@@ -28,6 +32,10 @@ describe('Need handling module', () => {
         title: 'test',
         description: 'test also'
     };
+
+    before('add needs to database', () => {
+        Promise.all([addNeed(needOne), addNeed(needTwo)]);
+    });
 
     after('clean up database', () => {
         Need.remove({title: 'test'});
@@ -51,14 +59,16 @@ describe('Need handling module', () => {
 
     describe('getNeeds', () => {
 
-        before('add needs to database', () => {
-            Promise.all([addNeed(needOne), addNeed(needTwo)]);
-        });
-
         it('should return needs by simple query', () => {
             let query = {title: 'test'};
 
-            return expect(getNeeds(query)).to.eventually.have.length(2);
+            getNeeds(query)
+                .then((needs) => {
+                    return Promise.resolve(needs.length);
+                })
+                .then((length) => {
+                    return expect(length).to.eventually.equal(1);
+                });
         });
 
         it('should return needs by more complex query', () => {
@@ -67,38 +77,55 @@ describe('Need handling module', () => {
                 description: {$not: {$in: ['test']}}
             };
 
-            return expect(getNeeds(query)).to.eventually.have.length(1);
+            getNeeds(query)
+                .then((needs) => {
+                    return Promise.resolve(needs.length);
+                })
+                .then((length) => {
+                    return expect(length).to.eventually.equal(1);
+                });
         });
 
-        it('Should return empty array if no needs matches the query', () => {
+        it('should return empty array if no needs matches the query', () => {
             let query = {
                 title: 'not test'
             };
 
-            return expect(getNeeds(query)).to.eventually.have.length(0);
-        });
-
-        it('Should reject if no valid query is passed', () => {
-            let query = 'bananas';
-            ;
-
-            return expect(getNeeds(query)).to.be.rejected;
+            getNeeds(query)
+                .then((needs) => {
+                    return Promise.resolve(needs.length);
+                })
+                .then((length) => {
+                    return expect(length).to.eventually.equal(0);
+                });
         });
 
     });
 
     describe('removeNeed', () => {
 
-        before('add needs to database', () => {
-            Promise.all([addNeed(needOne), addNeed(needTwo)]);
-        });
-
-        it('Should remove a need from the database', () => {
-            expect(2).to.equal(2);
+        it('should remove a need with the matching id from the database', () => {
+            Need.find({title: 'title'})
+                .then((needs) => {
+                    return removeNeed(needs[0]._id);
+                })
+                .then(() => {
+                    return expect(Need.find({title: 'title'})).to.eventually.have.length(1);
+                });
         });
 
         it('Should do nothing if no need with the matching id exists', () => {
-            expect(2).to.equal(2);
+            let id;
+
+            Need.find({title: 'title'})
+                .then((needs) => {
+                    id = needs[0]._id;
+
+                    return removeNeed(id);
+                })
+                .then(() => {
+                    return expect(removeNeed(id)).to.be.fulfilled;
+                });
         });
 
     });
@@ -106,30 +133,66 @@ describe('Need handling module', () => {
     describe('updateApplicants', () => {
 
         it('Should add the applicant-id to the need\'s list of applicants', () => {
-            expect(2).to.equal(2);
+            Need.find({title: 'title'})
+                .then((needs) => {
+                    id = needs[0]._id;
+
+                    return updateApplicants(id, 'testid');
+                })
+                .then(() => {
+                    return expect(Need.find({title: 'title'}).then(o => o.applicants.length)).to.eventually.equal(1);
+                });
         });
 
         it('Should do nothing if the need-id does not exist', () => {
-            expect(2).to.equal(2);
+            let id;
+
+            Need.find({title: 'title'})
+                .then((needs) => {
+                    id = needs[0]._id;
+
+                    return removeNeed(id);
+                })
+                .then(() => {
+                    return expect(updateApplicants(id, 'testid')).to.be.fulfilled;
+                });
         });
 
     });
 
     describe('cleanOutNeeds', () => {
 
-        it('Should remove all needs with passed expiry dates', (done) => {
-            expect(2).to.equal(2);
-            done();
+        it('should remove all needs with passed expiry dates', () => {
+            cleanOutNeeds()
+                .then(() => {
+                    return getNeeds({title: 'test'});
+                })
+                .then((needs) => {
+                    return Promise.resolve(needs.length);
+                })
+                .then((length) => {
+                    expect(length).to.eventually.equal(0);
+                });
         });
 
-        it('Should do nothing if there are no needs with passed expiry dates', (done) => {
-            expect(2).to.equal(2);
-            done();
+        it('should do nothing if there are no needs with passed expiry dates', () => {
+            let needThree = {
+                _creator: 'testcreator',
+                title: 'test',
+                description: 'test'
+            };
+
+            addNeed(needThree)
+                .then(() => {
+                    return expect(cleanOutNeeds().then(() => getNeeds({title: 'test'})).then(needs => needs.length)).to.eventually.equal(1);
+                });
         });
 
-        it('Should do nothing if there are no needs', (done) => {
-            expect(2).to.equal(2);
-            done();
+        it('should do nothing if there are no needs', () => {
+            Need.remove({title: 'test'})
+                .then(() => {
+                    return expect(cleanOutNeeds()).to.be.fulfilled;
+                });
         });
 
     });

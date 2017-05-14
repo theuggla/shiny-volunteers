@@ -122,16 +122,8 @@ function updateApplicants(id, applicantid) {
  */
 function cleanOutNeeds() {
     return new Promise((resolve, reject) => {
-        let date = new Date();
-
         Need
-            .find({expiryDate: {$lt: date}})
-            .then((needs) => {
-                needs.forEach((need) => {
-
-                });
-            })
-            .remove({expiryDate: {$lt: date}})
+            .remove({expiryDate: {$lt: Date.now()}})
             .then(() => {
                 resolve();
             })

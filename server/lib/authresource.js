@@ -1,6 +1,6 @@
 'use strict';
 
-// Requires.
+// Requires -----------------------------------------------------------------------------------------------------------
 let passport = require('passport');
 let LocalStrategy = require('passport-local').Strategy;
 let Volunteer = require('../models/Volunteer');

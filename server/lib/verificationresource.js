@@ -1,7 +1,15 @@
+/**
+ * Module for controlling the
+ * email verification configures emails
+ * against the verification-module.
+ */
+
+// Requires -----------------------------------------------------------------------------------------------------------
 let TempUser = require('../models/TempUser');
 let mongoose = require('mongoose');
 let verify = require('email-verification')(mongoose);
 
+// Functions ---------------------------------------------------------------------------------------------------------
 function connect() {
     verify.configure({
         verificationURL: process.env.SITE_URL + '/login/email-verification/${URL}',
@@ -26,6 +34,7 @@ function connect() {
     }, () => {});
 }
 
+// Exports -----------------------------------------------------------------------------------------------------------
 module.exports = {
     connect: connect,
     verify: verify

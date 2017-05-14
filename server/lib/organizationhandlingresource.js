@@ -6,6 +6,14 @@
 let needs = require('./needhandlingresource');
 
 // Functions----------------------------------------------------------------------------------------------------------
+
+/**
+ * Returns the needs a user have created.
+ *
+ * @param user {Object} the user to get the needs for.
+ * @returns {Promise} a Promise that resolves with the needs
+ * or rejects with an error.
+ */
 function getNeeds(user) {
     return new Promise((resolve, reject) => {
         let query = {_creator: user._id};
@@ -20,6 +28,14 @@ function getNeeds(user) {
     });
 }
 
+/**
+ * Adds a need to the database with the user as the creator.
+ *
+ * @param user {Object} the user adding the need.
+ * @param need {Object} the need to add.
+ * @returns {Promise} a Promise that resolves when the need have been added
+ * or rejects with an error.
+ */
 function addNeed(user, need) {
     return new Promise((resolve, reject) => {
         let newNeed = {
@@ -39,6 +55,13 @@ function addNeed(user, need) {
     });
 }
 
+/**
+ * Removes a need from the database.
+ *
+ * @param id {String} the id of the need to remove.
+ * @returns {Promise} a Promise that resolves when the need has been removed
+ * or rejects with an error.
+ */
 function removeNeed(id) {
     return new Promise((resolve, reject) => {
         needs.removeNeed(id)

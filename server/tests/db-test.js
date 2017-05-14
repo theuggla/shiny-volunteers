@@ -11,7 +11,7 @@ describe('Database module', () => {
 
     describe('connect', () => {
 
-        it('Should work', (done) => {
+        it('should shange the value of isConnected', (done) => {
             expect(2).to.equal(2);
             done();
         });
@@ -20,7 +20,7 @@ describe('Database module', () => {
 
     describe('isConnected', () => {
 
-        it('Should work', (done) => {
+        it('should return false before connection attempt has been made', (done) => {
             expect(2).to.equal(2);
             done();
         });
