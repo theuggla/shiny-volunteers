@@ -14,6 +14,9 @@ let confirmTempUser = require('../lib/authresource').confirmTempUser;
 
 // Routes---------------------------------------------------------------------------------------------------------------
 
+/**
+ * Log in locally.
+ */
 router.post('/local', validateLoginForm, isDatabaseConnected, (req, res, next) => {
     if (req.body) {
         return passport.authenticate('local', (err, token, userData) => {
@@ -38,7 +41,7 @@ router.post('/local', validateLoginForm, isDatabaseConnected, (req, res, next) =
                         });
                     }
                     default: {
-                        console.log(err);
+                        console.error(err);
                         return res.status(400).json({
                             success: false,
                             summary: 'Could not process the form.'
@@ -63,6 +66,9 @@ router.post('/local', validateLoginForm, isDatabaseConnected, (req, res, next) =
     });
 });
 
+/**
+ * Sign up locally.
+ */
 router.post('/local/signup', validateLoginForm, isDatabaseConnected, (req, res, next) => {
     let user = req.body;
 
@@ -70,6 +76,9 @@ router.post('/local/signup', validateLoginForm, isDatabaseConnected, (req, res, 
         info: {
             email: user.email.trim(),
             role: user.role
+        },
+        profile: {
+            email: user.email.trim()
         },
         local: {
             email: user.email.trim(),
@@ -99,9 +108,12 @@ router.post('/local/signup', validateLoginForm, isDatabaseConnected, (req, res, 
         });
 });
 
+/**
+ * Log in through facebook.
+ */
 router.route('/facebook')
     .post((req, res) => {
-    facebookAuth(req.body)
+        facebookAuth(req.body)
         .then((response) => {
             res.json({
                 success: true,
@@ -130,6 +142,9 @@ router.route('/facebook')
         });
     });
 
+/**
+ * Confirm email.
+ */
 router.route('/email-verification/:URL')
     .get((req, res, next) => {
         let url = req.params.URL;

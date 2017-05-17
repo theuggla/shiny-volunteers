@@ -19,7 +19,7 @@ let sg = require('sendgrid')(process.env.SENDGRID_API_KEY);
  * of the sent email or rejects with an error.
  */
 module.exports.sendMailToUser = function(user, need) {
-    let toEmail = new helper.Email(user.info.email);
+    let toEmail = new helper.Email(user.profile.email);
     let subject = 'Thanks for your application!';
     let content = new helper.Content('text/plain', 'We have  forwarded your application regarding the ' + need.title + ' to the concerned organization together with your profile, and they will be in touch as soon as possible.');
     let mail = new helper.Mail(fromEmail, subject, toEmail, content);
