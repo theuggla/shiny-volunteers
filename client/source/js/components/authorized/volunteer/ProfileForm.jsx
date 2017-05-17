@@ -10,8 +10,10 @@ import React from 'react';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import Card from 'material-ui/Card';
 
 import DropDownSelector from '../DropDownSelector.jsx';
+import ChipSelector from '../ChipSelector.jsx';
 
 import styles from '../../../ReactStyles';
 
@@ -40,8 +42,8 @@ const ProfileForm = ({
         <div className="field-line">
             <DropDownSelector
                 name="location"
-                onChange={onChange}
                 multiple={true}
+                onChange={onChange}
                 selectableValues={selectables.location}
                 selectedValues={profile.location}
                 errorText={errors.location}
@@ -50,7 +52,7 @@ const ProfileForm = ({
         </div>
 
         <div className="field-line">
-            <DropDownSelector
+            <ChipSelector
                 name="numberOfTimes"
                 onChange={onChange}
                 multiple={false}
@@ -62,6 +64,7 @@ const ProfileForm = ({
         </div>
 
         <div className="field-line">
+            <Card style={styles.formCard}>
             <DropDownSelector
                 name="timePerOccasion"
                 onChange={onChange}
@@ -71,10 +74,11 @@ const ProfileForm = ({
                 errorText={errors.timePerOccasion}
                 hintText="how much time in one go?"
             />
+            </Card>
         </div>
 
         <div className="field-line">
-            <DropDownSelector
+            <ChipSelector
                 name="interests"
                 onChange={onChange}
                 multiple={true}
@@ -86,7 +90,7 @@ const ProfileForm = ({
         </div>
 
         <div className="field-line">
-            <DropDownSelector
+            <ChipSelector
                 name="skills"
                 onChange={onChange}
                 multiple={true}
@@ -98,30 +102,39 @@ const ProfileForm = ({
         </div>
 
         <div className="field-line">
+            <Card style={styles.formCard}>
             <TextField
                 multiLine={true}
                 rows={3}
                 rowsMax={10}
                 floatingLabelText="describe yourself"
-                floatingLabelFixed={true}
-                floatingLabelStyle={styles.alignLeft}
-                style={styles.alignLeft}
+                floatingLabelStyle={styles.formTextField.floatingLabelStyle}
+                floatingLabelFocusStyle={styles.formTextField.floatingLabelFocusStyle}
+                style={styles.formTextField.style}
+                inputStyle={styles.formTextField.inputStyle}
+                textareaStyle={styles.formTextField.textareaStyle}
                 name="description"
                 errorText={errors.description}
                 onChange={onChange}
                 value={profile.description}
             />
+            </Card>
         </div>
 
         <div className="field-line">
+            <Card style={styles.formCard}>
             <TextField
                 floatingLabelText="email"
-                floatingLabelFixed={true}
                 name="email"
+                floatingLabelStyle={styles.formTextField.floatingLabelStyle}
+                floatingLabelFocusStyle={styles.formTextField.floatingLabelFocusStyle}
+                style={styles.formTextField.style}
+                inputStyle={styles.formTextField.inputStyle}
                 errorText={errors.email}
                 onChange={onChange}
                 value={profile.email}
             />
+            </Card>
         </div>
 
         <div className="button-line">

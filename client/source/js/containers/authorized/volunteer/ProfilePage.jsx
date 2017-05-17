@@ -35,7 +35,6 @@ const selectables = {
     numberOfTimes: [
         {value: 0, name: 'Once'},
         {value: 1, name: 'Recurring'},
-        {value: 2, name: 'Both'},
     ],
     timePerOccasion: [
         {value: 0, name: 'up to 2h'},
@@ -50,6 +49,11 @@ const selectables = {
         {value: 3, name: 'IT'},
         {value: 4, name: 'Economy'},
         {value: 5, name: 'Funding'},
+        {value: 6, name: 'Good with children'},
+        {value: 7, name: 'Languages'},
+        {value: 8, name: 'Medical knowledge'},
+        {value: 9, name: 'None'},
+
     ],
 };
 
@@ -164,7 +168,7 @@ class ProfilePage extends React.Component {
             if ( this.state.profile[key].length === 0
                 || this.state.profile[key] === null) {
 
-                errors[key] = 'need to put something here';
+                errors[key] = 'you will need to choose something here!';
                 valid = false;
 
             } else if (key === 'email' && !(/.+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/).test(this.state.profile.email)) {

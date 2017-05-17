@@ -74,6 +74,12 @@ module.exports = {
         textAlign: 'left',
         maxWidth: '90%'
     },
+    chipSelector: {
+        chip: {
+            margin: '1vh',
+            display: 'inline-block'
+        }
+    },
     loginForm: {
         floatingLabelStyle: {
             color: '#F5F5F5',
@@ -89,6 +95,37 @@ module.exports = {
         },
         snackbarContentStyle: {
             padding: '1em'
+        }
+    },
+    formCard: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        textAlign: 'center',
+        maxWidth: '90%',
+        margin: '0 auto',
+        color: '#b3b3b3'
+    },
+    formTextField: {
+        style: {
+            maxWidth: '90%',
+            textAlign: 'left'
+        },
+        floatingLabelStyle: {
+            textAlign: 'center',
+            width: '100%'
+        },
+        floatingLabelTextArea: {
+            textAlign: 'center'
+        },
+        floatingLabelFocusStyle: {
+            textAlign: 'left'
+        },
+        inputStyle: {
+            textAlign: 'center'
+        },
+        textareaStyle: {
+            textAlign: 'center'
         }
     },
     internalPopup: {

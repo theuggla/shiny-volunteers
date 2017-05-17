@@ -12,6 +12,7 @@ import TextField from 'material-ui/TextField';
 import styles from '../../../ReactStyles';
 
 import DropDownSelector from '../DropDownSelector.jsx';
+import ChipSelector from '../ChipSelector.jsx';
 
 // Variables ----------------------------------------------------------------------------------------------------------
 let requiredSkillsHint = "select the skills you require";
@@ -37,38 +38,126 @@ const NeedsForm = ({
         {errors.summary && <p className="error-message">{errors.summary}</p>}
 
         <div className="field-line">
-            <TextField
-                floatingLabelText="title"
-                name="title"
-                errorText={errors.title}
+            <Card style={styles.formCard}>
+                <TextField
+                    floatingLabelText="title"
+                    name="title"
+                    hintText="what do you need help with?"
+                    floatingLabelStyle={styles.formTextField.floatingLabelStyle}
+                    floatingLabelFocusStyle={styles.formTextField.floatingLabelFocusStyle}
+                    style={styles.formTextField.style}
+                    inputStyle={styles.formTextField.inputStyle}
+                    errorText={errors.title}
+                    onChange={onChange}
+                    value={need.title}
+                />
+            </Card>
+        </div>
+
+        <div className="field-line">
+            <DropDownSelector
+                name="location"
                 onChange={onChange}
-                value={need.title}
-                floatingLabelStyle={styles.centerText}
-                inputStyle={styles.centerText}
+                multiple={true}
+                selectableValues={selectables.location}
+                selectedValues={profile.location}
+                errorText={errors.location}
+                hintText="where do you need help?"
             />
         </div>
 
         <div className="field-line">
-            <TextField
-                floatingLabelText="description"
-                name="description"
-                multiLine={true}
-                errorText={errors.description}
+            <ChipSelector
+                name="numberOfTimes"
                 onChange={onChange}
-                value={need.description}
-                style={styles.addNeedForm.descriptionArea}
+                multiple={false}
+                selectableValues={selectables.numberOfTimes}
+                selectedValues={profile.numberOfTimes}
+                errorText={errors.numberOfTimes}
+                hintText="how often?"
             />
         </div>
 
         <div className="field-line">
             <DropDownSelector
+                name="timePerOccasion"
                 onChange={onChange}
+                multiple={false}
+                selectableValues={selectables.timePerOccasion}
+                selectedValues={profile.timePerOccasion}
+                errorText={errors.timePerOccasion}
+                hintText="how much time in one go?"
+            />
+        </div>
+
+        <div className="field-line">
+            <Card>
+            <TextField
+                floatingLabelText="when do you need the help?"
+                hintText="Tuesday afternoons, March 21, every morning, weekends..."
+                name="when"
+                floatingLabelStyle={styles.formTextField.floatingLabelStyle}
+                floatingLabelFocusStyle={styles.formTextField.floatingLabelFocusStyle}
+                style={styles.formTextField.style}
+                inputStyle={styles.formTextField.inputStyle}
+                errorText={errors.when}
+                onChange={onChange}
+                value={need.when}
+            />
+            </Card>
+        </div>
+
+        <div className="field-line">
+            <ChipSelector
+                onChange={onChange}
+                hintText="what skills are essential?"
                 name="skillsNeeded"
                 multi={true}
                 selectableValues={selectables.skillsNeeded}
                 selectedValues={need.skillsNeeded}
-                hintText={requiredSkillsHint}
             />
+        </div>
+
+        <div className="field-line">
+            <ChipSelector
+                onChange={onChange}
+                hintText="what skills are more optional?"
+                name="skillsDesired"
+                multi={true}
+                selectableValues={selectables.skillsDesired}
+                selectedValues={need.skillsNeeded}
+            />
+        </div>
+
+        <div className="field-line">
+            <ChipSelector
+                onChange={onChange}
+                name="categories"
+                multi={true}
+                selectableValues={selectables.categories}
+                selectedValues={need.categories}
+                hintText="what categories does this need fall into?"
+            />
+        </div>
+
+        <div className="field-line">
+            <Card style={styles.formCard}>
+                <TextField
+                    multiLine={true}
+                    rows={3}
+                    rowsMax={10}
+                    floatingLabelText="describe your need"
+                    floatingLabelStyle={styles.formTextField.floatingLabelStyle}
+                    floatingLabelFocusStyle={styles.formTextField.floatingLabelFocusStyle}
+                    style={styles.formTextField.style}
+                    inputStyle={styles.formTextField.inputStyle}
+                    textareaStyle={styles.formTextField.textareaStyle}
+                    name="description"
+                    errorText={errors.description}
+                    onChange={onChange}
+                    value={profile.description}
+                />
+            </Card>
         </div>
 
         <div className="button-line">

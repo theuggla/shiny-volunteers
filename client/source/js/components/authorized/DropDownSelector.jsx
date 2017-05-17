@@ -84,15 +84,14 @@ class DropDownSelector extends Component {
         return (<SelectField
                 multiple={this.props.multiple}
                 floatingLabelText={this.props.hintText}
-                floatingLabelFixed={true}
                 floatingLabelStyle={styles.centerText}
                 value={this.state.selectedValues}
                 errorText={this.props.errorText}
                 onChange={this.handleChange}
                 autoWidth={true}
                 dropDownMenuProps={{
-                    anchorOrigin: {vertical: 'bottom', horizontal: 'left'},
-                    targetOrigin: {vertical: 'top', horizontal: 'left'}
+                    anchorOrigin: {vertical: 'bottom', horizontal: 'middle'},
+                    targetOrigin: {vertical: 'top', horizontal: 'middle'}
                 }}
                 style={styles.dropDownSelector}
             >
