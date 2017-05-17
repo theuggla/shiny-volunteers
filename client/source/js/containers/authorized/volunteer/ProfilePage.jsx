@@ -15,6 +15,44 @@ import styles from '../../../ReactStyles';
 
 import ProfileForm from '../../../components/authorized/volunteer/ProfileForm.jsx';
 
+// Configs ------------------------------------------------------------------------------------------------------------
+
+const selectables = {
+    location: [
+        {value: 0, name: 'Gothenburg'},
+        {value: 1, name: 'London'},
+        {value: 2, name: 'Remotely'},
+    ],
+    interests: [
+        {value: 0, name: 'Animals'},
+        {value: 1, name: 'Language'},
+        {value: 2, name: 'Kids'},
+        {value: 3, name: 'Immigration'},
+        {value: 4, name: 'Food'},
+        {value: 5, name: 'Women'},
+        {value: 6, name: 'Homelessness'},
+    ],
+    recurring: [
+        {value: 0, name: 'Once'},
+        {value: 1, name: 'Recurringly'},
+        {value: 2, name: 'Both'},
+    ],
+    timePerOccasion: [
+        {value: 0, name: 'up to 2h'},
+        {value: 1, name: 'up to 5h'},
+        {value: 2, name: 'up to 8h'},
+        {value: 3, name: 'up to 10h'},
+    ],
+    skills: [
+        {value: 0, name: 'Wordpress'},
+        {value: 1, name: 'Cooking'},
+        {value: 2, name: 'Drivers License'},
+        {value: 3, name: 'IT'},
+        {value: 4, name: 'Economy'},
+        {value: 5, name: 'Funding'},
+    ],
+};
+
 // Class --------------------------------------------------------------------------------------------------------------
 
 /**
@@ -34,7 +72,8 @@ class ProfilePage extends React.Component {
         this.state = {
             profile: null,
             offlinePopup: false,
-            errors: {}
+            errors: {},
+            isComplete: false
         };
 
         this.processForm = this.processForm.bind(this);
@@ -48,8 +87,11 @@ class ProfilePage extends React.Component {
      * to true.
      */
     componentWillMount() {
+        this.state.profile = {};
+
+        /*
         let responseTimeout = setTimeout(() => {
-            this.setState({offlinePopup: true});
+            this.state.offlinePopup = true;
         }, 5000);
 
         axios({
@@ -68,7 +110,7 @@ class ProfilePage extends React.Component {
             })
             .catch((error) => {
                 this.state.errors = error.response ? error.response.data.errors ? error.response.data.errors : error.response.data : {summary: 'are you offline?'};
-            });
+            });*/
     }
 
     /**
@@ -80,9 +122,59 @@ class ProfilePage extends React.Component {
         const profile = this.state.profile;
         profile[field] = event.target.value;
 
+        let complete = this.isFormComplete() && this.isFormValid();
+
         this.setState({
-            profile: profile
+            profile: profile,
+            isComplete: complete
         });
+    }
+
+    /**
+     * Checks if the form is complete.
+     * @returns {boolean} true if the form is complete.
+     */
+    isFormComplete() {
+        let complete = true;
+        let keys = Object.keys(this.state.profile);
+
+        if (keys.length < 7) {
+            complete = false;
+        } else {
+            keys.forEach(key => {
+                if (this.state.profile[key] === undefined || this.state.profile[key] === null) {
+                    complete = false;
+                }
+            });
+        }
+
+        return complete;
+    }
+
+    /**
+     * Validates the form components.
+     * @returns {boolean} true if everything has been filled in correctly.
+     */
+    isFormValid() {
+        let valid = true;
+        let keys = Object.keys(this.state.profile);
+        let errors = {};
+
+        keys.forEach(key => {
+            if ( this.state.profile[key].length === 0
+                || this.state.profile[key] === null) {
+
+                errors[key] = 'need to put something here';
+                valid = false;
+
+            } else if (key === 'email' && !(/.+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/).test(this.state.profile.email)) {
+                errors.email = 'email is not valid';
+                valid = false;
+            }
+        });
+
+        this.setState({errors: errors});
+        return valid;
     }
 
     /**
@@ -127,11 +219,13 @@ class ProfilePage extends React.Component {
                        onChange={this.changeProfile}
                        errors={this.state.errors}
                        profile={this.state.profile}
+                       selectables={selectables}
+                       isComplete={this.state.isComplete}
             />) : (
                 <div style={styles.loadcontainer}>
                     <CircularProgress />
                     <Snackbar
-                        message={"we seem to not be getting a response. " + this.state.errors.summary}
+                        message={'we seem to not be getting a response. ' + this.state.errors.summary || ''}
                         open={this.state.offlinePopup}
                         bodyStyle={styles.internalPopup.snackbarBody}
                     />

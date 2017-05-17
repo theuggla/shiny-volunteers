@@ -31,7 +31,7 @@ let staticPath = path.join(cwd, (process.env.NODE_ENV === 'production' ? '/../cl
 require('dotenv').config({silent: process.env.NODE_ENV === 'production'});
 
 app.set('port', port);
-db.connect();
+/*db.connect();*/
 verify.connect();
 
 // Middlewares-------------------------------------------------------------------------------------------------------

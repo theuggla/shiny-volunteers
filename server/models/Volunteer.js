@@ -11,6 +11,16 @@ let userBase = require('./UserBase');
  */
 let volunteerSchema = userBase({
     profile: {
+        email: {
+            type: String,
+            validate: {
+                validator: function (value) {
+                    return (/.+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/).test(value);
+                },
+                message: 'email is not valid'
+            }
+        },
+        description: String,
         location: String,
         skills: [String],
         interests: [String],

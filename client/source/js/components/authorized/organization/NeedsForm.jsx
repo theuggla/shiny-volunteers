@@ -11,7 +11,7 @@ import TextField from 'material-ui/TextField';
 
 import styles from '../../../ReactStyles';
 
-import SkillPicker from '../SkillPicker.jsx';
+import DropDownSelector from '../DropDownSelector.jsx';
 
 // Variables ----------------------------------------------------------------------------------------------------------
 let requiredSkillsHint = "select the skills you require";
@@ -24,12 +24,14 @@ let requiredSkillsHint = "select the skills you require";
  * @param onChange {function} what to do when a form-component within the form is changed.
  * @param errors {Object} the error state of the parent object.
  * @param need {Object} the need-object to update.
+ * @param selectables {Object} an object with the arrays to select from under the different categories.
  */
 const NeedsForm = ({
     onSubmit,
     onChange,
     errors,
     need,
+    selectables
 }) => (
     <form className="need-form" action="/organization/needs" method="POST" onSubmit={onSubmit}>
         {errors.summary && <p className="error-message">{errors.summary}</p>}
@@ -59,10 +61,12 @@ const NeedsForm = ({
         </div>
 
         <div className="field-line">
-            <SkillPicker
+            <DropDownSelector
                 onChange={onChange}
                 name="skillsNeeded"
-                values={need.skillsNeeded}
+                multi={true}
+                selectableValues={selectables.skillsNeeded}
+                selectedValues={need.skillsNeeded}
                 hintText={requiredSkillsHint}
             />
         </div>

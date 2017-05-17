@@ -12,6 +12,23 @@ import axios from 'axios';
 
 import NeedsForm from '../../../components/authorized/organization/NeedsForm.jsx';
 
+// Configs ------------------------------------------------------------------------------------------------------------
+
+let selectables = {
+    location: [],
+    categories: [],
+    recurring: [],
+    timePerOccasion: [],
+    skillsNeeded: [
+        {value: 0, name: 'Wordpress'},
+        {value: 1, name: 'Cooking'},
+        {value: 2, name: 'Drivers License'},
+        {value: 3, name: 'IT'},
+        {value: 4, name: 'Economy'},
+        {value: 5, name: 'Funding'},
+    ],
+};
+
 // Class --------------------------------------------------------------------------------------------------------------
 
 /**
@@ -90,6 +107,7 @@ class AddNeedPage extends React.Component {
                 onChange={this.changeNeed}
                 errors={this.state.errors}
                 need={this.state.need}
+                selectables={selectables}
             />
         );
     }

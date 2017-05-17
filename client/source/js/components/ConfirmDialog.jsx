@@ -1,5 +1,5 @@
 /**
- * A modal confirm-daalog that takes a passed in prompt
+ * A modal confirm-dialog that takes a passed in prompt
  * and an onConfirm function.
  */
 

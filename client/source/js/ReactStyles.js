@@ -65,7 +65,14 @@ module.exports = {
     addNeedForm: {
         descriptionArea: {
             textAlign: 'left'
+        },
+        dropDownSelector: {
+            textAlign: 'left'
         }
+    },
+    dropDownSelector: {
+        textAlign: 'left',
+        maxWidth: '90%'
     },
     loginForm: {
         floatingLabelStyle: {
@@ -100,5 +107,8 @@ module.exports = {
     },
     centerText: {
         textAlign: 'center'
+    },
+    alignLeft: {
+        textAlign: 'left'
     }
 };
