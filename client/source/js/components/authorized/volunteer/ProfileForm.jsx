@@ -51,12 +51,12 @@ const ProfileForm = ({
 
         <div className="field-line">
             <DropDownSelector
-                name="recurring"
+                name="numberOfTimes"
                 onChange={onChange}
                 multiple={false}
-                selectableValues={selectables.recurring}
-                selectedValues={profile.recurring}
-                errorText={errors.recurring}
+                selectableValues={selectables.numberOfTimes}
+                selectedValues={profile.numberOfTimes}
+                errorText={errors.numberOfTimes}
                 hintText="how often?"
             />
         </div>

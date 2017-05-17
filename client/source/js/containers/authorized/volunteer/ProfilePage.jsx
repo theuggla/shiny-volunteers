@@ -32,9 +32,9 @@ const selectables = {
         {value: 5, name: 'Women'},
         {value: 6, name: 'Homelessness'},
     ],
-    recurring: [
+    numberOfTimes: [
         {value: 0, name: 'Once'},
-        {value: 1, name: 'Recurringly'},
+        {value: 1, name: 'Recurring'},
         {value: 2, name: 'Both'},
     ],
     timePerOccasion: [

@@ -41,7 +41,23 @@ function getMatches(user) {
  */
 function updateProfile(user, profile) {
     return new Promise((resolve, reject) => {
+        switch (profile.numberOfTimes) {
+            case 'recurring':
+                profile.recurring = true;
+                profile.oneOff = false;
+                break;
+            case 'once':
+                profile.recurring = false;
+                profile.oneOff = true;
+                break;
+            case 'both':
+                profile.recurring = true;
+                profile.oneOff = true;
+                break;
+        }
+
         user.profile = profile;
+
         user.save()
             .then((result) => {
                 resolve(result);
