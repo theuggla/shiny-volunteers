@@ -189,6 +189,8 @@ class ProfilePage extends React.Component {
     processForm(event) {
         event.preventDefault();
 
+        console.log(this.state.profile);
+
         axios({
             method: 'POST',
             url: '/volunteer/profile',

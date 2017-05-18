@@ -6,8 +6,10 @@
 
 // Imports -----------------------------------------------------------------------------------------------------------
 import React from 'react';
+
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import DatePicker from 'material-ui/DatePicker';
 
 import styles from '../../../ReactStyles';
 
@@ -156,6 +158,25 @@ const NeedsForm = ({
                     errorText={errors.description}
                     onChange={onChange}
                     value={profile.description}
+                />
+            </Card>
+        </div>
+
+        <div className="field-line">
+            <Card style={styles.formCard}>
+                <DatePicker
+                    floatingLabelText="how long to save the need for?"
+                    floatingLabelStyle={styles.formTextField.floatingLabelStyle}
+                    floatingLabelShrinkStyle={styles.addNeedForm.shrunkenDatePicker}
+                    autoOk={true}
+                    minDate={new Date()}
+                    maxDate={new Date(new Date().getFullYear(), new Date().getMonth() + 6, new Date().getDate())}
+                    underlineShow={false}
+                    textFieldStyle={styles.centerText}
+                    inputStyle={styles.centerText}
+                    disableYearSelection={true}
+                    value={profile.expiryDate}
+                    onChange={(event, date) => {onChange({target: {name: 'expiryDate', value: new Date(date)}})}}
                 />
             </Card>
         </div>

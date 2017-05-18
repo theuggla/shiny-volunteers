@@ -85,6 +85,7 @@ class DropDownSelector extends Component {
                 multiple={this.props.multiple}
                 floatingLabelText={this.props.hintText}
                 floatingLabelStyle={styles.centerText}
+                underlineShow={false}
                 value={this.state.selectedValues}
                 errorText={this.props.errorText}
                 onChange={this.handleChange}

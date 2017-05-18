@@ -40,6 +40,7 @@ const ProfileForm = ({
         {errors.summary && <p className="error-message">{errors.summary}</p>}
 
         <div className="field-line">
+            <Card style={styles.formCard}>
             <DropDownSelector
                 name="location"
                 multiple={true}
@@ -47,8 +48,9 @@ const ProfileForm = ({
                 selectableValues={selectables.location}
                 selectedValues={profile.location}
                 errorText={errors.location}
-                hintText="where do you want to volunteer?"
+                hintText="where to volunteer?"
             />
+            </Card>
         </div>
 
         <div className="field-line">
@@ -110,6 +112,8 @@ const ProfileForm = ({
                 floatingLabelText="describe yourself"
                 floatingLabelStyle={styles.formTextField.floatingLabelStyle}
                 floatingLabelFocusStyle={styles.formTextField.floatingLabelFocusStyle}
+                floatingLabelShrinkStyle={styles.formTextField.floatingLabelFocusStyle}
+                underlineShow={false}
                 style={styles.formTextField.style}
                 inputStyle={styles.formTextField.inputStyle}
                 textareaStyle={styles.formTextField.textareaStyle}
@@ -128,6 +132,8 @@ const ProfileForm = ({
                 name="email"
                 floatingLabelStyle={styles.formTextField.floatingLabelStyle}
                 floatingLabelFocusStyle={styles.formTextField.floatingLabelFocusStyle}
+                floatingLabelShrinkStyle={styles.formTextField.floatingLabelFocusStyle}
+                underlineShow={false}
                 style={styles.formTextField.style}
                 inputStyle={styles.formTextField.inputStyle}
                 errorText={errors.email}

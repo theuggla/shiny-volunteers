@@ -68,6 +68,9 @@ module.exports = {
         },
         dropDownSelector: {
             textAlign: 'left'
+        },
+        shrunkenDatePicker: {
+            textAlign: 'left'
         }
     },
     dropDownSelector: {
@@ -147,5 +150,11 @@ module.exports = {
     },
     alignLeft: {
         textAlign: 'left'
+    },
+    hidden: {
+        visibility: 'hidden'
+    },
+    visible: {
+        visibility: 'visible'
     }
 };
