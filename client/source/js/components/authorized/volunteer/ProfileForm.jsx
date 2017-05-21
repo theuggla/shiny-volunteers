@@ -74,7 +74,7 @@ const ProfileForm = ({
                 selectableValues={selectables.timePerOccasion}
                 selectedValues={profile.timePerOccasion}
                 errorText={errors.timePerOccasion}
-                hintText="how much time in one go?"
+                hintText="maximum time in one go?"
             />
             </Card>
         </div>

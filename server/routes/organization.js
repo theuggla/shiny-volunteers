@@ -26,6 +26,7 @@ router.route('/needs')
     .post((req, res, next) => {
         let user = req.user;
         let need = req.body;
+
         organization.addNeed(user, need)
             .then(() => {
                 res.end();

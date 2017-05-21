@@ -30,12 +30,11 @@ function getNeeds(query) {
                         _id: need._id,
                         title: need.title,
                         description: need.description,
-                        skillsNeeded: need.skillsNeeded,
+                        skillsRequired: need.skillsRequired,
                         skillsDesired: need.skillsDesired,
                         location: need.location,
                         timePerOccasion: need.timePerOccasion,
-                        recurring: need.recurring,
-                        oneOff: need.oneOff
+                        numberOfTimes: need.numberOfTimes
                     };
                 });
             })
@@ -57,6 +56,8 @@ function getNeeds(query) {
  */
 function addNeed(data) {
     return new Promise((resolve, reject) => {
+        data.expiryDate = new Date(data.expiryDate);
+
         let newNeed = new Need(data);
 
         newNeed.save()

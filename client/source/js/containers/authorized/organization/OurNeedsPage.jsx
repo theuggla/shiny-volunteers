@@ -89,7 +89,7 @@ class OurNeedsPage extends React.Component {
             headers: {'Authorization': `bearer ${Auth.getToken()}`},
         })
             .then((response) => {
-                this.setState({reload: true});
+                window.location.reload();
             })
             .catch((error) => {
                 const errors = error.response ? error.response.data.errors ? error.response.data.errors : error.response.data : {summary: 'you seem to be offline'};

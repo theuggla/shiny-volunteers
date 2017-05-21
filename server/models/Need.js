@@ -14,13 +14,13 @@ let needSchema = new mongoose.Schema({
     title           : {type: String, required: true},
     description     : {type: String, required: true},
     expiryDate      : {type: Date, default: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1)},
-    skillsNeeded    : [String],
+    skillsRequired  : [String],
     skillsDesired   : [String],
-    location        : String,
+    location        : [String],
     when            : String,
     categories      : [String],
     timePerOccasion : Number,
-    numberOfTimes   : Boolean
+    numberOfTimes   : [String]
 });
 
 /**

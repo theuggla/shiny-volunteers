@@ -2,24 +2,33 @@
  * Test for the VolunteerNav component.
  */
 
-/*
-import React from 'react';
-import { shallow } from 'enzyme';
 
+import React from 'react';
+import { mount } from 'enzyme';
+
+import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import {BottomNavigationItem} from 'material-ui/BottomNavigation';
 
 import VolunteerNav from '../VolunteerNav.jsx';
 
+const muiTheme = getMuiTheme();
+
 describe("VolunteernNav Component", () => {
-    const historyMock= [];
+    const historyMock= {location: '/matches'};
     const matchMock = {
         path: '/volunteer'
     };
 
-    const wrapper = shallow(<VolunteerNav
-        match={matchMock}
+    const wrapper = mount(<VolunteerNav
+    match={matchMock}
         history={historyMock}
-    />);
+    />, {
+        context: {
+            muiTheme
+        },
+        childContextTypes: {muiTheme: React.PropTypes.object}
+    });
+
 
 
     describe("Basic render", () => {
@@ -35,31 +44,4 @@ describe("VolunteernNav Component", () => {
         });
     });
 
-    describe("Visually", () => {
-
-        it("should select the clicked BottomNavigationItem", (done) => {
-            wrapper.find('[label="matches"]').simulate('touchTap');
-            expect(wrapper.state('selectedIndex')).to.equal(0);
-            wrapper.find('[label="applications"]').simulate('touchTap');
-            expect(wrapper.state('selectedIndex')).to.equal(1);
-            wrapper.find('[label="profile"]').simulate('touchTap');
-            expect(wrapper.state('selectedIndex')).to.equal(2);
-            done();
-        });
-
-    });
-
-    describe("Functionally", () => {
-        it("should route between pages on click", (done) => {
-            wrapper.find('[label="matches"]').simulate('touchTap');
-            expect(historyMock[historyMock.length -1]).to.equal('/volunteer/matches');
-            wrapper.find('[label="applications"]').simulate('touchTap');
-            expect(historyMock[historyMock.length -1]).to.equal('/volunteer/applications');
-            wrapper.find('[label="profile"]').simulate('touchTap');
-            expect(historyMock[historyMock.length -1]).to.equal('/volunteer/profile');
-            done();
-        });
-    });
-
 });
-*/

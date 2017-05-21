@@ -37,10 +37,10 @@ const selectables = {
         {value: 1, name: 'Recurring'},
     ],
     timePerOccasion: [
-        {value: 0, name: 'up to 2h'},
-        {value: 1, name: 'up to 5h'},
-        {value: 2, name: 'up to 8h'},
-        {value: 3, name: 'up to 10h'},
+        {value: 0, label: 'up to 2h', name: '2' },
+        {value: 1, label: 'up to 5h', name: '5'},
+        {value: 2, label: 'up to 8h', name: '8'},
+        {value: 3, label: 'up to 10h', name: '10'},
     ],
     skills: [
         {value: 0, name: 'Wordpress'},
@@ -91,9 +91,6 @@ class ProfilePage extends React.Component {
      * to true.
      */
     componentWillMount() {
-        this.state.profile = {};
-
-        /*
         let responseTimeout = setTimeout(() => {
             this.state.offlinePopup = true;
         }, 5000);
@@ -114,7 +111,7 @@ class ProfilePage extends React.Component {
             })
             .catch((error) => {
                 this.state.errors = error.response ? error.response.data.errors ? error.response.data.errors : error.response.data : {summary: 'are you offline?'};
-            });*/
+            });
     }
 
     /**
@@ -188,8 +185,6 @@ class ProfilePage extends React.Component {
      */
     processForm(event) {
         event.preventDefault();
-
-        console.log(this.state.profile);
 
         axios({
             method: 'POST',

@@ -423,15 +423,15 @@ function createNewUser(user) {
                     email       : user.info.email,
                     roles       : user.info.roles
                 },
+                profile: {
+                    email       : user.info.email
+                },
                 local : {
                     email       : user.local.email
                 },
                 facebook: {
                     email       : user.facebook.email,
                     id          : user.facebook.id
-                },
-                profile : {
-                    isComplete  : false
                 }
             });
         } else {

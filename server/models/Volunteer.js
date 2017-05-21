@@ -25,7 +25,7 @@ let volunteerSchema = userBase({
         skills: [String],
         interests: [String],
         timePerOccasion: Number,
-        numberOfTimes: Boolean
+        numberOfTimes: [String]
     },
     facebook: {
         id: {

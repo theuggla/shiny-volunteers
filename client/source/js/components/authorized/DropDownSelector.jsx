@@ -28,12 +28,10 @@ class DropDownSelector extends Component {
             selectedValues: null
         };
 
-        this.state.selectedValues = props.multiple ? props.selectedValues ?
-            props.selectableValues
+        this.state.selectedValues = props.selectedValues ? (props.multiple ?
+                (props.selectableValues
                 .filter((item) => {return props.selectedValues.includes(item.name);})
-                .map((item) => {return item.value})
-            : [] : null;
-
+                .map((item) => {return item.value})) : props.selectedValues) : (props.multiple ? [] : null);
     }
 
     /**
@@ -65,13 +63,16 @@ class DropDownSelector extends Component {
      * @param items {[Object]} the objects to map.
      */
     menuItems(items) {
+
         let checked = this.state.selectedValues === (items.value);
+
         return items.map((item) => (
             <MenuItem
                 key={item.value}
                 insetChildren={true}
                 checked={Array.isArray(this.state.selectedValues) ? this.state.selectedValues.includes(item.value) : checked}
                 value={item.value}
+                label={item.label}
                 primaryText={item.name}
             />
         ));

@@ -2,24 +2,32 @@
  * Test for the OrganizationNav component.
  */
 
-/*
-import React from 'react';
-import { shallow } from 'enzyme';
 
+import React from 'react';
+import { mount } from 'enzyme';
+
+import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import {BottomNavigationItem} from 'material-ui/BottomNavigation';
 
 import OrganizationNav from '../OrganizationNav.jsx';
 
+const muiTheme = getMuiTheme();
+
 describe("OrganizationNav Component", () => {
-    const historyMock= [];
+    const historyMock= {location: '/needs'};
     const matchMock = {
         path: '/organization'
     };
 
-    const wrapper = shallow(<OrganizationNav
+    const wrapper = mount(<OrganizationNav
         match={matchMock}
         history={historyMock}
-    />);
+    />, {
+        context: {
+            muiTheme
+        },
+        childContextTypes: {muiTheme: React.PropTypes.object}
+    });
 
 
     describe("Basic render", () => {
@@ -35,27 +43,5 @@ describe("OrganizationNav Component", () => {
         });
     });
 
-    describe("Visually", () => {
-
-        it("should select the clicked BottomNavigationItem", (done) => {
-            wrapper.find('[label="needs"]').simulate('touchTap');
-            expect(wrapper.state('selectedIndex')).to.equal(0);
-            wrapper.find('[label="add need"]').simulate('touchTap');
-            expect(wrapper.state('selectedIndex')).to.equal(1);
-            done();
-        });
-
-    });
-
-    describe("Functionally", () => {
-        it("should route between pages on click", (done) => {
-            wrapper.find('[label="needs"]').simulate('touchTap');
-            expect(historyMock[historyMock.length -1]).to.equal('/organization/needs');
-            wrapper.find('[label="add need"]').simulate('touchTap');
-            expect(historyMock[historyMock.length -1]).to.equal('/organization/needs/add');
-            done();
-        });
-    });
-
 });
-*/
+

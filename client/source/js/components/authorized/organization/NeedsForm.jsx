@@ -10,6 +10,7 @@ import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import DatePicker from 'material-ui/DatePicker';
+import Card from 'material-ui/Card';
 
 import styles from '../../../ReactStyles';
 
@@ -19,7 +20,7 @@ import ChipSelector from '../ChipSelector.jsx';
 // Variables ----------------------------------------------------------------------------------------------------------
 let requiredSkillsHint = "select the skills you require";
 
-// CLass --------------------------------------------------------------------------------------------------------------
+// Class --------------------------------------------------------------------------------------------------------------
 
 /**
  * Returns a Form-component with no state that can display the error state of the parent-object.
@@ -57,15 +58,17 @@ const NeedsForm = ({
         </div>
 
         <div className="field-line">
+            <Card style={styles.formCard}>
             <DropDownSelector
                 name="location"
                 onChange={onChange}
                 multiple={true}
                 selectableValues={selectables.location}
-                selectedValues={profile.location}
+                selectedValues={need.location}
                 errorText={errors.location}
                 hintText="where do you need help?"
             />
+            </Card>
         </div>
 
         <div className="field-line">
@@ -74,22 +77,24 @@ const NeedsForm = ({
                 onChange={onChange}
                 multiple={false}
                 selectableValues={selectables.numberOfTimes}
-                selectedValues={profile.numberOfTimes}
+                selectedValues={need.numberOfTimes}
                 errorText={errors.numberOfTimes}
                 hintText="how often?"
             />
         </div>
 
         <div className="field-line">
-            <DropDownSelector
-                name="timePerOccasion"
-                onChange={onChange}
-                multiple={false}
-                selectableValues={selectables.timePerOccasion}
-                selectedValues={profile.timePerOccasion}
-                errorText={errors.timePerOccasion}
-                hintText="how much time in one go?"
-            />
+            <Card style={styles.formCard}>
+                <DropDownSelector
+                    name="timePerOccasion"
+                    onChange={onChange}
+                    multiple={false}
+                    selectableValues={selectables.timePerOccasion}
+                    selectedValues={need.timePerOccasion}
+                    errorText={errors.timePerOccasion}
+                    hintText="maximum time in one go?"
+                />
+            </Card>
         </div>
 
         <div className="field-line">
@@ -113,10 +118,10 @@ const NeedsForm = ({
             <ChipSelector
                 onChange={onChange}
                 hintText="what skills are essential?"
-                name="skillsNeeded"
+                name="skillsRequired"
                 multi={true}
-                selectableValues={selectables.skillsNeeded}
-                selectedValues={need.skillsNeeded}
+                selectableValues={selectables.skillsRequired}
+                selectedValues={need.skillsRequired}
             />
         </div>
 
@@ -127,7 +132,7 @@ const NeedsForm = ({
                 name="skillsDesired"
                 multi={true}
                 selectableValues={selectables.skillsDesired}
-                selectedValues={need.skillsNeeded}
+                selectedValues={need.skillsDesired}
             />
         </div>
 
@@ -157,7 +162,7 @@ const NeedsForm = ({
                     name="description"
                     errorText={errors.description}
                     onChange={onChange}
-                    value={profile.description}
+                    value={need.description}
                 />
             </Card>
         </div>
@@ -175,7 +180,7 @@ const NeedsForm = ({
                     textFieldStyle={styles.centerText}
                     inputStyle={styles.centerText}
                     disableYearSelection={true}
-                    value={profile.expiryDate}
+                    value={need.expiryDate}
                     onChange={(event, date) => {onChange({target: {name: 'expiryDate', value: new Date(date)}})}}
                 />
             </Card>

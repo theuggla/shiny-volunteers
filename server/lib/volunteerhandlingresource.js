@@ -17,12 +17,13 @@ let needs = require('./needhandlingresource');
 function getMatches(user) {
     return new Promise((resolve, reject) => {
         let query = {
-            skillsNeeded: {$in: user.profile.skills},
+            skillsDesired: {$in: user.profile.skills},
             applicants: {$nin: [user._id]}
         };
 
         needs.getNeeds(query)
             .then((result) => {
+            console.log(result);
                 resolve(result);
             })
             .catch((error) => {

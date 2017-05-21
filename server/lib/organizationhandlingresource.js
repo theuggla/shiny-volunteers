@@ -38,12 +38,8 @@ function getNeeds(user) {
  */
 function addNeed(user, need) {
     return new Promise((resolve, reject) => {
-        let newNeed = {
-            _creator        : user._id,
-            title           : need.title,
-            description     : need.description,
-            skillsNeeded    : need.skillsNeeded
-        };
+        let newNeed = need;
+        newNeed._creator = user._id;
 
         needs.addNeed(newNeed)
             .then(() => {

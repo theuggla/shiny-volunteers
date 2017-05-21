@@ -32,13 +32,12 @@ let selectables = {
     numberOfTimes: [
         {value: 0, name: 'Once'},
         {value: 1, name: 'Recurring'},
-        {value: 2, name: 'Either'},
     ],
     timePerOccasion: [
-        {value: 0, name: '1-2h'},
-        {value: 1, name: '2-5h'},
-        {value: 2, name: '5-8h'},
-        {value: 3, name: '8-10h'},
+        {value: 0, label: '1-2h', name: 2},
+        {value: 1, label: '2-5h', name: 5},
+        {value: 2, label: '5-8h', name: 8},
+        {value: 3, label: '8-10h', name: 10},
     ],
     skillsRequired: [
         {value: 0, name: 'Wordpress'},
@@ -117,13 +116,13 @@ class AddNeedPage extends React.Component {
      */
     isFormComplete() {
         let complete = true;
-        let keys = Object.keys(this.state.profile);
+        let keys = Object.keys(this.state.need);
 
         if (keys.length < 10) {
             complete = false;
         } else {
             keys.forEach(key => {
-                if (this.state.profile[key] === undefined || this.state.profile[key] === null) {
+                if (this.state.need[key] === undefined || this.state.need[key] === null) {
                     complete = false;
                 }
             });
@@ -138,14 +137,14 @@ class AddNeedPage extends React.Component {
      */
     isFormValid() {
         let valid = true;
-        let keys = Object.keys(this.state.profile);
+        let keys = Object.keys(this.state.need);
         let errors = {};
 
         keys.forEach(key => {
-            if ( this.state.profile[key].length === 0
-                || this.state.profile[key] === null) {
+            if ( this.state.need[key].length === 0
+                || this.state.need[key] === null) {
 
-                errors[key] = 'need to put something here';
+                errors[key] = 'you\'ll need to put something here';
                 valid = false;
             }
         });

@@ -80,7 +80,7 @@ class Need extends React.Component {
                             (<div>
                             <p>{this.props.need.description}</p>
                             <ul>
-                                {this.props.need.skillsNeeded.map((skill) => (
+                                {this.props.need.skillsRequired.map((skill) => (
                                     <li>
                                         {skill}
                                     </li>))
