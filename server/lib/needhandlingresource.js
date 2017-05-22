@@ -21,8 +21,7 @@ function getNeeds(query) {
         cleanOutNeeds()
             .then(() => {
                  return Need
-                    .find(query)
-                    .sort({expiryDate: -1});
+                    .find(query);
             })
             .then((result) => {
                 return result.map((need) => {
@@ -40,6 +39,32 @@ function getNeeds(query) {
             })
             .then((needs) => {
                 resolve(needs);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
+
+/**
+ * Gets an array of needs where the required skills matches skills the user have, sorted
+ * by which matches the most of the need's desired skills against the user's skills.
+ *
+ * @param skills {[String]} the skills to match by.
+ * @param query {object} the mongoose-query to filter the matches by.
+ * @returns {Promise} that resolves with the matches or rejects with an error.
+ */
+function getMatchesBySkills(skills, query) {
+    return new Promise((resolve, reject) => {
+        getNeeds(query)
+            .then((result) => {
+                return matchByRequiredSkills(result, skills);
+            })
+            .then((result) => {
+                return sortByDesiredSkills(result, skills);
+            })
+            .then((result) => {
+                resolve(result);
             })
             .catch((error) => {
                 reject(error);
@@ -91,7 +116,7 @@ function removeNeed(id) {
 }
 
 /**
- * Adds an applicant to the nedd's list of applicants.
+ * Adds an applicant to the need's list of applicants.
  *
  * @param id {String} the id of the need.
  * @param applicantid {String} the id of the applicant.
@@ -134,11 +159,69 @@ function cleanOutNeeds() {
     });
 }
 
+/**
+ * Returns an array of needs where the required skills all matches the user's actual skills, or the required skills
+ * are none.
+ *
+ * @param needs {[need]} the needs to match.
+ * @param skills {[string]} the skills to match against.
+ * @returns {Promise} that resolves with the matched needs or rejects with an error.
+ */
+function matchByRequiredSkills(needs, skills) {
+    return new Promise((resolve, reject) => {
+
+        if (skills.indexOf('none') >= 0) {
+            resolve(needs);
+        }
+        else {
+            let result = needs.filter((need) => {
+                if (need.skillsRequired.indexOf('None') >= 0) {
+                    return true;
+                } else {
+                    return need.skillsRequired.every((value) => {
+                        return (skills.indexOf(value) >= 0);
+                    });
+                }
+            });
+
+            resolve(result);
+        }
+    });
+}
+
+/**
+ * Sorts an array of needs after which has the most desired skills matching the
+ * user's actual skills.
+ * @param needs {[needs]} the needs to sort.
+ * @param skills {[string]} the skills to sort against.
+ * @returns {Promise} that resolves with the sorted array or rejects with an error.
+ */
+function sortByDesiredSkills(needs, skills) {
+    return new Promise((resolve, reject) => {
+        let haveMostDesiredSkills = function(a, b) {
+            let aLength = a.skillsDesired.filter((n) => {
+                return skills.indexOf(n) !== -1;
+            }).length;
+
+            let bLength = b.skillsDesired.filter((n) => {
+                return skills.indexOf(n) !== -1;
+            }).length;
+
+            return bLength - aLength;
+        };
+
+        let sorted = needs.sort((a, b) => haveMostDesiredSkills(a, b));
+
+        resolve(sorted);
+    });
+}
+
 // Exports ------------------------------------------------------------------------------------------------------------
 module.exports = {
     getNeeds: getNeeds,
     addNeed: addNeed,
     removeNeed: removeNeed,
     updateApplicants: updateApplicants,
+    getMatchesBySkills: getMatchesBySkills,
     cleanOutNeeds: cleanOutNeeds
 };

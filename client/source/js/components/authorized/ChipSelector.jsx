@@ -17,26 +17,20 @@ import styles from '../../ReactStyles';
  */
 class ChipSelector extends React.Component {
     /**
-     * Sets state and passes on the props.
+     * Passes on the props.
      * @param props {Object} the props to pass on.
      */
     constructor(props) {
         super(props);
 
         this.state = {
-            selectedChips: [],
-            unselectedChips: []
+            selectedValues: null
         };
 
-        this.state.selectedChips = props.selectedValues && props.selectedValues.length > 0 ?
-                props.selectableValues
-                    .filter((item) => {return props.selectedValues.includes(item.name);})
-                : [];
-
-        this.state.unselectedChips = props.selectedValues ?
+        this.state.selectedValues = props.selectedValues && props.selectedValues.length > 0 ?
             props.selectableValues
-                .filter((item) => {return !props.selectedValues.includes(item.name);})
-            : props.selectableValues;
+                .filter((item) => {return props.selectedValues.includes(item.name);})
+            : [];
     }
 
     /**
@@ -44,19 +38,14 @@ class ChipSelector extends React.Component {
      * @param value {number} the value of the chip to remove.
      */
     handleRequestDelete = (value) => {
-        this.selectedChips = this.state.selectedChips;
-        this.unselectedChips = this.state.unselectedChips;
+        this.selectedChips = this.state.selectedValues;
         const chipToDelete = this.selectedChips.map((chip) => chip.value).indexOf(value);
 
-        this.unselectedChips.push(this.selectedChips[chipToDelete]);
         this.selectedChips.splice(chipToDelete, 1);
 
-        this.setState({
-            selectedChips: this.selectedChips,
-            unselectedChips: this.unselectedChips
-        });
+        this.setState({selectedValues: this.selectedChips});
 
-        this.handleChange(this.state.selectedChips);
+        this.handleChange(this.state.selectedValues);
     };
 
     /**
@@ -64,25 +53,19 @@ class ChipSelector extends React.Component {
      * @param value {number} the value of the chip to select.
      */
     handleSelect = (value) => {
-        this.selectedChips = this.state.selectedChips;
-        this.unselectedChips = this.state.unselectedChips;
-        const chipToSelect = this.unselectedChips.map((chip) => chip.value).indexOf(value);
+        this.selectedChips = this.state.selectedValues;
+        const chipToSelect = this.props.selectableValues.map((chip) => chip.value).indexOf(value);
 
-        this.selectedChips.push(this.unselectedChips[chipToSelect]);
-        this.unselectedChips.splice(chipToSelect, 1);
+        this.selectedChips.push(this.props.selectableValues[chipToSelect]);
 
-        this.setState({
-            selectedChips: this.selectedChips,
-            unselectedChips: this.unselectedChips
-        });
+        this.setState({selectedValues: this.selectedChips});
 
-        this.handleChange(this.state.selectedChips);
+        this.handleChange(this.state.selectedValues);
     };
 
     /**
      * Handles a change in the selected items.
-     * @param values {[number]} an array of indices of all the selected values
-     * if multiple enabled.
+     * @param values {[number]} an array of indices of all the selected values.
      */
     handleChange = (values) => {
         let mappedValues = values.map((value) => {
@@ -144,10 +127,16 @@ class ChipSelector extends React.Component {
                 <p>{this.props.hintText}</p>
                 {this.props.errorText && <p className="error-message">{this.props.errorText}</p>}
                 <div>
-                    {this.state.selectedChips.map((chip) => {return this.renderSelectedChip(chip)})}
+                    {this.state.selectedValues.map((chip) => {
+                        return this.renderSelectedChip(chip)
+                    })}
                 </div>
                 <div>
-                    {this.state.unselectedChips.map((chip) => {return this.renderUnselectedChip(chip)})}
+                    {this.props.selectableValues.filter((value) => {
+                        return this.state.selectedValues.indexOf(value) < 0
+                    }).map((chip) => {
+                        return this.renderUnselectedChip(chip)
+                    })}
                 </div>
             </Card>
         );

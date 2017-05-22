@@ -17,13 +17,15 @@ let needs = require('./needhandlingresource');
 function getMatches(user) {
     return new Promise((resolve, reject) => {
         let query = {
-            skillsDesired: {$in: user.profile.skills},
-            applicants: {$nin: [user._id]}
+            applicants: {$nin: [user._id]},
+            location: {$in: user.profile.location},
+            numberOfTimes: {$in: user.profile.numberOfTimes},
+            categories: {$in: user.profile.interests},
+            timePerOccasion: {$lte: user.profile.timePerOccasion}
         };
 
-        needs.getNeeds(query)
+        needs.getMatchesBySkills(user.profile.skills, query)
             .then((result) => {
-            console.log(result);
                 resolve(result);
             })
             .catch((error) => {

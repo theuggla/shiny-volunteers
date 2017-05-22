@@ -14,7 +14,7 @@ import NeedsForm from '../../../components/authorized/organization/NeedsForm.jsx
 
 // Configs ------------------------------------------------------------------------------------------------------------
 
-let selectables = {
+const selectables = {
     location: [
         {value: 0, name: 'Gothenburg'},
         {value: 1, name: 'London'},

@@ -21,7 +21,7 @@ let volunteerSchema = userBase({
             }
         },
         description: String,
-        location: String,
+        location: [String],
         skills: [String],
         interests: [String],
         timePerOccasion: Number,
