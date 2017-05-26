@@ -2,14 +2,73 @@
  * Tests for the volunteer handling-resource.
  */
 
-let expect = require('chai').expect;
+let chai = require('chai');
+let chaiAsPromised = require('chai-as-promised');
+chai.use(chaiAsPromised);
+let expect = chai.expect;
 let sinon = require('sinon');
+
+let db = require('../lib/dbresource');
+if (!db.isConnected) db.connect();
+
 let getMatches = require('../lib/volunteerhandlingresource').getMatches;
 let updateProfile = require('../lib/volunteerhandlingresource').updateProfile;
 let updateApplications = require('../lib/volunteerhandlingresource').updateApplications;
 let getApplications = require('../lib/volunteerhandlingresource').getApplications;
 
+let addNeed = require('../lib/needhandlingresource').addNeed;
+let getNeeds = require('../lib/needhandlingresource').getNeeds;
+let removeNeed = require('../lib/needhandlingresource').removeNeed;
+let updateApplicants = require('../lib/needhandlingresource').updateApplicants;
+let cleanOutNeeds = require('../lib/needhandlingresource').cleanOutNeeds;
+let Need = require('../models/Need');
+
 describe('volunteer handling module', () => {
+
+    let needOne = {
+        _creator: 'testcreator',
+        title: 'test',
+        description: 'test',
+        skillsRequired: ['wordpress', 'cooking'],
+        skillsDesired: ['IT', 'children'],
+        expiryDate: new Date(Date.now())
+    };
+
+    let needTwo = {
+        _creator: 'testcreator',
+        title: 'test',
+        skillsRequired: ['wordpress'],
+        skillsDesired: ['IT', 'children'],
+        description: 'test also'
+    };
+
+    let needThree = {
+        _creator: 'testcreator',
+        title: 'test',
+        skillsRequired: ['wordpress', 'IT'],
+        skillsDesired: ['none'],
+        description: 'test also'
+    };
+
+    let needFour = {
+        _creator: 'testcreator',
+        title: 'test',
+        skillsRequired: ['none'],
+        skillsDesired: ['IT'],
+        description: 'test also'
+    };
+
+    let user = {
+        skills: ['wordpress, cooking, children']
+    };
+
+    before('add needs to database', () => {
+        Promise.all([addNeed(needOne), addNeed(needTwo), addNeed(needThree), addNeed(needFour)]);
+    });
+
+    after('clean up database', () => {
+        Need.remove({title: 'test'});
+    });
 
     describe('getMatches', () => {
 

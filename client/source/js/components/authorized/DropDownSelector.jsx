@@ -28,10 +28,22 @@ class DropDownSelector extends Component {
             selectedValues: null
         };
 
-        this.state.selectedValues = props.selectedValues ? (props.multiple ?
+        let selected = (props.multiple && props.selectedValues) ? props.selectedValues : [props.selectedValues];
+
+       selected = selected.map((item) => {return item.toString()});
+
+        selected = props.selectedValues ?
                 (props.selectableValues
-                .filter((item) => {return props.selectedValues.includes(item.name);})
-                .map((item) => {return item.value})) : props.selectedValues) : (props.multiple ? [] : null);
+                    .filter((item) => {return selected.includes(item.name);})
+                    .map((item) => {return item.value})) : (props.multiple ? [] : null);
+
+                console.log(selected);
+
+        if (!props.multiple && selected) {
+            selected = selected[0];
+        }
+
+        this.state.selectedValues = selected;
     }
 
     /**

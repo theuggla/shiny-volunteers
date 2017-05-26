@@ -28,6 +28,7 @@ let requiredSkillsHint = "select the skills you require";
  * @param onChange {function} what to do when a form-component within the form is changed.
  * @param errors {Object} the error state of the parent object.
  * @param need {Object} the need-object to update.
+ * @param isComplete {boolean} whether the form is complete.
  * @param selectables {Object} an object with the arrays to select from under the different categories.
  */
 const NeedsForm = ({
@@ -35,7 +36,8 @@ const NeedsForm = ({
     onChange,
     errors,
     need,
-    selectables
+    selectables,
+    isComplete
 }) => (
     <form className="need-form" action="/organization/needs" method="POST" onSubmit={onSubmit}>
         {errors.summary && <p className="error-message">{errors.summary}</p>}
@@ -187,7 +189,7 @@ const NeedsForm = ({
         </div>
 
         <div className="button-line">
-            <RaisedButton type="submit" label="Save" primary />
+            <RaisedButton type="submit" label="Save" disabled={!isComplete} primary />
         </div>
     </form>
 );

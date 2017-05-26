@@ -108,6 +108,8 @@ class AddNeedPage extends React.Component {
             need: need,
             isComplete: complete
         });
+
+        console.log(this.state.need);
     }
 
     /**
