@@ -32,6 +32,7 @@ function getNeeds(query) {
                         skillsRequired: need.skillsRequired,
                         skillsDesired: need.skillsDesired,
                         location: need.location,
+                        when: need.when,
                         timePerOccasion: need.timePerOccasion,
                         numberOfTimes: need.numberOfTimes
                     };

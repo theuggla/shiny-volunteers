@@ -28,19 +28,20 @@ class DropDownSelector extends Component {
             selectedValues: null
         };
 
-        let selected = (props.multiple && props.selectedValues) ? props.selectedValues : [props.selectedValues];
+        let selected;
 
-       selected = selected.map((item) => {return item.toString()});
+        if (props.selectedValues) {
+            selected = props.multiple ? props.selectedValues.map((item) => {return item.toString()}) : [props.selectedValues].map((item) => {return item.toString()});
 
-        selected = props.selectedValues ?
-                (props.selectableValues
-                    .filter((item) => {return selected.includes(item.name);})
-                    .map((item) => {return item.value})) : (props.multiple ? [] : null);
+            selected = (props.selectableValues
+                .filter((item) => {return selected.includes(item.name);})
+                .map((item) => {return item.value}));
 
-                console.log(selected);
-
-        if (!props.multiple && selected) {
-            selected = selected[0];
+            if (!props.multiple) {
+                selected = selected[0];
+            }
+        } else if (props.multiple){
+            selected = [];
         }
 
         this.state.selectedValues = selected;
@@ -75,14 +76,11 @@ class DropDownSelector extends Component {
      * @param items {[Object]} the objects to map.
      */
     menuItems(items) {
-
-        let checked = this.state.selectedValues === (items.value);
-
         return items.map((item) => (
             <MenuItem
                 key={item.value}
                 insetChildren={true}
-                checked={Array.isArray(this.state.selectedValues) ? this.state.selectedValues.includes(item.value) : checked}
+                checked={this.props.multiple ? this.state.selectedValues.includes(item.value) : this.state.selectedValues === (item.value)}
                 value={item.value}
                 label={item.label}
                 primaryText={item.name}

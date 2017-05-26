@@ -47,10 +47,10 @@ module.exports = {
             maxHeight: '100vh'
         },
         needActionDisplayColumn: {
-            width: '10vw',
-            paddingTop: 0
+            padding: 0
         },
         needDisplayColumn: {
+            width: '70vw',
             wordWrap: 'break-word',
             whiteSpace: 'normal',
             paddingRight: 0
@@ -59,7 +59,7 @@ module.exports = {
             verticalAlign: 'top'
         },
         needActionIcon: {
-            padding: '1em'
+            margin: 0
         }
     },
     addNeedForm: {

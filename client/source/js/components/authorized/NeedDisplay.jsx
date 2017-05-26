@@ -30,6 +30,8 @@ class Need extends React.Component {
     constructor(props) {
         super(props);
 
+        console.log(this.props.need);
+
         this.state = {
             open: false,
             confirmOpen: false
@@ -78,14 +80,14 @@ class Need extends React.Component {
                             <h3>{this.props.need.title}</h3>
                             {(this.state.open) &&
                             (<div>
+                                <div style={styles.needsDisplay.keyInfo}>
+                                    <p><b>Required skills:</b> {this.props.need.skillsRequired.join(' - ')}</p>
+                                    <p><b>Desired skills:</b> {this.props.need.skillsDesired.join(' - ')}</p>
+                                    <p><b>When:</b> {this.props.need.when}</p>
+                                    <p><b>Number of times:</b> {this.props.need.numberOfTimes.join(' / ')}</p>
+                                    <p><b>Time per occasion:</b> {this.props.need.timePerOccasion}h</p>
+                                </div>
                             <p>{this.props.need.description}</p>
-                            <ul>
-                                {this.props.need.skillsRequired.map((skill) => (
-                                    <li>
-                                        {skill}
-                                    </li>))
-                                }
-                            </ul>
                             </div>)
                             }
                         </TableRowColumn>
