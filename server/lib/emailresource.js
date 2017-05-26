@@ -52,6 +52,7 @@ module.exports.sendMailToUser = function(user, need) {
             sg.API(request, (error, response) => {
                 if (error) {
                     console.log(error);
+                    console.log(error.response.body.errors);
                     reject(error);
                 }
                 resolve(response);
@@ -72,8 +73,27 @@ module.exports.sendMailToUser = function(user, need) {
 module.exports.sendApplicationMail = function(user, need, applicant) {
     let toEmail = new helper.Email(user.info.email);
     let subject = 'Someone wants to help you!';
-    let content = new helper.Content('text/plain', 'You have recieved an application for the ' + need.title + ' from the following user: \n' + JSON.stringify(applicant.profile) + ' \n Please contact them on ' + applicant.info.email + ' as soon as possible. Cheers!');
+    let content = new helper.Content('text/plain', '');
     let mail = new helper.Mail(fromEmail, subject, toEmail, content);
+
+    mail.personalizations[0].addSubstitution(
+        new helper.Substitution('-name-', user.email));
+    mail.personalizations[0].addSubstitution(
+        new helper.Substitution('-need-', need.title));
+    mail.personalizations[0].addSubstitution(
+        new helper.Substitution('-email-', applicant.profile.email));
+    mail.personalizations[0].addSubstitution(
+        new helper.Substitution('-skills-', applicant.profile.skills.join(', ')));
+    mail.personalizations[0].addSubstitution(
+        new helper.Substitution('-interests-', applicant.profile.interests.join(', ')));
+    mail.personalizations[0].addSubstitution(
+        new helper.Substitution('-available-', applicant.profile.numberOfTimes.join(', ')));
+    mail.personalizations[0].addSubstitution(
+        new helper.Substitution('-time-', applicant.profile.timePerOccasion));
+    mail.personalizations[0].addSubstitution(
+        new helper.Substitution('-description-', applicant.profile.description));
+
+    mail.setTemplateId('59dfda2e-00f6-4963-864f-9341fcac48df');
 
     let request = sg.emptyRequest({
         method: 'POST',
@@ -85,6 +105,9 @@ module.exports.sendApplicationMail = function(user, need, applicant) {
         if (user.info.email !== 'org@org.com') {
             sg.API(request, (error, response) => {
                 if (error) {
+                    console.log(error);
+                    console.log(error.response.body.errors);
+
                     reject(error);
                 }
                 resolve(response);
