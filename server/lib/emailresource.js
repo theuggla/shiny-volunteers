@@ -21,7 +21,7 @@ let sg = require('sendgrid')(process.env.SENDGRID_API_KEY);
 module.exports.sendMailToUser = function(user, need) {
     let toEmail = new helper.Email(user.profile.email);
     let subject = 'Thanks for your application!';
-    let content = new helper.Content('text/plain', '');
+    let content = new helper.Content('text/plain', ' ');
     let mail = new helper.Mail(fromEmail, subject, toEmail, content);
 
     mail.personalizations[0].addSubstitution(
@@ -73,7 +73,7 @@ module.exports.sendMailToUser = function(user, need) {
 module.exports.sendApplicationMail = function(user, need, applicant) {
     let toEmail = new helper.Email(user.info.email);
     let subject = 'Someone wants to help you!';
-    let content = new helper.Content('text/plain', '');
+    let content = new helper.Content('text/plain', ' ');
     let mail = new helper.Mail(fromEmail, subject, toEmail, content);
 
     mail.personalizations[0].addSubstitution(
