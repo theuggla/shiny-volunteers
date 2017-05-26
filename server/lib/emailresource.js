@@ -35,11 +35,11 @@ module.exports.sendMailToUser = function(user, need) {
     mail.personalizations[0].addSubstitution(
         new helper.Substitution('-when-', need.when));
     mail.personalizations[0].addSubstitution(
-        new helper.Substitution('-time-', need.timePerOccasion));
+        new helper.Substitution('-time-', need.timePerOccasion.toString()));
     mail.personalizations[0].addSubstitution(
         new helper.Substitution('-description-', need.description));
 
-    mail.setTemplateId('3ecd7bff-f4e2-471c-a7f0-b6441bdb58f5');
+    mail.setTemplateId(process.env.SENDGRID_VOL_EMAILTEMP);
 
     let request = sg.emptyRequest({
         method: 'POST',
@@ -89,11 +89,11 @@ module.exports.sendApplicationMail = function(user, need, applicant) {
     mail.personalizations[0].addSubstitution(
         new helper.Substitution('-available-', applicant.profile.numberOfTimes.join(', ')));
     mail.personalizations[0].addSubstitution(
-        new helper.Substitution('-time-', applicant.profile.timePerOccasion));
+        new helper.Substitution('-time-', applicant.profile.timePerOccasion.toString()));
     mail.personalizations[0].addSubstitution(
         new helper.Substitution('-description-', applicant.profile.description));
 
-    mail.setTemplateId('59dfda2e-00f6-4963-864f-9341fcac48df');
+    mail.setTemplateId(process.env.SENDGRID_ORG_EMAILTEMP);
 
     let request = sg.emptyRequest({
         method: 'POST',
