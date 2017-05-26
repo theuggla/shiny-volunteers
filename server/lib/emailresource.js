@@ -21,8 +21,25 @@ let sg = require('sendgrid')(process.env.SENDGRID_API_KEY);
 module.exports.sendMailToUser = function(user, need) {
     let toEmail = new helper.Email(user.profile.email);
     let subject = 'Thanks for your application!';
-    let content = new helper.Content('text/plain', 'We have  forwarded your application regarding the ' + need.title + ' to the concerned organization together with your profile, and they will be in touch as soon as possible.');
+    let content = new helper.Content('text/plain', '');
     let mail = new helper.Mail(fromEmail, subject, toEmail, content);
+
+    mail.personalizations[0].addSubstitution(
+        new helper.Substitution('-name-', user.email));
+    mail.personalizations[0].addSubstitution(
+        new helper.Substitution('-need-', need.title));
+    mail.personalizations[0].addSubstitution(
+        new helper.Substitution('-required-', need.skillsRequired.join(', ')));
+    mail.personalizations[0].addSubstitution(
+        new helper.Substitution('-desired-', need.skillsDesired.join(', ')));
+    mail.personalizations[0].addSubstitution(
+        new helper.Substitution('-when-', need.when));
+    mail.personalizations[0].addSubstitution(
+        new helper.Substitution('-time-', need.timePerOccasion));
+    mail.personalizations[0].addSubstitution(
+        new helper.Substitution('-description-', need.description));
+
+    mail.setTemplateId('3ecd7bff-f4e2-471c-a7f0-b6441bdb58f5');
 
     let request = sg.emptyRequest({
         method: 'POST',
@@ -34,6 +51,7 @@ module.exports.sendMailToUser = function(user, need) {
         if (user.info.email !== 'vol@vol.com') {
             sg.API(request, (error, response) => {
                 if (error) {
+                    console.log(error);
                     reject(error);
                 }
                 resolve(response);
