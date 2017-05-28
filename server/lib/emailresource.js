@@ -25,7 +25,7 @@ module.exports.sendMailToUser = function(user, need) {
     let mail = new helper.Mail(fromEmail, subject, toEmail, content);
 
     mail.personalizations[0].addSubstitution(
-        new helper.Substitution('-name-', user.email));
+        new helper.Substitution('-name-', user.profile.email));
     mail.personalizations[0].addSubstitution(
         new helper.Substitution('-need-', need.title));
     mail.personalizations[0].addSubstitution(
@@ -77,7 +77,7 @@ module.exports.sendApplicationMail = function(user, need, applicant) {
     let mail = new helper.Mail(fromEmail, subject, toEmail, content);
 
     mail.personalizations[0].addSubstitution(
-        new helper.Substitution('-name-', user.email));
+        new helper.Substitution('-name-', user.info.email));
     mail.personalizations[0].addSubstitution(
         new helper.Substitution('-need-', need.title));
     mail.personalizations[0].addSubstitution(

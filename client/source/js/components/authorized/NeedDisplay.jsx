@@ -30,8 +30,6 @@ class Need extends React.Component {
     constructor(props) {
         super(props);
 
-        console.log(this.props.need);
-
         this.state = {
             open: false,
             confirmOpen: false

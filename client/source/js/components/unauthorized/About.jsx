@@ -10,7 +10,7 @@ import React from 'react';
  * Renders an about-text.
  */
 const About = () => (
-    <div className="about"><p>About.</p></div>
+    <div className="about"><p></p></div>
 );
 
 // Exports ------------------------------------------------------------------------------------------------------------
