@@ -36,6 +36,7 @@ const NeedsList = ({needs, noNeedsText, onClick, action, actionPrompt, icon, con
 
             {(needs.length > 0) && (
                 <div>
+                    <p style={styles.needsDisplay.actionTip}>{actionPrompt}</p>
                     <Table style={styles.needsDisplay.needsList}>
                         <TableBody
                             selectable={false}
@@ -44,7 +45,7 @@ const NeedsList = ({needs, noNeedsText, onClick, action, actionPrompt, icon, con
                             displayRowCheckbox={false}
                         >
                             {needs.map( (need) => (
-                                <Need onClick={onClick} need={need} action={action} icon={icon} actionPrompt={actionPrompt} confirmPrompt={confirmPrompt} key={need._id}/>
+                                <Need onClick={onClick} need={need} action={action} icon={icon} confirmPrompt={confirmPrompt} key={need._id}/>
                             ))}
                             </TableBody>
                     </Table>

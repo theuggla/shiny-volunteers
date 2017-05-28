@@ -60,6 +60,11 @@ module.exports = {
         },
         needActionIcon: {
             margin: 0
+        },
+        actionTip: {
+            textAlign: 'center',
+            padding: '1em',
+            color: '#BDBDBD'
         }
     },
     addNeedForm: {

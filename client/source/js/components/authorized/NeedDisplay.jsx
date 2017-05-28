@@ -72,10 +72,6 @@ class Need extends React.Component {
                                 if (this.props.action) {
                                     this.setState({confirmOpen: true})
                                 }}}
-                                tooltip={this.props.actionPrompt}
-                                tooltipPosition='bottom-left'
-                                tooltipStyles={{zIndex: '100', overflow: 'visible'}}
-                                touch={true}
                                 >
                                 {this.props.icon}
                             </IconButton>
