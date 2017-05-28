@@ -140,6 +140,9 @@ module.exports = {
     loadcontainer: {
         textAlign: 'center'
     },
+    about: {
+        padding: '2em'
+    },
     error: {
         textAlign: 'center',
         padding: '0 1em',

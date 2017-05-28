@@ -175,3 +175,11 @@ form {
 
 /*end authorized volunteer pages*/
 /*end specific styles*/
+
+/*media queries*/
+@media screen and (min-width: 800px) {
+    .main-space, .main-space-front {
+        margin: 20vh;
+    }
+}
+/*end media queries*/

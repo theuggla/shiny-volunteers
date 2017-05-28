@@ -21,6 +21,7 @@ let noNeedsText = "you haven't registered any needs yet! think of what you need 
     "under the add-need-tab.";
 let confirmPrompt = "confirming will remove the need permanently";
 let serverErrorMessage = "we seem to not be getting a response. ";
+let actionPrompt = "click the x to delete a need.";
 
 // Class --------------------------------------------------------------------------------------------------------------
 
@@ -116,6 +117,7 @@ class OurNeedsPage extends React.Component {
                         onClick={this.removeNeed}
                         confirmPrompt={confirmPrompt}
                         noNeedsText={noNeedsText}
+                        actionPrompt={actionPrompt}
                         icon={<RemoveIcon />}
                     />) : (
                     <div style={styles.loadcontainer}>

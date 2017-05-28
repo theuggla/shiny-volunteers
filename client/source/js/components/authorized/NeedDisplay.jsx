@@ -66,11 +66,17 @@ class Need extends React.Component {
         return (
             <TableRow key={this.props.need._id} selectable={false} style={styles.needsDisplay.needDisplayRow}>
                         <TableRowColumn style={styles.needsDisplay.needActionDisplayColumn}>
-                            <IconButton style={styles.needsDisplay.needActionIcon} onTouchTap={() => {
+                            <IconButton
+                                style={styles.needsDisplay.needActionIcon}
+                                onTouchTap={() => {
                                 if (this.props.action) {
                                     this.setState({confirmOpen: true})
-                                }
-                            }}>
+                                }}}
+                                tooltip={this.props.actionPrompt}
+                                tooltipPosition='bottom-left'
+                                tooltipStyles={{zIndex: '100', overflow: 'visible'}}
+                                touch={true}
+                                >
                                 {this.props.icon}
                             </IconButton>
                         </TableRowColumn>

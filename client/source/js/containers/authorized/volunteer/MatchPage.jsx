@@ -21,6 +21,7 @@ let noNeedsText = "there are no matches for you at the moment. either your profi
         "organization has a need that matches your preferences. hang in there.";
 let confirmPrompt = "your information will be sent out to the organization.";
 let serverErrorMessage = "we seem to not be getting a response. ";
+let actionPrompt = "click the plus-sign to apply for the match.";
 
 // Class---------------------------------------------------------------------------------------------------------------
 
@@ -118,6 +119,7 @@ class MatchPage extends React.Component {
                                onClick={this.applyForMatch}
                                confirmPrompt={confirmPrompt}
                                noNeedsText={noNeedsText}
+                               actionPrompt={actionPrompt}
                                icon={<AddIcon />}
                     />) : (
                     <div style={styles.loadcontainer}>
