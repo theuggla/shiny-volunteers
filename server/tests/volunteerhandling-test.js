@@ -2,6 +2,8 @@
  * Tests for the volunteer handling-resource.
  */
 
+require('mocha');
+
 let chai = require('chai');
 let chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
@@ -31,6 +33,9 @@ describe('volunteer handling module', () => {
         description: 'test',
         skillsRequired: ['wordpress', 'cooking'],
         skillsDesired: ['IT', 'children'],
+        categories: 'women',
+        timePerOccasion: 8,
+        numberOfTimes: ['once'],
         expiryDate: new Date(Date.now())
     };
 
@@ -39,6 +44,10 @@ describe('volunteer handling module', () => {
         title: 'test',
         skillsRequired: ['wordpress'],
         skillsDesired: ['IT', 'children'],
+        categories: 'women',
+        timePerOccasion: 8,
+        numberOfTimes: ['once'],
+        expiryDate: new Date(Date.now()),
         description: 'test also'
     };
 
@@ -47,6 +56,10 @@ describe('volunteer handling module', () => {
         title: 'test',
         skillsRequired: ['wordpress', 'IT'],
         skillsDesired: ['none'],
+        categories: 'women',
+        timePerOccasion: 8,
+        numberOfTimes: ['once'],
+        expiryDate: new Date(Date.now()),
         description: 'test also'
     };
 
@@ -55,11 +68,22 @@ describe('volunteer handling module', () => {
         title: 'test',
         skillsRequired: ['none'],
         skillsDesired: ['IT'],
+        categories: 'women',
+        timePerOccasion: 8,
+        numberOfTimes: ['once'],
+        expiryDate: new Date(Date.now()),
         description: 'test also'
     };
 
     let user = {
-        skills: ['wordpress, cooking, children']
+        profile: {
+            _id: 1,
+            skills: ['wordpress, cooking, children'],
+            location: ['gothenburg'],
+            numberOfTimes: ['once'],
+            timePerOccasion: 10,
+            interests: ['women']
+        }
     };
 
     before('add needs to database', () => {
