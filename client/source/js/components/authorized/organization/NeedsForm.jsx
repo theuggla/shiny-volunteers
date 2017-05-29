@@ -102,6 +102,8 @@ const NeedsForm = ({
         <div className="field-line">
             <Card>
             <TextField
+                multiLine={true}
+                rows={2}
                 floatingLabelText="when do you need the help?"
                 hintText="Tuesday afternoons, March 21, every morning, weekends..."
                 name="when"
@@ -184,6 +186,22 @@ const NeedsForm = ({
                     disableYearSelection={true}
                     value={need.expiryDate}
                     onChange={(event, date) => {onChange({target: {name: 'expiryDate', value: new Date(date)}})}}
+                />
+            </Card>
+        </div>
+
+        <div className="field-line">
+            <Card>
+                <TextField
+                    floatingLabelText="way of contact (email or telephone)"
+                    name="contact"
+                    floatingLabelStyle={styles.formTextField.floatingLabelStyle}
+                    floatingLabelFocusStyle={styles.formTextField.floatingLabelFocusStyle}
+                    style={styles.formTextField.style}
+                    inputStyle={styles.formTextField.inputStyle}
+                    errorText={errors.contact}
+                    onChange={onChange}
+                    value={need.contact}
                 />
             </Card>
         </div>

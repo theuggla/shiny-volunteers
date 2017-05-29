@@ -34,7 +34,8 @@ function getNeeds(query) {
                         location: need.location,
                         when: need.when,
                         timePerOccasion: need.timePerOccasion,
-                        numberOfTimes: need.numberOfTimes
+                        numberOfTimes: need.numberOfTimes,
+                        contact: need.contact
                     };
                 });
             })

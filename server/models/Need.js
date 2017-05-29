@@ -20,7 +20,8 @@ let needSchema = new mongoose.Schema({
     when            : String,
     categories      : [String],
     timePerOccasion : Number,
-    numberOfTimes   : [String]
+    numberOfTimes   : [String],
+    contact         : {type: String, required: true}
 });
 
 /**

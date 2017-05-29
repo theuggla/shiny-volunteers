@@ -86,6 +86,7 @@ class Need extends React.Component {
                                     <p><b>When:</b> {this.props.need.when}</p>
                                     <p><b>Number of times:</b> {this.props.need.numberOfTimes.join(' / ')}</p>
                                     <p><b>Time per occasion:</b> {this.props.need.timePerOccasion}h</p>
+                                    <p><b>Contact for more information:</b> {this.props.need.contact}</p>
                                 </div>
                             <p>{this.props.need.description}</p>
                             </div>)

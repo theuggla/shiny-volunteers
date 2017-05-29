@@ -82,7 +82,9 @@ class AddNeedPage extends React.Component {
         super(props);
 
         this.state = {
-            need: {},
+            need: {
+                contact: Auth.getUserData().email
+            },
             errors: {
                 summary: ""
             },
@@ -118,7 +120,7 @@ class AddNeedPage extends React.Component {
         let complete = true;
         let keys = Object.keys(this.state.need);
 
-        if (keys.length < 10) {
+        if (keys.length < 11) {
             complete = false;
         } else {
             keys.forEach(key => {
