@@ -31,7 +31,7 @@ import Snackbar from 'material-ui/Snackbar';
  * @param processSignup {function} hat to do if the user signs up.
  * @param errors {Object} the error-state of the wrapper.
  * @param user {Object} The user object to change.
- * @param allowFacebook {Boolean} wheter to display the facebook login button.
+ * @param allowFacebook {Boolean} whether to display the facebook login button.
  * @param signup {Boolean} whether to display the signup form.
  * @param popup {Boolean} whether to display a popup.
  * @param popupAction {String} what action the popup button will have,

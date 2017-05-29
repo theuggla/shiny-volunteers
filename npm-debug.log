@@ -1,24 +1,46 @@
 0 info it worked if it ends with ok
-1 verbose cli [ '/usr/bin/nodejs', '/usr/bin/npm', 'run', 'install' ]
+1 verbose cli [ '/usr/bin/nodejs', '/usr/bin/npm', 'run', 'test' ]
 2 info using npm@3.10.10
 3 info using node@v6.10.2
-4 verbose stack Error: missing script: install
-4 verbose stack     at run (/usr/lib/node_modules/npm/lib/run-script.js:151:19)
-4 verbose stack     at /usr/lib/node_modules/npm/lib/run-script.js:61:5
-4 verbose stack     at /usr/lib/node_modules/npm/node_modules/read-package-json/read-json.js:356:5
-4 verbose stack     at checkBinReferences_ (/usr/lib/node_modules/npm/node_modules/read-package-json/read-json.js:320:45)
-4 verbose stack     at final (/usr/lib/node_modules/npm/node_modules/read-package-json/read-json.js:354:3)
-4 verbose stack     at then (/usr/lib/node_modules/npm/node_modules/read-package-json/read-json.js:124:5)
-4 verbose stack     at /usr/lib/node_modules/npm/node_modules/read-package-json/read-json.js:311:12
-4 verbose stack     at /usr/lib/node_modules/npm/node_modules/graceful-fs/graceful-fs.js:78:16
-4 verbose stack     at tryToString (fs.js:456:3)
-4 verbose stack     at FSReqWrap.readFileAfterClose [as oncomplete] (fs.js:443:12)
-5 verbose cwd /media/molly/DATA/code/1dv430/code/ma222jp-project
-6 error Linux 4.8.0-49-generic
-7 error argv "/usr/bin/nodejs" "/usr/bin/npm" "run" "install"
-8 error node v6.10.2
-9 error npm  v3.10.10
-10 error missing script: install
-11 error If you need help, you may report this error at:
-11 error     <https://github.com/npm/npm/issues>
-12 verbose exit [ 1, true ]
+4 verbose run-script [ 'pretest', 'test', 'posttest' ]
+5 info lifecycle shiny-volunteers@1.0.0~pretest: shiny-volunteers@1.0.0
+6 silly lifecycle shiny-volunteers@1.0.0~pretest: no script for pretest, continuing
+7 info lifecycle shiny-volunteers@1.0.0~test: shiny-volunteers@1.0.0
+8 verbose lifecycle shiny-volunteers@1.0.0~test: unsafe-perm in lifecycle true
+9 verbose lifecycle shiny-volunteers@1.0.0~test: PATH: /usr/lib/node_modules/npm/bin/node-gyp-bin:/media/molly/DATA/code/1dv430/code/ma222jp-project/node_modules/.bin:/home/molly/bin:/home/molly/.local/bin:/home/molly/bin:/home/molly/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin
+10 verbose lifecycle shiny-volunteers@1.0.0~test: CWD: /media/molly/DATA/code/1dv430/code/ma222jp-project
+11 silly lifecycle shiny-volunteers@1.0.0~test: Args: [ '-c',
+11 silly lifecycle   'karma start && mocha-webpack --webpack-config webpack.server-test.babel.js "server/tests/*-test.js"' ]
+12 silly lifecycle shiny-volunteers@1.0.0~test: Returned: code: 1  signal: null
+13 info lifecycle shiny-volunteers@1.0.0~test: Failed to exec test script
+14 verbose stack Error: shiny-volunteers@1.0.0 test: `karma start && mocha-webpack --webpack-config webpack.server-test.babel.js "server/tests/*-test.js"`
+14 verbose stack Exit status 1
+14 verbose stack     at EventEmitter.<anonymous> (/usr/lib/node_modules/npm/lib/utils/lifecycle.js:255:16)
+14 verbose stack     at emitTwo (events.js:106:13)
+14 verbose stack     at EventEmitter.emit (events.js:191:7)
+14 verbose stack     at ChildProcess.<anonymous> (/usr/lib/node_modules/npm/lib/utils/spawn.js:40:14)
+14 verbose stack     at emitTwo (events.js:106:13)
+14 verbose stack     at ChildProcess.emit (events.js:191:7)
+14 verbose stack     at maybeClose (internal/child_process.js:886:16)
+14 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:226:5)
+15 verbose pkgid shiny-volunteers@1.0.0
+16 verbose cwd /media/molly/DATA/code/1dv430/code/ma222jp-project
+17 error Linux 4.8.0-49-generic
+18 error argv "/usr/bin/nodejs" "/usr/bin/npm" "run" "test"
+19 error node v6.10.2
+20 error npm  v3.10.10
+21 error code ELIFECYCLE
+22 error shiny-volunteers@1.0.0 test: `karma start && mocha-webpack --webpack-config webpack.server-test.babel.js "server/tests/*-test.js"`
+22 error Exit status 1
+23 error Failed at the shiny-volunteers@1.0.0 test script 'karma start && mocha-webpack --webpack-config webpack.server-test.babel.js "server/tests/*-test.js"'.
+23 error Make sure you have the latest version of node.js and npm installed.
+23 error If you do, this is most likely a problem with the shiny-volunteers package,
+23 error not with npm itself.
+23 error Tell the author that this fails on your system:
+23 error     karma start && mocha-webpack --webpack-config webpack.server-test.babel.js "server/tests/*-test.js"
+23 error You can get information on how to open an issue for this project with:
+23 error     npm bugs shiny-volunteers
+23 error Or if that isn't available, you can get their info via:
+23 error     npm owner ls shiny-volunteers
+23 error There is likely additional logging output above.
+24 verbose exit [ 1, true ]

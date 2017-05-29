@@ -5,7 +5,7 @@
 
 
 // Keep track of the cache.
-let CACHE_VERSION = 'v18';
+let CACHE_VERSION = 'v19';
 let STATIC_CACHE = 'static';
 
 let expectedCaches = [CACHE_VERSION, STATIC_CACHE];

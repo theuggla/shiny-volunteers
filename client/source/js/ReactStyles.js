@@ -19,6 +19,14 @@ module.exports = {
             padding: '1em',
             fontVariant: 'small-caps',
             color: 'white'
+        },
+        user: {
+            position: 'fixed',
+            paddingLeft: '1em',
+            left: '0',
+            top: '0',
+            fontVariant: 'small-caps',
+            color: 'white'
         }
     },
     navigation: {
