@@ -93,7 +93,7 @@ class LoginPage extends React.Component {
                     errors: {}
                 });
 
-                auth.authenticateUser(response.data.token, response.data.user.roles, response.data.user.complete);
+                auth.authenticateUser(response.data.token, response.data.user.roles, response.data.user);
                 if (this) this.props.history.push('/' + response.data.user.roles[0]);
             })
             .catch((error) => {

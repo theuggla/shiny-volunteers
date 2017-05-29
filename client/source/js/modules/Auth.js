@@ -9,10 +9,11 @@ import Cookies from 'js-cookie';
 class Auth {
     /**
      * Save an authenticated user in a cookie.
-     * @param {string} token the users JWT token
-     * @param {[string]} roles an array of roles the user is authenticated as
+     * @param {string} token - the users JWT token
+     * @param {[string]} roles - an array of roles the user is authenticated as
+     * @param {object} data - the userdata of the authenticated user
      */
-    static authenticateUser(token, roles) {
+    static authenticateUser(token, roles, data) {
         if (!Array.isArray(roles)) {
             roles = [roles];
         }
@@ -23,7 +24,7 @@ class Auth {
             }
         });
 
-        Cookies.set('currentUser', {token: token, roles: roles}, {expires: 30});
+        Cookies.set('currentUser', {token: token, roles: roles, data: data}, {expires: 30});
     }
 
     /**
@@ -64,6 +65,18 @@ class Auth {
             return JSON.parse(Cookies.get('currentUser')).roles;
         } else {
             return [];
+        }
+    }
+
+    /**
+     * Get the data of the currently authenticated user.
+     * @returns {object} the data.
+     */
+    static getUserData() {
+        if (Auth.isUserAuthenticated()) {
+            return JSON.parse(Cookies.get('currentUser')).data;
+        } else {
+            return {};
         }
     }
 

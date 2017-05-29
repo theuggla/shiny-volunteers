@@ -9,6 +9,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { HashRouter, Route, Switch, Redirect } from 'react-router-dom'
+import ScrollToTop from './components/ScrollToTop.jsx';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';

@@ -49,9 +49,16 @@ class VolunteerContainer extends AuthorizedComponent {
     constructor(props) {
         super(props);
 
+        this.state = {
+            isAuthorized: true,
+            user: {}
+        };
+
         this.userRoles = Auth.getAuthRoles();
-        this.isAuthorized = true;
-        this.notAuthorizedPath = "/"
+        this.notAuthorizedPath = "/";
+
+        this.state.user = Auth.getUserData();
+        this.state.isAuthorized = true;
     }
 
     /**
@@ -60,7 +67,7 @@ class VolunteerContainer extends AuthorizedComponent {
      * @param userRoles [String] the actual roles.
      */
     handleUnauthorizedRole(routeRoles, userRoles) {
-        this.isAuthorized = false;
+        this.setState({isAuthorized: false});
     }
 
     /**
@@ -73,7 +80,7 @@ class VolunteerContainer extends AuthorizedComponent {
             <div className="volunteer-app app-container">
                 <div className="app-bar">
                     <Link id="main-link" to={`${this.props.match.path}/`}><img src="/assets/logo.png" style={styles.topbar.internalLogo}/></Link>
-                    <Link id="logout-link" to={`${this.props.match.path}/logout`} style={styles.topbar.logout}>LOG OUT</Link>
+                    <Link id="logout-link" to={`${this.props.match.path}/logout`} style={styles.topbar.logout}><p>LOG OUT</p><p>{this.state.user.email}</p></Link>
                 </div>
                 <div className="main-space">
                 <Switch>
