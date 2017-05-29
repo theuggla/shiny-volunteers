@@ -105,7 +105,7 @@ const LoginForm = ({
             <div className="button-line">
                 <FacebookLogin
                     appId={process.env.FACEBOOK_ID || ''}
-                    autoLoad={true}
+                    autoLoad={false}
                     fields="name,email,id"
                     scope="public_profile,email"
                     callback={onFacebookLogin}
