@@ -75,7 +75,7 @@ class VolunteerContainer extends AuthorizedComponent {
      * @returns {Component} Different components depending on if the user is authorized.
      */
     render() {
-        return this.isAuthorized ? (
+        return this.state.isAuthorized ? (
             <MuiThemeProvider muiTheme={muiTheme}>
             <div className="volunteer-app app-container">
                 <div className="app-bar">
