@@ -39,6 +39,7 @@ const muiTheme = getMuiTheme(darkBaseTheme, {
 const App = () => (
     <HashRouter >
             <MuiThemeProvider muiTheme={muiTheme}>
+                <ScrollToTop>
                 <div>
                     <Switch>
                         <Route path="/volunteer" render={(props) => ( Auth.isUserAuthenticated() ? (<VolunteerContainer {...props} routes={[{authorize: ['volunteer']}]}/>) : (<FrontEndContainer />) )} />
@@ -46,6 +47,7 @@ const App = () => (
                         <Route path="/" render={() => ( Auth.isUserAuthenticated() ? (<Redirect to={Auth.getAuthRoles()[0]}/>) : (<FrontEndContainer />))} />
                     </Switch>
                 </div>
+                </ScrollToTop>
             </MuiThemeProvider>
     </HashRouter>
 );
