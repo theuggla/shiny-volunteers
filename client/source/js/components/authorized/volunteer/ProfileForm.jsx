@@ -143,6 +143,8 @@ const ProfileForm = ({
             </Card>
         </div>
 
+        {errors.summary && <p className="error-message">{errors.summary}</p>}
+
         <div className="button-line">
             <RaisedButton type="submit" label="Save" disabled={!isComplete} primary />
         </div>

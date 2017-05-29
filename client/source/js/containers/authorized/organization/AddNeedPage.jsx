@@ -164,6 +164,8 @@ class AddNeedPage extends React.Component {
     processForm(event) {
         event.preventDefault();
 
+        console.log('processing form');
+
         axios({
             method: 'POST',
             url: '/organization/needs',
@@ -173,8 +175,10 @@ class AddNeedPage extends React.Component {
                 this.setState({
                     errors: {}
                 });
+                console.log('form sent');
                 this.props.history.push('/');
         }).catch((error) => {
+            console.log('form not sent');
                 const errors = error.response ? error.response.data.errors ? error.response.data.errors : error.response.data : {summary: 'you seem to be offline'};
                 this.setState({
                     errors: errors
