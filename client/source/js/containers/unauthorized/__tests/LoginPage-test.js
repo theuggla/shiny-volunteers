@@ -154,7 +154,7 @@ describe("LoginPage", () => {
         step("Submit the form", function(done) {
             const form = wrapper.find(".login-form");
             form.simulate("submit");
-            done();
+            setTimeout(done, 1000);
         });
 
         step("Display error message", function(done) {
