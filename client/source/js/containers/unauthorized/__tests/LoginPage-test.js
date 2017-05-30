@@ -264,7 +264,9 @@ describe("LoginPage", () => {
             let event = {preventDefault: function(){}};
             const form = wrapper.find(".login-form");
 
-            form.props().processSignup(event).then(done());
+
+
+            form.prop('processSignup')(event).then(done());
         });
 
         step("Display error message", function(done) {
@@ -313,14 +315,6 @@ describe("LoginPage", () => {
             const confirmPasswordInput = wrapper.find("[name='passwordConfirm']");
             confirmPasswordInput.simulate("change", {target: {name: 'passwordConfirm', value: "correct"}});
             done();
-        });
-
-        step("Submit the form", function(done) {
-            wrapper.setState({signup: true});
-            let event = {preventDefault: function(){}};
-            const form = wrapper.find(".login-form");
-
-            form.props().processSignup(event).then(done());
         });
     });
 
