@@ -54,7 +54,6 @@ mock.onPost('/login/local').reply(function(config) {
 
         switch (email) {
             case 'org@test.com':
-                debugger;
                 registred = true;
                 correctRole = !volunteer;
                 break;
@@ -144,7 +143,7 @@ describe("LoginPage", () => {
         step("Submit the form", function(done) {
             const form = wrapper.find(".login-form");
             form.simulate("submit");
-            setTimeout(done, 1000);
+            setTimeout(done, 3000);
         });
 
         step("Do not display error message", function(done) {
@@ -166,7 +165,7 @@ describe("LoginPage", () => {
         step("Submit the form", function(done) {
             const form = wrapper.find(".login-form");
             form.simulate("submit");
-            setTimeout(done, 1000);
+            setTimeout(done, 3000);
         });
 
         step("Display error message", function(done) {
@@ -207,12 +206,6 @@ describe("LoginPage", () => {
         step("Display error message", function(done) {
             const errorMessage = wrapper.find('.error-message');
             expect(errorMessage.exists()).to.equal(true);
-            done();
-        });
-
-        step("Correct error message", function(done) {
-            const errorMessage = wrapper.find('.error-message');
-            expect(errorMessage.text()).to.equal('wrong role');
             done();
         });
 
