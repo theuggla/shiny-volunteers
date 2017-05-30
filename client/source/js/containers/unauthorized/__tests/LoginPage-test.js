@@ -165,24 +165,18 @@ describe("LoginPage", () => {
             done();
         });
 
-        step("Submit the form", function(done) {
+        step("Submit the form and display correct error message", function(done) {
             let event = {preventDefault: function(){}};
             const form = wrapper.find(".login-form");
 
-            form.props().onSubmit(event).then(done());
+            form.props().onSubmit(event).then(() => {
+                    const errorMessage = wrapper.find('.error-message');
+                    expect(errorMessage.exists()).to.equal(true);
+                    expect(errorMessage.text()).to.equal('wrong password');
+                    done();
+            });
         });
 
-        step("Display error message", function(done) {
-            const errorMessage = wrapper.find('.error-message');
-            expect(errorMessage.exists()).to.equal(true);
-            done();
-        });
-
-        step("Correct error message", function(done) {
-            const errorMessage = wrapper.find('.error-message');
-            expect(errorMessage.text()).to.equal('wrong password');
-            done();
-        });
 
         step("Do not redirect", function(done) {
             expect(historyMock.length).to.equal(0);
@@ -201,23 +195,19 @@ describe("LoginPage", () => {
             done();
         });
 
-        step("Submit the form", function(done) {
+        step("Submit the form and display correct error message", function(done) {
             let event = {preventDefault: function(){}};
 
             const form = wrapper.find(".login-form");
-            form.props().onSubmit(event).then(done());
-        });
 
-        step("Display error message", function(done) {
-            const errorMessage = wrapper.find('.error-message');
-            expect(errorMessage.exists()).to.equal(true);
-            done();
-        });
+            form.props().onSubmit(event).then(() => {
+                const errorMessage = wrapper.find('.error-message');
 
-        step("Correct error message", function(done) {
-            const errorMessage = wrapper.find('.error-message');
-            expect(errorMessage.text()).to.equal('wrong role');
-            done();
+                expect(errorMessage.exists()).to.equal(true);
+                expect(errorMessage.text()).to.equal('wrong role');
+
+                done();
+            });
         });
 
         step("Do not redirect", function(done) {
@@ -235,17 +225,15 @@ describe("LoginPage", () => {
             done();
         });
 
-        step("Submit the form", function(done) {
+        step("Submit the form and do not display error message", function(done) {
             let event = {preventDefault: function(){}};
             const form = wrapper.find(".login-form");
 
-            form.props().onSubmit(event).then(done());
-        });
-
-        step("No error message", function(done) {
-            const errorMessage = wrapper.find('.error-message');
-            expect(errorMessage.exists()).to.equal(false);
-            done();
+            form.props().onSubmit(event).then(() => {
+                const errorMessage = wrapper.find('.error-message');
+                expect(errorMessage.exists()).to.equal(false);
+                done();
+            });
         });
 
         step("Find popup", function(done) {
