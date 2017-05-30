@@ -142,16 +142,6 @@ describe("LoginPage", () => {
 
     });
 
-    describe("Login with wrong password", () => {
-        step("Fill in email and password", function(done) {
-            const emailInput = wrapper.find("[name='email']");
-            const passwordInput = wrapper.find("[name='password']");
-            emailInput.simulate("change", {target: {name: 'email', value: "correct@test.com"}});
-            passwordInput.simulate("change", {target: {name: 'password', value: "incorrect"}});
-            done();
-        });
-    });
-
     describe("Login as organization with email that belongs to volunteer", () => {
         wrapper.setProps({match: {params: {role: 'organization'}}});
 
@@ -177,20 +167,9 @@ describe("LoginPage", () => {
         step("Submit the form", function(done) {
             const form = wrapper.find(".login-form");
             form.simulate("submit");
-            setTimeout(done, 1000);
-        });
-
-        step("No error message", function(done) {
-            const errorMessage = wrapper.find('.error-message');
-            expect(errorMessage.exists()).to.equal(false);
             done();
         });
 
-        step("Find popup", function(done) {
-            const popup = wrapper.find('.popup');
-            expect(popup.exists()).to.equal(true);
-            done();
-        });
     });
 
     describe("Login with email that is not in system, accept signup, passwords does not match", () => {
@@ -205,7 +184,7 @@ describe("LoginPage", () => {
         step("Submit the form", function(done) {
             const form = wrapper.find(".login-form");
             form.simulate("submit");
-            setTimeout(done, 1000);
+            done();
         });
 
         step("No error message", function(done) {
