@@ -265,7 +265,7 @@ describe("LoginPage", () => {
             const form = wrapper.find(".login-form");
 
             console.log(form.debug());
-            console.log(form.props().processSignup):
+            console.log(form.props().processSignup);
 
             form.prop('processSignup')(event).then(done());
         });
