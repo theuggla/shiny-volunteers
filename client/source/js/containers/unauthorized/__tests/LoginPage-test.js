@@ -165,18 +165,6 @@ describe("LoginPage", () => {
             form.props().onSubmit(event).then(done());
         });
 
-        step("Display error message", function(done) {
-            const errorMessage = wrapper.find('.error-message');
-            expect(errorMessage.exists()).to.equal(true);
-            done();
-        });
-
-        step("Correct error message", function(done) {
-            const errorMessage = wrapper.find('.error-message');
-            expect(errorMessage.text()).to.equal('wrong password');
-            done();
-        });
-
         step("Do not redirect", function(done) {
             expect(historyMock.length).to.equal(0);
             done();
@@ -199,17 +187,6 @@ describe("LoginPage", () => {
 
             const form = wrapper.find(".login-form");
             form.props().onSubmit(event).then(done());
-        });
-
-        step("Display error message", function(done) {
-            const errorMessage = wrapper.find('.error-message');
-            expect(errorMessage.exists()).to.equal(true);
-            done();
-        });
-
-        step("Do not redirect", function(done) {
-            expect(historyMock.length).to.equal(0);
-            done();
         });
     });
 
@@ -298,7 +275,7 @@ describe("LoginPage", () => {
 
         step("Correct error message", function(done) {
             const errorMessage = wrapper.find('.error-message');
-            expect(errorMessage.text()).to.evetually.equal('retype your passwords');
+            expect(errorMessage.text()).to.equal('retype your passwords');
             done();
         });
     });
