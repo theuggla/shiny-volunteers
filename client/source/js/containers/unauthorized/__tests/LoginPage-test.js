@@ -108,7 +108,7 @@ describe("LoginPage", () => {
     });
 
     beforeEach("reset state", () => {
-        wrapper.setState({signup: false});
+        wrapper.setState({signup: false, errors: {}});
     });
 
     describe("Basic render", () => {

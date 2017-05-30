@@ -5,7 +5,7 @@
 
 
 // Keep track of the cache.
-let CACHE_VERSION = 'v19';
+let CACHE_VERSION = 'v20';
 let STATIC_CACHE = 'static';
 
 let expectedCaches = [CACHE_VERSION, STATIC_CACHE];
@@ -54,8 +54,12 @@ self.addEventListener('activate', (event) => {
 
 // Handle fetch events by first asking the network, then sending back the cached resource if available.
 self.addEventListener('fetch', (event) => {
+    console.log('responding from sw');
     function onFetch (event) {
         let request = event.request;
+
+        console.log('fetching request');
+        console.log(request);
 
         event.respondWith(
             fromNetwork(event.request, 1000)
@@ -86,10 +90,16 @@ self.addEventListener('fetch', (event) => {
 
     // Get responses from cache.
     function fetchFromCache (fetchevent) {
+        console.log('fetching from cache');
+
         return caches.match(fetchevent.request).then((response) => {
             if (!response) {
                 throw Error('${event.request.url} not found in cache');
             }
+
+            console.log('got reponse from cache');
+            console.log(response.clone());
+
             return response;
         });
     }

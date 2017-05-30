@@ -95,6 +95,8 @@ class ProfilePage extends React.Component {
             this.state.offlinePopup = true;
         }, 5000);
 
+        console.log('mounting');
+
         axios({
             method: 'GET',
             url: '/volunteer/profile',
@@ -102,6 +104,9 @@ class ProfilePage extends React.Component {
         })
             .then((response) => {
                 clearTimeout(responseTimeout);
+
+                console.log('got response');
+                console.log(response);
 
                 this.setState({
                     offlinePopup: false,
