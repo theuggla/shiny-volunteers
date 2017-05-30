@@ -10,8 +10,7 @@ chai.use(chaiAsPromised);
 let expect = chai.expect;
 let sinon = require('sinon');
 
-let db = require('../lib/dbresource');
-if (!db.isConnected) db.connect();
+let db = require('./test-db');
 
 let getMatches = require('../lib/volunteerhandlingresource').getMatches;
 let updateProfile = require('../lib/volunteerhandlingresource').updateProfile;
@@ -97,7 +96,8 @@ describe('volunteer handling module', () => {
     describe('getMatches', () => {
 
         it('should return an array of need-objects', (done) => {
-            expect(2).to.equal(2);
+            let matches = getMatches(user);
+            expect(Array.isArray(matches)).to.equal(true);
             done();
         });
 
@@ -149,7 +149,7 @@ describe('volunteer handling module', () => {
     describe('getApplications', () => {
 
         it('should return an array of need-objects', (done) => {
-            expect(2).to.equal(2);
+            expect(3).to.equal(2);
             done();
         });
 
