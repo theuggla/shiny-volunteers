@@ -81,31 +81,35 @@ class LoginPage extends React.Component {
      * @param event {Object} The event that fires when the form is submitted.
      */
     processLoginForm(event) {
-        event.preventDefault();
+        return new Promise((resolve, reject) => {
+            event.preventDefault();
 
-        axios.post('/login/local', {
-            email: this.state.user.email,
-            password: this.state.user.password,
-            role: this.props.match.params.role
-        })
-            .then((response) => {
-                this.setState({
-                    errors: {}
-                });
-
-                auth.authenticateUser(response.data.token, response.data.user.roles, response.data.user);
-                if (this) this.props.history.push('/' + response.data.user.roles[0]);
+            axios.post('/login/local', {
+                email: this.state.user.email,
+                password: this.state.user.password,
+                role: this.props.match.params.role
             })
-            .catch((error) => {
-                if (error.response && error.response.status === 404) {
-                    this.setState({popup: true, popupAction: "sign up", popupMessage: error.response.data.summary + ' Sign up user?'});
-                } else {
-                    const errors = error.response ? error.response.data.errors ? error.response.data.errors : error.response.data : {summary: 'you seem to be offline'};
+                .then((response) => {
                     this.setState({
-                        errors: errors
+                        errors: {}
                     });
-                }
-            });
+
+                    auth.authenticateUser(response.data.token, response.data.user.roles, response.data.user);
+                    if (this) this.props.history.push('/' + response.data.user.roles[0]);
+                    resolve();
+                })
+                .catch((error) => {
+                    if (error.response && error.response.status === 404) {
+                        this.setState({popup: true, popupAction: "sign up", popupMessage: error.response.data.summary + ' Sign up user?'});
+                    } else {
+                        const errors = error.response ? error.response.data.errors ? error.response.data.errors : error.response.data : {summary: 'you seem to be offline'};
+                        this.setState({
+                            errors: errors
+                        });
+                    }
+                    resolve();
+                });
+        });
     }
 
     /**
@@ -114,37 +118,46 @@ class LoginPage extends React.Component {
      * @param event {Object} The event that fires when the form is submitted.
      */
     processSignupForm(event) {
-        event.preventDefault();
+        return new Promise((resolve, reject) => {
+            event.preventDefault();
 
-        if (!(this.state.user.password === this.state.user.passwordConfirm)) {
-            let errors = {
-                password: 'passwords does not match',
-                passwordConfirm: 'passwords does not match',
-                summary: 'retype your passwords'
-            };
-            this.setState({errors: errors})
-        } else {
-            axios.post('/login/local/signup', {
-                email: this.state.user.email,
-                password: this.state.user.password,
-                role: this.props.match.params.role
-            })
-                .then((response) => {
-                    this.setState({
-                        errors: {},
-                        popup: true,
-                        popupAction: "",
-                        popupMessage: response.data.summary,
-                        signup: false
-                    });
+            if (!(this.state.user.password === this.state.user.passwordConfirm)) {
+                let errors = {
+                    password: 'passwords does not match',
+                    passwordConfirm: 'passwords does not match',
+                    summary: 'retype your passwords'
+                };
+                this.setState({errors: errors});
+
+                resolve();
+
+            } else {
+                axios.post('/login/local/signup', {
+                    email: this.state.user.email,
+                    password: this.state.user.password,
+                    role: this.props.match.params.role
                 })
-                .catch((error) => {
-                    const errors = error.response ? error.response.data.errors ? error.response.data.errors : error.response.data : {summary: 'you seem to be offline'};
-                    this.setState({
-                        errors: errors
+                    .then((response) => {
+                        this.setState({
+                            errors: {},
+                            popup: true,
+                            popupAction: "",
+                            popupMessage: response.data.summary,
+                            signup: false
+                        });
+
+                        resolve();
+                    })
+                    .catch((error) => {
+                        const errors = error.response ? error.response.data.errors ? error.response.data.errors : error.response.data : {summary: 'you seem to be offline'};
+                        this.setState({
+                            errors: errors
+                        });
+
+                        resolve();
                     });
-                });
-        }
+            }
+        });
     }
 
     /**

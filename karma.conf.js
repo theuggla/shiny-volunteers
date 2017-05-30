@@ -41,7 +41,7 @@ module.exports = function(config) {
         files: [
             './webpack.client.tests.js'
         ],
-        frameworks: ['mocha', 'chai'],
+        frameworks: ['mocha', 'chai-as-promised', 'chai'],
         preprocessors: {
             './webpack.client.tests.js': ['webpack', 'sourcemap', 'babel']
         },

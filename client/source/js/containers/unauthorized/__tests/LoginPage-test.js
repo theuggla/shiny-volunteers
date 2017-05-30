@@ -141,9 +141,10 @@ describe("LoginPage", () => {
         });
 
         step("Submit the form", function(done) {
+            let event = {preventDefault: function(){}};
             const form = wrapper.find(".login-form");
-            form.simulate("submit");
-            done();
+
+            form.props().onSubmit(event).then(done());
         });
 
         step("Do not display error message", function(done) {
@@ -163,9 +164,10 @@ describe("LoginPage", () => {
         });
 
         step("Submit the form", function(done) {
+            let event = {preventDefault: function(){}};
             const form = wrapper.find(".login-form");
-            form.simulate("submit");
-            done();
+
+            form.props().onSubmit(event).then(done());
         });
 
         step("Display error message", function(done) {
@@ -176,7 +178,7 @@ describe("LoginPage", () => {
 
         step("Correct error message", function(done) {
             const errorMessage = wrapper.find('.error-message');
-            expect(errorMessage.text()).to.equal('wrong password');
+            expect(errorMessage.text()).to.eventually.equal('wrong password');
             done();
         });
 
@@ -198,20 +200,15 @@ describe("LoginPage", () => {
         });
 
         step("Submit the form", function(done) {
+            let event = {preventDefault: function(){}};
+
             const form = wrapper.find(".login-form");
-            form.simulate("submit");
-            done();
+            form.props().onSubmit(event).then(done());
         });
 
         step("Display error message", function(done) {
             const errorMessage = wrapper.find('.error-message');
             expect(errorMessage.exists()).to.equal(true);
-            done();
-        });
-
-        step("Correct error message", function(done) {
-            const errorMessage = wrapper.find('.error-message');
-            expect(errorMessage.text()).to.equal('wrong role');
             done();
         });
 
@@ -231,9 +228,10 @@ describe("LoginPage", () => {
         });
 
         step("Submit the form", function(done) {
+            let event = {preventDefault: function(){}};
             const form = wrapper.find(".login-form");
-            form.simulate("submit");
-            done();
+
+            form.props().onSubmit(event).then(done());
         });
 
         step("No error message", function(done) {
@@ -244,7 +242,7 @@ describe("LoginPage", () => {
 
         step("Find popup", function(done) {
             const popup = wrapper.find('.popup');
-            expect(popup.exists()).to.equal(true);
+            expect(popup.exists()).to.eventually.equal(true);
             done();
         });
     });
@@ -259,9 +257,10 @@ describe("LoginPage", () => {
         });
 
         step("Submit the form", function(done) {
+            let event = {preventDefault: function(){}};
             const form = wrapper.find(".login-form");
-            form.simulate("submit");
-            done();
+
+            form.props().onSubmit(event).then(done());
         });
 
         step("No error message", function(done) {
@@ -272,7 +271,7 @@ describe("LoginPage", () => {
 
         step("Find popup", function(done) {
             const popup = wrapper.find('.popup');
-            expect(popup.exists()).to.equal(true);
+            expect(popup.exists()).to.eventually.equal(true);
             done();
         });
 
@@ -290,9 +289,10 @@ describe("LoginPage", () => {
 
         step("Submit the form", function(done) {
             wrapper.setState({signup: true});
+            let event = {preventDefault: function(){}};
             const form = wrapper.find(".login-form");
-            form.simulate("submit");
-            done();
+
+            form.props().processSignup(event).then(done());
         });
 
         step("Display error message", function(done) {
@@ -303,7 +303,7 @@ describe("LoginPage", () => {
 
         step("Correct error message", function(done) {
             const errorMessage = wrapper.find('.error-message');
-            expect(errorMessage.text()).to.equal('retype your passwords');
+            expect(errorMessage.text()).to.evetually.equal('retype your passwords');
             done();
         });
     });
@@ -319,9 +319,10 @@ describe("LoginPage", () => {
         });
 
         step("Submit the form", function(done) {
+            let event = {preventDefault: function(){}};
             const form = wrapper.find(".login-form");
-            form.simulate("submit");
-            done();
+
+            form.props().onSubmit(event).then(done());
         });
 
         step("Find popup", function(done) {
@@ -344,15 +345,10 @@ describe("LoginPage", () => {
 
         step("Submit the form", function(done) {
             wrapper.setState({signup: true});
+            let event = {preventDefault: function(){}};
             const form = wrapper.find(".login-form");
-            form.simulate("submit");
-            done();
-        });
 
-        step("Confirm success", function(done) {
-            wrapper.setState({signup: true});
-            expect(wrapper.state('popupMessage')).to.equal('success');
-            done();
+            form.props().processSignup(event).then(done());
         });
     });
 
