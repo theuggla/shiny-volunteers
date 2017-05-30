@@ -107,11 +107,6 @@ describe("LoginPage", () => {
         wrapper.setProps({history: historyMock});
     });
 
-    beforeEach("reset state", () => {
-        wrapper.setState({signup: false});
-    });
-
-
     describe("Basic render", () => {
 
         it("should mount", (done) => {
@@ -178,7 +173,7 @@ describe("LoginPage", () => {
 
         step("Correct error message", function(done) {
             const errorMessage = wrapper.find('.error-message');
-            expect(errorMessage.text()).to.eventually.equal('wrong password');
+            expect(errorMessage.text()).to.equal('wrong password');
             done();
         });
 
@@ -242,7 +237,7 @@ describe("LoginPage", () => {
 
         step("Find popup", function(done) {
             const popup = wrapper.find('.popup');
-            expect(popup.exists()).to.eventually.equal(true);
+            expect(popup.exists()).to.equal(true);
             done();
         });
     });
@@ -271,7 +266,7 @@ describe("LoginPage", () => {
 
         step("Find popup", function(done) {
             const popup = wrapper.find('.popup');
-            expect(popup.exists()).to.eventually.equal(true);
+            expect(popup.exists()).to.equal(true);
             done();
         });
 
