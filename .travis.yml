@@ -1,7 +1,7 @@
 language: node_js
 node_js:
 - '6.10'
-script: mocha-webpack --webpack-config webpack.server-test.babel.js \'server/tests/*-test.js\' && node_modules/karma/bin/karma start karma.conf.js --single-run
+script: mocha-webpack --webpack-config webpack.server-test.babel.js \server/tests/*-test.js\ && node_modules/karma/bin/karma start karma.conf.js --single-run
 addons:
   firefox: latest
 services:
