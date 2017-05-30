@@ -53,7 +53,6 @@ mock.onPost('/login/local').reply(function(config) {
 
         switch (email) {
             case 'org@test.com':
-                debugger;
                 registred = true;
                 correctRole = !volunteer;
                 break;
@@ -80,6 +79,10 @@ mock.onPost('/login/local').reply(function(config) {
             errorResponse.errors.summary = 'user not in system';
             resolve([404, errorResponse]);
         }
+
+        correctPass = false;
+        registred = true;
+        correctRole = true;
     });
 });
 
@@ -108,7 +111,7 @@ describe("LoginPage", () => {
     });
 
     beforeEach("reset state", () => {
-        wrapper.setState({signup: false, errors: {}});
+        wrapper.setState({signup: false});
     });
 
     describe("Basic render", () => {
