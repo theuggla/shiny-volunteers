@@ -34,7 +34,7 @@ module.exports = function(config) {
             }
         },
         browserNoActivityTimeout: 100000,
-        browsers: ['Firefox'],
+        browsers: ['Chrome'],
         client: {
             captureConsole: true
         },
