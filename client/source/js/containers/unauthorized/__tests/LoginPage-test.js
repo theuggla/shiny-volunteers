@@ -150,29 +150,6 @@ describe("LoginPage", () => {
             passwordInput.simulate("change", {target: {name: 'password', value: "incorrect"}});
             done();
         });
-
-        step("Submit the form", function(done) {
-            const form = wrapper.find(".login-form");
-            form.simulate("submit");
-            setTimeout(done, 1000);
-        });
-
-        step("Display error message", function(done) {
-            const errorMessage = wrapper.find('.error-message');
-            expect(errorMessage.exists()).to.equal(true);
-            done();
-        });
-
-        step("Correct error message", function(done) {
-            const errorMessage = wrapper.find('.error-message');
-            expect(errorMessage.text()).to.equal('wrong password');
-            done();
-        });
-
-        step("Do not redirect", function(done) {
-            expect(historyMock.length).to.equal(0);
-            done();
-        });
     });
 
     describe("Login as organization with email that belongs to volunteer", () => {
