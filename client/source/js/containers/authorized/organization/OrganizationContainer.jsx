@@ -81,6 +81,7 @@ class OrganizationContainer extends AuthorizedComponent {
             <MuiThemeProvider muiTheme={muiTheme}>
                 <div className="organization-app app-container">
                     <div className="app-bar">
+                        <p style={styles.topbar.user}>{this.state.user.email}</p>
                         <Link id="main-link" to={`${this.props.match.path}/`}><img src="/assets/logo.png" style={styles.topbar.internalLogo}/></Link>
                         <Link id="logout-link" to={`${this.props.match.path}/logout`} style={styles.topbar.logout}>LOG OUT</Link>
                     </div>
