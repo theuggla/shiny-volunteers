@@ -1,28 +1,43 @@
 /**
  * A database for testing purposes.
  */
-
 let mongoose = require('mongoose');
-require('mocha');
+let isConnected = true;
 
-mongoose.connect('mongodb://localhost/test');
+/**
+ * Connects to the database.
+ */
 
-let connection = mongoose.connection;
+function connect() {
+    let db = mongoose.connection;
 
-before((done) => {
-    connection.on('open', () => {
-        connection.db.dropDatabase();
-        done();
+    // Use native promises
+    mongoose.Promise = global.Promise;
+
+    db.on('error', () => {
+        isConnected = false;
     });
 
-});
+    db.once('open', () => {
+        isConnected = true;
+    });
 
-after((done) => {
-    connection.close();
-    done();
-});
+    // Close database connection if node process closes.
+    process.on('SIGINT', () => {
+        db.close(() => {
+            process.exit(0);
+        });
+    });
 
-module.exports = afterEach((done) => {
-    connection.db.dropDatabase();
-    done();
-});
+    // Connect to the database
+    mongoose.connect('mongodb://localhost/test')
+        .catch((error) => {
+            console.error(error);
+        });
+}
+
+// Exports.
+module.exports = {
+    connect: connect,
+    isConnected: isConnected
+};

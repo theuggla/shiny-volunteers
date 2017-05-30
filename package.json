@@ -10,7 +10,7 @@
     "build": "webpack",
     "start": "node server/server.js",
     "watch": "webpack && nodemon server/server.js",
-    "test": "karma start && mocha-webpack --webpack-config webpack.server-test.babel.js \"server/tests/*-test.js\"",
+    "test": "mocha-webpack --webpack-config webpack.server-test.babel.js \"server/tests/*-test.js\"",
     "heroku-postbuild": "npm install --dev && webpack"
   },
   "repository": {

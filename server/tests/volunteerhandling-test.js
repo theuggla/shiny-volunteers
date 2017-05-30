@@ -11,6 +11,7 @@ let expect = chai.expect;
 let sinon = require('sinon');
 
 let db = require('./test-db');
+db.connect();
 
 let getMatches = require('../lib/volunteerhandlingresource').getMatches;
 let updateProfile = require('../lib/volunteerhandlingresource').updateProfile;
@@ -35,7 +36,8 @@ describe('volunteer handling module', () => {
         categories: 'women',
         timePerOccasion: 8,
         numberOfTimes: ['once'],
-        expiryDate: new Date(Date.now())
+        expiryDate: new Date(Date.now()),
+        contact: 'test@test.com'
     };
 
     let needTwo = {
@@ -47,7 +49,8 @@ describe('volunteer handling module', () => {
         timePerOccasion: 8,
         numberOfTimes: ['once'],
         expiryDate: new Date(Date.now()),
-        description: 'test also'
+        description: 'test also',
+        contact: 'test@test.com'
     };
 
     let needThree = {
@@ -59,19 +62,22 @@ describe('volunteer handling module', () => {
         timePerOccasion: 8,
         numberOfTimes: ['once'],
         expiryDate: new Date(Date.now()),
-        description: 'test also'
+        description: 'test also',
+        contact: 'test@test.com'
     };
 
     let needFour = {
         _creator: 'testcreator',
         title: 'test',
+        applicants: [1],
         skillsRequired: ['none'],
         skillsDesired: ['IT'],
         categories: 'women',
         timePerOccasion: 8,
         numberOfTimes: ['once'],
         expiryDate: new Date(Date.now()),
-        description: 'test also'
+        description: 'test also',
+        contact: 'test@test.com'
     };
 
     let user = {
@@ -90,20 +96,23 @@ describe('volunteer handling module', () => {
     });
 
     after('clean up database', () => {
-        Need.remove({title: 'test'});
+        Need.remove({_creator: 'testcreator'});
     });
 
     describe('getMatches', () => {
 
         it('should return an array of need-objects', (done) => {
             let matches = getMatches(user);
-            expect(Array.isArray(matches)).to.equal(true);
+            expect(matches).to.eventually.equal(true);
             done();
         });
 
-        it('should not return needs that the user has already applied for', (done) => {
-            expect(2).to.equal(2);
-            done();
+        it('should not return needs that the user has already applied for', () => {
+            getMatches(user)
+                .then((matches) => {
+                    let filter = matches.filter((match) => {return match.applicants.contains(1)});
+                    expect(filter.length).to.equal(0);
+                });
         });
 
         it('should return an empty array if there are no matches', (done) => {

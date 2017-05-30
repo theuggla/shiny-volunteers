@@ -8,8 +8,8 @@ chai.use(chaiAsPromised);
 let expect = chai.expect;
 let sinon = require('sinon');
 
-let db = require('../lib/dbresource');
-if (!db.isConnected) db.connect();
+let db = require('./test-db');
+db.connect();
 
 let addNeed = require('../lib/needhandlingresource').addNeed;
 let getNeeds = require('../lib/needhandlingresource').getNeeds;
@@ -24,13 +24,15 @@ describe('Need handling module', () => {
         _creator: 'testcreator',
         title: 'test',
         description: 'test',
-        expiryDate: new Date(Date.now())
+        expiryDate: new Date(Date.now()),
+        contact: 'test@test.com'
     };
 
     let needTwo = {
         _creator: 'testcreator',
         title: 'test',
-        description: 'test also'
+        description: 'test also',
+        contact: 'test@test.com'
     };
 
     before('add needs to database', () => {
