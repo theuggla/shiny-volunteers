@@ -91,6 +91,17 @@ describe('volunteer handling module', () => {
         }
     };
 
+    let noMatchUser = {
+        profile: {
+            _id: 2,
+            skills: ['cooking, children'],
+            location: ['gothenburg'],
+            numberOfTimes: ['once'],
+            timePerOccasion: 10,
+            interests: ['women']
+        }
+    };
+
     before('add needs to database', () => {
         Promise.all([addNeed(needOne), addNeed(needTwo), addNeed(needThree), addNeed(needFour)]);
     });
@@ -111,13 +122,21 @@ describe('volunteer handling module', () => {
             getMatches(user)
                 .then((matches) => {
                     let filter = matches.filter((match) => {return match.applicants.contains(1)});
-                    expect(filter.length).to.equal(0);
+                    return Promise.resolve(filter.length);
+                })
+                .then((length) => {
+                    return expect(length).to.eventually.equal(1);
                 });
         });
 
-        it('should return an empty array if there are no matches', (done) => {
-            expect(2).to.equal(2);
-            done();
+        it('should return an empty array if there are no matches', () => {
+            getMatches(noMatchUser)
+                .then((matches) => {
+                    return Promise.resolve(matches.length);
+                })
+                .then((length) => {
+                    return expect(length).to.eventually.equal(1);
+                });
         });
 
         it('should return an array with one object if there is one match', (done) => {
