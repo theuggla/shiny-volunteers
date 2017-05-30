@@ -70,8 +70,8 @@ describe('volunteer handling module', () => {
         _creator: 'testcreator',
         title: 'test',
         applicants: [1],
-        skillsRequired: ['none'],
-        skillsDesired: ['IT'],
+        skillsRequired: ['IT'],
+        skillsDesired: ['wordpress'],
         categories: 'women',
         timePerOccasion: 8,
         numberOfTimes: ['once'],
@@ -95,6 +95,17 @@ describe('volunteer handling module', () => {
         profile: {
             _id: 2,
             skills: ['cooking, children'],
+            location: ['gothenburg'],
+            numberOfTimes: ['once'],
+            timePerOccasion: 10,
+            interests: ['women']
+        }
+    };
+
+    let oneMatchUser = {
+        profile: {
+            _id: 2,
+            skills: ['wordpress'],
             location: ['gothenburg'],
             numberOfTimes: ['once'],
             timePerOccasion: 10,
@@ -135,18 +146,18 @@ describe('volunteer handling module', () => {
                     return Promise.resolve(matches.length);
                 })
                 .then((length) => {
-                    return expect(length).to.eventually.equal(1);
+                    return expect(length).to.eventually.equal(0);
                 });
         });
 
-        it('should return an array with one object if there is one match', (done) => {
-            expect(2).to.equal(2);
-            done();
-        });
-
-        it('should return an array of need-objects where the needs matches the user\'s skills', (done) => {
-            expect(2).to.equal(2);
-            done();
+        it('should return an array with one object if there is one match', () => {
+            getMatches(oneMatchUser)
+                .then((matches) => {
+                    return Promise.resolve(matches.length);
+                })
+                .then((length) => {
+                    return expect(length).to.eventually.equal(1);
+                });
         });
 
     });
