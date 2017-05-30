@@ -81,7 +81,7 @@ passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password
 
                                     return done(err);
                                 } else {
-                                    let err = new Error('User does not exist. Do you want to create user?');
+                                    let err = new Error('User does not exist.');
                                     err.name = 'NoSuchUserError';
 
                                     return done(err);
