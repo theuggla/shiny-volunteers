@@ -1,4 +1,3 @@
-
 /**
  * Tests for the LoginPage.
  */
@@ -54,6 +53,7 @@ mock.onPost('/login/local').reply(function(config) {
 
         switch (email) {
             case 'org@test.com':
+                debugger;
                 registred = true;
                 correctRole = !volunteer;
                 break;
@@ -96,11 +96,11 @@ describe("LoginPage", () => {
 
     const wrapper = mount(
         <LoginPage match={matchMockVolunteer} history={historyMock} />, {
-        context: {
-            muiTheme
-        },
-        childContextTypes: {muiTheme: React.PropTypes.object}
-    });
+            context: {
+                muiTheme
+            },
+            childContextTypes: {muiTheme: React.PropTypes.object}
+        });
 
     beforeEach("reset history", () => {
         historyMock = [];
@@ -140,6 +140,50 @@ describe("LoginPage", () => {
             done();
         });
 
+        step("Submit the form", function(done) {
+            const form = wrapper.find(".login-form");
+            form.simulate("submit");
+            done();
+        });
+
+        step("Do not display error message", function(done) {
+            const errorMessage = wrapper.find('.error-message');
+            expect(errorMessage.exists()).to.equal(false);
+            done();
+        });
+    });
+
+    describe("Login with wrong password", () => {
+        step("Fill in email and password", function(done) {
+            const emailInput = wrapper.find("[name='email']");
+            const passwordInput = wrapper.find("[name='password']");
+            emailInput.simulate("change", {target: {name: 'email', value: "correct@test.com"}});
+            passwordInput.simulate("change", {target: {name: 'password', value: "incorrect"}});
+            done();
+        });
+
+        step("Submit the form", function(done) {
+            const form = wrapper.find(".login-form");
+            form.simulate("submit");
+            done();
+        });
+
+        step("Display error message", function(done) {
+            const errorMessage = wrapper.find('.error-message');
+            expect(errorMessage.exists()).to.equal(true);
+            done();
+        });
+
+        step("Correct error message", function(done) {
+            const errorMessage = wrapper.find('.error-message');
+            expect(errorMessage.text()).to.equal('wrong password');
+            done();
+        });
+
+        step("Do not redirect", function(done) {
+            expect(historyMock.length).to.equal(0);
+            done();
+        });
     });
 
     describe("Login as organization with email that belongs to volunteer", () => {
@@ -153,6 +197,28 @@ describe("LoginPage", () => {
             done();
         });
 
+        step("Submit the form", function(done) {
+            const form = wrapper.find(".login-form");
+            form.simulate("submit");
+            done();
+        });
+
+        step("Display error message", function(done) {
+            const errorMessage = wrapper.find('.error-message');
+            expect(errorMessage.exists()).to.equal(true);
+            done();
+        });
+
+        step("Correct error message", function(done) {
+            const errorMessage = wrapper.find('.error-message');
+            expect(errorMessage.text()).to.equal('wrong role');
+            done();
+        });
+
+        step("Do not redirect", function(done) {
+            expect(historyMock.length).to.equal(0);
+            done();
+        });
     });
 
     describe("Login with email that is not in system, refuse signup", () => {
@@ -170,6 +236,17 @@ describe("LoginPage", () => {
             done();
         });
 
+        step("No error message", function(done) {
+            const errorMessage = wrapper.find('.error-message');
+            expect(errorMessage.exists()).to.equal(false);
+            done();
+        });
+
+        step("Find popup", function(done) {
+            const popup = wrapper.find('.popup');
+            expect(popup.exists()).to.equal(true);
+            done();
+        });
     });
 
     describe("Login with email that is not in system, accept signup, passwords does not match", () => {
