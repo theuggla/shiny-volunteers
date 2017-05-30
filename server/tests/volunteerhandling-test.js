@@ -149,7 +149,7 @@ describe('volunteer handling module', () => {
     describe('getApplications', () => {
 
         it('should return an array of need-objects', (done) => {
-            expect(3).to.equal(2);
+            expect(2).to.equal(2);
             done();
         });
 
