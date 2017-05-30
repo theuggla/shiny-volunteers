@@ -215,6 +215,7 @@ describe("LoginPage", () => {
             wrapper.setState({signup: true});
             const form = wrapper.find(".login-form");
             form.simulate("submit");
+            done();
         });
 
         step("Display error message", function(done) {
@@ -268,7 +269,7 @@ describe("LoginPage", () => {
             wrapper.setState({signup: true});
             const form = wrapper.find(".login-form");
             form.simulate("submit");
-            setTimeout(done, 1000);
+            done();
         });
 
         step("Confirm success", function(done) {
