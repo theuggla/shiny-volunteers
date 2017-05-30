@@ -107,6 +107,10 @@ describe("LoginPage", () => {
         wrapper.setProps({history: historyMock});
     });
 
+    beforeEach("reset state", () => {
+        wrapper.setState({signup: false});
+    });
+
     describe("Basic render", () => {
 
         it("should mount", (done) => {
@@ -165,6 +169,18 @@ describe("LoginPage", () => {
             form.props().onSubmit(event).then(done());
         });
 
+        step("Display error message", function(done) {
+            const errorMessage = wrapper.find('.error-message');
+            expect(errorMessage.exists()).to.equal(true);
+            done();
+        });
+
+        step("Correct error message", function(done) {
+            const errorMessage = wrapper.find('.error-message');
+            expect(errorMessage.text()).to.equal('wrong password');
+            done();
+        });
+
         step("Do not redirect", function(done) {
             expect(historyMock.length).to.equal(0);
             done();
@@ -187,6 +203,23 @@ describe("LoginPage", () => {
 
             const form = wrapper.find(".login-form");
             form.props().onSubmit(event).then(done());
+        });
+
+        step("Display error message", function(done) {
+            const errorMessage = wrapper.find('.error-message');
+            expect(errorMessage.exists()).to.equal(true);
+            done();
+        });
+
+        step("Correct error message", function(done) {
+            const errorMessage = wrapper.find('.error-message');
+            expect(errorMessage.text()).to.equal('wrong role');
+            done();
+        });
+
+        step("Do not redirect", function(done) {
+            expect(historyMock.length).to.equal(0);
+            done();
         });
     });
 
@@ -266,13 +299,20 @@ describe("LoginPage", () => {
             const form = wrapper.find(".login-form");
 
             form.prop('onSubmit')(event).then(() => {
-                const errorMessage = wrapper.find('.error-message');
-
-                expect(errorMessage.exists()).to.equal(true);
-
-                expect(errorMessage.text()).to.equal('retype your passwords');
                 done();
             });
+        });
+
+        step("Display error message", function(done) {
+            const errorMessage = wrapper.find('.error-message');
+            expect(errorMessage.exists()).to.equal(true);
+            done();
+        });
+
+        step("Correct error message", function(done) {
+            const errorMessage = wrapper.find('.error-message');
+            expect(errorMessage.text()).to.equal('retype your passwords');
+            done();
         });
     });
 
@@ -308,6 +348,23 @@ describe("LoginPage", () => {
             wrapper.setState({signup: true});
             const confirmPasswordInput = wrapper.find("[name='passwordConfirm']");
             confirmPasswordInput.simulate("change", {target: {name: 'passwordConfirm', value: "correct"}});
+            done();
+        });
+
+        step("Submit the form", function(done) {
+            wrapper.setState({signup: true});
+
+            let event = {preventDefault: function(){}};
+            const form = wrapper.find(".login-form");
+
+            form.prop('onSubmit')(event).then(() => {
+                done();
+            });
+        });
+
+        step("Confirm success", function(done) {
+            wrapper.setState({signup: true});
+            expect(wrapper.state('popupMessage')).to.equal('success');
             done();
         });
     });
