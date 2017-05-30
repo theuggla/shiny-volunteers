@@ -163,22 +163,6 @@ describe("LoginPage", () => {
             done();
         });
 
-        step("Submit the form", function(done) {
-            const form = wrapper.find(".login-form");
-            form.simulate("submit");
-            setTimeout(done, 1000);
-        });
-
-        step("Display error message", function(done) {
-            const errorMessage = wrapper.find('.error-message');
-            expect(errorMessage.exists()).to.equal(true);
-            done();
-        });
-
-        step("Do not redirect", function(done) {
-            expect(historyMock.length).to.equal(0);
-            done();
-        });
     });
 
     describe("Login with email that is not in system, refuse signup", () => {
