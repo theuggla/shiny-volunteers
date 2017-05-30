@@ -166,6 +166,8 @@ class LoginPage extends React.Component {
      * @param response
      */
     facebookLogin(response) {
+        console.log('in facebook login');
+        console.log(response);
         if (response.name) {
             axios.post('/login/facebook', response)
                 .then((response) => {
@@ -173,6 +175,9 @@ class LoginPage extends React.Component {
                         errors: {}
                     });
                     auth.authenticateUser(response.data.token, response.data.user.roles);
+                    console.log('response from server');
+                    console.log(response);
+                    console.log('pushing history');
                     this.props.history.push('/' + response.data.user.roles[0]);
                 })
                 .catch((error) => {
