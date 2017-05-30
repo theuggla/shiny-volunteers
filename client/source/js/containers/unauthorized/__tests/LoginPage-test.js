@@ -264,10 +264,7 @@ describe("LoginPage", () => {
             let event = {preventDefault: function(){}};
             const form = wrapper.find(".login-form");
 
-            console.log(form.debug());
-            console.log(form.props().processSignup);
-
-            form.prop('processSignup')(event).then(done());
+            form.prop('onSubmit')(event).then(done());
         });
 
         step("Display error message", function(done) {
