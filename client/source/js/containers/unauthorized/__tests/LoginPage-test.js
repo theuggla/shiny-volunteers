@@ -266,6 +266,11 @@ describe("LoginPage", () => {
             const form = wrapper.find(".login-form");
 
             form.prop('onSubmit')(event).then(() => {
+                const errorMessage = wrapper.find('.error-message');
+
+                expect(errorMessage.exists()).to.equal(true);
+
+                expect(errorMessage.text()).to.equal('retype your passwords');
                 done();
             });
         });
