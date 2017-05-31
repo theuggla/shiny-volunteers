@@ -21,10 +21,7 @@ module.exports = {
             color: 'white'
         },
         user: {
-            position: 'fixed',
-            paddingLeft: '1em',
-            left: '0',
-            top: '0',
+            fontSize: '0.8em',
             fontVariant: 'small-caps',
             color: 'white'
         }

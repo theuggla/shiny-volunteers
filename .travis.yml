@@ -2,8 +2,7 @@ language: node_js
 node_js:
 - '6.10'
 script:
-- node server/server.js &
-- npm test
+- npm run test
 addons:
   firefox: latest
 services:
