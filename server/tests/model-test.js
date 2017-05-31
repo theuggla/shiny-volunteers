@@ -9,7 +9,7 @@ let chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 let expect = chai.expect;
 
-let db = require ('./test-db');
+let db = require('./test-db');
 if (!db.isConnected) db.connect();
 
 let Need = require('../models/Need');
@@ -22,18 +22,24 @@ describe('Models', () => {
 
     describe('Need', () => {
 
-        let needData = {
-            contact: '44'
-        };
-
         it('should require a creator', () => {
+            let needData = {
+                contact: '44',
+                description: '44',
+                title: '44'
+            };
+
             let need = new Need(needData);
 
             return expect(need.save()).to.reject;
         });
 
         it('should require a title', () => {
-            needData._creator = '44';
+            let needData = {
+                contact: '44',
+                description: '44',
+                _creator: '44'
+            };
 
             let need = new Need(needData);
 
@@ -41,7 +47,11 @@ describe('Models', () => {
         });
 
         it('should require a description', () => {
-            needData.title = '44';
+            let needData = {
+                contact: '44',
+                title: '44',
+                _creator: '44'
+            };
 
             let need = new Need(needData);
 
@@ -49,6 +59,13 @@ describe('Models', () => {
         });
 
         it('should set a default expiry date if none is given', () => {
+            let needData = {
+                contact: '44',
+                description: '44',
+                title: '44',
+                _creator: '44'
+            };
+
             needData.description = '44';
 
             let need = new Need(needData);
@@ -104,8 +121,8 @@ describe('Models', () => {
             let tempOne = {info: {email: 'temp@test.com'}};
             let tempTwo = {info: {email: 'temp@test.com'}};
 
-            let first = new TempUser(tempOne);
-            let second = new TempUser(tempTwo);
+            let first = new UserBase(tempOne);
+            let second = new UserBase(tempTwo);
 
             first.save()
                 .then(() => {
@@ -116,7 +133,7 @@ describe('Models', () => {
         it('should reject if local email is not valid email', () => {
             let badUserData = {local: {email: 'temptest.com'}};
 
-            let badUser = new TempUser(badUserData);
+            let badUser = new UserBase(badUserData);
 
             return expect(badUser.save()).to.be.rejected;
         });
@@ -124,7 +141,7 @@ describe('Models', () => {
         it('should hash a given password', () => {
             let tempOne = {local: {email: 'temp@test.com', password: 'test'}};
 
-            let first = new TempUser(tempOne);
+            let first = new UserBase(tempOne);
 
             first.save()
                 .then((user) => {
@@ -138,7 +155,7 @@ describe('Models', () => {
         it('should compared a plaintext password to a hashed one and return true if they are equal', () => {
             let tempOne = {local: {email: 'temp@test.com', password: 'test'}};
 
-            let first = new TempUser(tempOne);
+            let first = new UserBase(tempOne);
 
             first.save()
                 .then((user) => {
@@ -155,7 +172,7 @@ describe('Models', () => {
         it('should compared a plaintext password to a hashed one and return false if they are not equal', () => {
             let tempOne = {local: {email: 'temp@test.com', password: 'test'}};
 
-            let first = new TempUser(tempOne);
+            let first = new UserBase(tempOne);
 
             first.save()
                 .then((user) => {
@@ -174,7 +191,7 @@ describe('Models', () => {
         it('should take a facebook email', () => {
             let tempOne = {facebook: {email: 'temp@test.com', id: 'test'}};
 
-            let first = new TempUser(tempOne);
+            let first = new Volunteer(tempOne);
 
             first.save()
                 .then((user) => {
@@ -185,7 +202,7 @@ describe('Models', () => {
         it('should take a facebook id', () => {
             let tempOne = {facebook: {email: 'temp@test.com', id: 'test'}};
 
-            let first = new TempUser(tempOne);
+            let first = new Volunteer(tempOne);
 
             first.save()
                 .then((user) => {
