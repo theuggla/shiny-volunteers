@@ -12,17 +12,27 @@ describe('API-tests', () => {
         describe('POST /local', () => {
 
             it('Should work', (done) => {
-                expect(2).to.equal(2);
-                done();
+                axios.post('/login/local/signup', {
+                    email: 'test@test.com',
+                    password: 'test',
+                    role: 'volunteer'
+                }).then((response) => {
+
+                });
             });
 
         });
 
         describe('POST /local/signup', () => {
 
-            it('Should work', (done) => {
-                expect(2).to.equal(2);
-                done();
+            it('Should work', () => {
+                axios.post('/login/local/signup', {
+                    email: 'test@test.com',
+                    password: 'test',
+                    role: 'volunteer'
+                }).then((response) => {
+
+                });
             });
         });
 

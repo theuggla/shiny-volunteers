@@ -186,6 +186,7 @@ describe('Need handling module', () => {
         it('should do nothing if there are no needs with passed expiry dates', () => {
             let needThree = {
                 _creator: 'testcreator',
+                contact: 'test',
                 title: 'test',
                 description: 'test'
             };

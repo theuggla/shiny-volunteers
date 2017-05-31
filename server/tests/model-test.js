@@ -37,7 +37,7 @@ describe('Models', () => {
 
             let need = new Need(needData);
 
-            return expect(need.save()).to.reject;
+            return Promise.resolve(expect(need.save()).to.reject);
         });
 
         it('should require a title', () => {
@@ -49,7 +49,7 @@ describe('Models', () => {
 
             let need = new Need(needData);
 
-            return expect(need.save()).to.reject;
+            return Promise.resolve(expect(need.save()).to.reject);
         });
 
         it('should require a description', () => {
@@ -61,7 +61,7 @@ describe('Models', () => {
 
             let need = new Need(needData);
 
-            return expect(need.save()).to.reject;
+            return Promise.resolve(expect(need.save()).to.reject);
         });
 
         it('should set a default expiry date if none is given', () => {
