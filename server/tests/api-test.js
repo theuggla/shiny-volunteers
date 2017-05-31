@@ -22,7 +22,14 @@ describe('API-tests', () => {
         describe('POST /local/signup', () => {
 
             it('Should work', (done) => {
-                expect(2).to.equal(2);
+                axios.post('/login/local/signup', {
+                    email: 'test@test.com',
+                    password: 'test',
+                    role: 'volunteer'
+                }).then((response) => {
+                    return Promise.resolve(response);
+                });
+
                 done();
 
             });
