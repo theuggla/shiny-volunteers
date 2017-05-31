@@ -37,7 +37,8 @@ describe('Models', () => {
 
             let need = new Need(needData);
 
-            return Promise.resolve(expect(need.save()).to.reject);
+            done();
+
         });
 
         it('should require a title', () => {
