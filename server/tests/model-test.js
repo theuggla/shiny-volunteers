@@ -10,15 +10,21 @@ chai.use(chaiAsPromised);
 let expect = chai.expect;
 
 let db = require('./test-db');
-if (!db.isConnected) db.connect();
+db.connect() //- starting a db connection
+    .catch(() => {
+        db.connect(true); //- starting another db connection
+    });
 
 let Need = require('../models/Need');
 let Organization = require('../models/Organization');
 let TempUser = require('../models/TempUser');
-let UserBase = require('../models/UserBase');
 let Volunteer = require('../models/Volunteer');
 
 describe('Models', () => {
+
+    after(() => {
+        db.disconnect();
+    });
 
     describe('Need', () => {
 
@@ -121,8 +127,8 @@ describe('Models', () => {
             let tempOne = {info: {email: 'temp@test.com'}};
             let tempTwo = {info: {email: 'temp@test.com'}};
 
-            let first = new UserBase(tempOne);
-            let second = new UserBase(tempTwo);
+            let first = new Volunteer(tempOne);
+            let second = new Volunteer(tempTwo);
 
             first.save()
                 .then(() => {
@@ -133,7 +139,7 @@ describe('Models', () => {
         it('should reject if local email is not valid email', () => {
             let badUserData = {local: {email: 'temptest.com'}};
 
-            let badUser = new UserBase(badUserData);
+            let badUser = new Volunteer(badUserData);
 
             return expect(badUser.save()).to.be.rejected;
         });
@@ -141,7 +147,7 @@ describe('Models', () => {
         it('should hash a given password', () => {
             let tempOne = {local: {email: 'temp@test.com', password: 'test'}};
 
-            let first = new UserBase(tempOne);
+            let first = new Volunteer(tempOne);
 
             first.save()
                 .then((user) => {
@@ -155,7 +161,7 @@ describe('Models', () => {
         it('should compared a plaintext password to a hashed one and return true if they are equal', () => {
             let tempOne = {local: {email: 'temp@test.com', password: 'test'}};
 
-            let first = new UserBase(tempOne);
+            let first = new Volunteer(tempOne);
 
             first.save()
                 .then((user) => {
@@ -172,7 +178,7 @@ describe('Models', () => {
         it('should compared a plaintext password to a hashed one and return false if they are not equal', () => {
             let tempOne = {local: {email: 'temp@test.com', password: 'test'}};
 
-            let first = new UserBase(tempOne);
+            let first = new Volunteer(tempOne);
 
             first.save()
                 .then((user) => {

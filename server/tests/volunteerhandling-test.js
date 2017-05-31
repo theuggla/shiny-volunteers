@@ -10,7 +10,10 @@ chai.use(chaiAsPromised);
 let expect = chai.expect;
 
 let db = require('./test-db');
-if (!db.isConnected) db.connect();
+db.connect() //- starting a db connection
+    .catch(() => {
+        db.connect(true); //- starting another db connection
+    });
 
 let getMatches = require('../lib/volunteerhandlingresource').getMatches;
 let updateProfile = require('../lib/volunteerhandlingresource').updateProfile;

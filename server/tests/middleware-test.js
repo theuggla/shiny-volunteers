@@ -13,7 +13,6 @@ let sinon = require('sinon');
 
 let checkIfAuthorized = require('../middleware/middleware').checkIfAuthorized;
 let validateLoginForm = require('../middleware/middleware').validateLoginForm;
-let isDatabaseConnected = require('../middleware/middleware').isDatabaseConnected;
 
 describe('Middleware-tests', () => {
 

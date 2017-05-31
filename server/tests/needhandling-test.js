@@ -9,7 +9,10 @@ let expect = chai.expect;
 let sinon = require('sinon');
 
 let db = require('./test-db');
-if (!db.isConnected) db.connect();
+db.connect() //- starting a db connection
+    .catch(() => {
+        db.connect(true); //- starting another db connection
+    });
 
 let addNeed = require('../lib/needhandlingresource').addNeed;
 let getNeeds = require('../lib/needhandlingresource').getNeeds;
@@ -19,6 +22,10 @@ let cleanOutNeeds = require('../lib/needhandlingresource').cleanOutNeeds;
 let Need = require('../models/Need');
 
 describe('Need handling module', () => {
+
+    after(() => {
+        db.disconnect();
+    });
 
     let needOne = {
         _creator: 'testcreator',
