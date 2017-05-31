@@ -11,13 +11,13 @@ describe('API-tests', () => {
 
         describe('POST /local', () => {
 
-            it('Should work', (done) => {
-                axios.post('/login/local/signup', {
+            it('Should work', () => {
+                axios.post('/login/local/', {
                     email: 'test@test.com',
                     password: 'test',
                     role: 'volunteer'
                 }).then((response) => {
-
+                    return Promise.resolve(response);
                 });
             });
 
@@ -31,7 +31,7 @@ describe('API-tests', () => {
                     password: 'test',
                     role: 'volunteer'
                 }).then((response) => {
-
+                    return Promise.resolve(response);
                 });
             });
         });
