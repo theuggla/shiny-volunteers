@@ -20,6 +20,8 @@ describe('API-tests', () => {
                     return Promise.resolve(response);
                 });
 
+                done();
+
             });
 
         });
@@ -34,6 +36,8 @@ describe('API-tests', () => {
                 }).then((response) => {
                     return Promise.resolve(response);
                 });
+
+                done();
 
             });
         });

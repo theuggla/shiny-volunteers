@@ -53,7 +53,10 @@ describe('Models', () => {
 
             let need = new Need(needData);
 
-            return Promise.resolve(expect(need.save()).to.reject);
+            need.save()
+                .catch((error) => {
+                    return done();
+                });
         });
 
         it('should require a description', () => {
@@ -65,7 +68,10 @@ describe('Models', () => {
 
             let need = new Need(needData);
 
-            return Promise.resolve(expect(need.save()).to.reject);
+            need.save()
+                .catch((error) => {
+                    return done();
+                });
         });
 
         it('should set a default expiry date if none is given', () => {
@@ -89,13 +95,13 @@ describe('Models', () => {
 
     describe('Organization', () => {
         it('should take a profile', () => {
-            let profile = {property: 44};
+            let profile = {thing: 44};
 
             let org = new Organization(profile);
 
             org.save()
                 .then((savedorg) => {
-                    return Promise.resolve(expect(savedorg.profile.property).to.equal(44));
+                    return Promise.resolve(expect(savedorg.profile.thing).to.equal(44));
                 })
                 .then((result) => {
                     return expect(result).to.equal(true);
