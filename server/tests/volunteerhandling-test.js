@@ -37,7 +37,6 @@ describe('volunteer handling module', () => {
         categories: 'women',
         timePerOccasion: 8,
         numberOfTimes: ['once'],
-        expiryDate: new Date(Date.now()),
         contact: 'test@test.com'
     };
 
@@ -49,7 +48,6 @@ describe('volunteer handling module', () => {
         categories: 'women',
         timePerOccasion: 8,
         numberOfTimes: ['once'],
-        expiryDate: new Date(Date.now()),
         description: 'test also',
         contact: 'test@test.com'
     };
@@ -62,7 +60,6 @@ describe('volunteer handling module', () => {
         categories: 'women',
         timePerOccasion: 8,
         numberOfTimes: ['once'],
-        expiryDate: new Date(Date.now()),
         description: 'test also',
         contact: 'test@test.com'
     };
@@ -76,7 +73,6 @@ describe('volunteer handling module', () => {
         categories: 'women',
         timePerOccasion: 8,
         numberOfTimes: ['once'],
-        expiryDate: new Date(Date.now()),
         description: 'test also',
         contact: 'test@test.com'
     };

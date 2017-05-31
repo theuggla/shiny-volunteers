@@ -24,7 +24,6 @@ describe('Need handling module', () => {
         _creator: 'testcreator',
         title: 'test',
         description: 'test',
-        expiryDate: new Date(),
         contact: 'test@test.com'
     };
 
@@ -117,9 +116,14 @@ describe('Need handling module', () => {
         });
 
         it('Should do nothing if no need with the matching id exists', () => {
-            let id = 22;
+            let id;
 
-            removeNeed(id)
+            Need.find({title: 'test'})
+                .then((needs) => {
+                    id = needs[0]._id;
+
+                    return removeNeed(id);
+                })
                 .then(() => {
                     return expect(removeNeed(id)).to.be.fulfilled;
                 });
