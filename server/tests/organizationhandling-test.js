@@ -9,60 +9,52 @@ let chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 let expect = chai.expect;
 
+let db = require('./test-db');
+db.connect() //- starting a db connection
+    .catch(() => {
+        db.connect(true); //- starting another db connection
+    });
+
 let addNeed = require('../lib/organizationhandlingresource').addNeed;
-let getNeeds = require('../lib/organizationhandlingresource').getNeeds;
-let removeNeed = require('../lib/organizationhandlingresource').removeNeed;
+
+let Need = require('../models/Need');
 
 describe('Organization handling module', () => {
 
+    after(() => {
+        db.disconnect();
+    });
+
+    let needOne = {
+        title: 'test',
+        description: 'test',
+        contact: 'test@test.com'
+    };
+
+    let needTwo = {
+        title: 'test',
+        description: 'test also',
+        contact: 'test@test.com'
+    };
+
+    let user = {
+       _id: 1
+    };
+
+    after('clean up database', () => {
+        Need.remove({title: 'test'});
+    });
+
     describe('addNeed', () => {
 
-        it('should add a need with the given data and the user as the creator', (done) => {
-            expect(2).to.equal(2);
-            done();
-        });
-
-        it('should not return needs that the user has already applied for', (done) => {
-            expect(2).to.equal(2);
-            done();
-        });
-
-    });
-
-    describe('getNeeds', () => {
-
-        it('should return an array of need-objects', (done) => {
-            expect(2).to.equal(2);
-            done();
-        });
-
-        it('should not return expired needs', (done) => {
-            expect(2).to.equal(2);
-            done();
-        });
-
-        it('should return an empty array if there are no matches', (done) => {
-            expect(2).to.equal(2);
-            done();
-        });
-
-        it('should return an array with one object if there is one match', (done) => {
-            expect(2).to.equal(2);
-            done();
-        });
-
-        it('should return an array of need-objects where the user is the creator', (done) => {
-            expect(2).to.equal(2);
-            done();
-        });
-
-    });
-
-    describe('removeNeed', () => {
-
-        it('should remove a need', (done) => {
-            expect(2).to.equal(2);
-            done();
+        it('should add a need with the given data and the user as the creator', () => {
+            addNeed(user, needOne)
+                .then(() => {
+                   return Need.find({_creator: user._id});
+                })
+                .then((needs) => {
+                    return Promise.resolve(expect(needs.length).to.equal(1));
+                });
         });
 
     });
