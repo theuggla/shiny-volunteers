@@ -24,7 +24,7 @@ describe('Need handling module', () => {
         _creator: 'testcreator',
         title: 'test',
         description: 'test',
-        expiryDate: new Date(Date.now()),
+        expiryDate: new Date(),
         contact: 'test@test.com'
     };
 
@@ -107,7 +107,7 @@ describe('Need handling module', () => {
     describe('removeNeed', () => {
 
         it('should remove a need with the matching id from the database', () => {
-            Need.find({title: 'title'})
+            Need.find({title: 'test'})
                 .then((needs) => {
                     return removeNeed(needs[0]._id);
                 })
@@ -117,14 +117,9 @@ describe('Need handling module', () => {
         });
 
         it('Should do nothing if no need with the matching id exists', () => {
-            let id;
+            let id = 22;
 
-            Need.find({title: 'title'})
-                .then((needs) => {
-                    id = needs[0]._id;
-
-                    return removeNeed(id);
-                })
+            removeNeed(id)
                 .then(() => {
                     return expect(removeNeed(id)).to.be.fulfilled;
                 });
@@ -135,7 +130,7 @@ describe('Need handling module', () => {
     describe('updateApplicants', () => {
 
         it('Should add the applicant-id to the need\'s list of applicants', () => {
-            Need.find({title: 'title'})
+            Need.find({title: 'test'})
                 .then((needs) => {
                     id = needs[0]._id;
 
@@ -149,7 +144,7 @@ describe('Need handling module', () => {
         it('Should do nothing if the need-id does not exist', () => {
             let id;
 
-            Need.find({title: 'title'})
+            Need.find({title: 'test'})
                 .then((needs) => {
                     id = needs[0]._id;
 
@@ -173,7 +168,7 @@ describe('Need handling module', () => {
                     return Promise.resolve(needs.length);
                 })
                 .then((length) => {
-                    expect(length).to.eventually.equal(0);
+                    return expect(length).to.eventually.equal(0);
                 });
         });
 

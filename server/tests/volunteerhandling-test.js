@@ -24,6 +24,7 @@ let removeNeed = require('../lib/needhandlingresource').removeNeed;
 let updateApplicants = require('../lib/needhandlingresource').updateApplicants;
 let cleanOutNeeds = require('../lib/needhandlingresource').cleanOutNeeds;
 let Need = require('../models/Need');
+let User = require('../models/Volunteer');
 
 describe('volunteer handling module', () => {
 
@@ -55,7 +56,7 @@ describe('volunteer handling module', () => {
 
     let needThree = {
         _creator: 'testcreator',
-        title: 'test',
+        title: 'addapplicant',
         skillsRequired: ['wordpress', 'IT'],
         skillsDesired: ['none'],
         categories: 'women',
@@ -69,7 +70,7 @@ describe('volunteer handling module', () => {
     let needFour = {
         _creator: 'testcreator',
         title: 'test',
-        applicants: [1],
+        applicants: [1, 3],
         skillsRequired: ['IT'],
         skillsDesired: ['wordpress'],
         categories: 'women',
@@ -87,7 +88,8 @@ describe('volunteer handling module', () => {
             location: ['gothenburg'],
             numberOfTimes: ['once'],
             timePerOccasion: 10,
-            interests: ['women']
+            interests: ['women'],
+            email: 'test@test.com'
         }
     };
 
@@ -104,7 +106,7 @@ describe('volunteer handling module', () => {
 
     let oneMatchUser = {
         profile: {
-            _id: 2,
+            _id: 3,
             skills: ['wordpress'],
             location: ['gothenburg'],
             numberOfTimes: ['once'],
@@ -123,10 +125,8 @@ describe('volunteer handling module', () => {
 
     describe('getMatches', () => {
 
-        it('should return an array of need-objects', (done) => {
-            let matches = getMatches(user);
-            expect(matches).to.eventually.equal(true);
-            done();
+        it('should return an array of need-objects', () => {
+            return expect(Array.isArray(getMatches(user))).to.eventually.equal(true);
         });
 
         it('should not return needs that the user has already applied for', () => {
@@ -136,7 +136,7 @@ describe('volunteer handling module', () => {
                     return Promise.resolve(filter.length);
                 })
                 .then((length) => {
-                    return expect(length).to.eventually.equal(1);
+                    return expect(length).to.equal(1);
                 });
         });
 
@@ -146,7 +146,7 @@ describe('volunteer handling module', () => {
                     return Promise.resolve(matches.length);
                 })
                 .then((length) => {
-                    return expect(length).to.eventually.equal(0);
+                    return expect(length).to.equal(0);
                 });
         });
 
@@ -156,7 +156,7 @@ describe('volunteer handling module', () => {
                     return Promise.resolve(matches.length);
                 })
                 .then((length) => {
-                    return expect(length).to.eventually.equal(1);
+                    return expect(length).to.equal(1);
                 });
         });
 
@@ -164,48 +164,82 @@ describe('volunteer handling module', () => {
 
     describe('updateProfile', () => {
 
-        it('should update the users profile', (done) => {
-            expect(2).to.equal(2);
-            done();
+        it('should update the users profile', () => {
+            let user = new User(user);
+
+            user.save()
+                .then(() => {
+                    return updateProfile(user, noMatchUser);
+                })
+                .then((user) => {
+                  return Promise.resolve(user.skills);
+                })
+                .then((skills) => {
+                    return expect(skills).to.eventually.equal(noMatchUser.skills);
+                });
         });
 
-        it('should reject if invalid profile information is given', (done) => {
-            expect(2).to.equal(2);
-            done();
+        it('should reject if invalid profile information is given', () => {
+            let user = new User(user);
+
+            user.save()
+                .then(() => {
+                    return expect(updateProfile(user, {})).to.be.rejected;
+                });
         });
 
     });
 
     describe('updateApplications', () => {
 
-        it('should add the user to the need\'s applicants', (done) => {
-            expect(2).to.equal(2);
-            done();
+        it('should add the user to the need\'s applicants', () => {
+            Need.find({title: 'addapplicant'})
+                .then((need) => {
+                    return updateApplicants(user._id, need._id);
+                })
+                .then(() => {
+                    return Need.find({title: 'addapplicant'});
+                })
+                .then((need) => {
+                    return Promise.resolve(need.applicants.indexOf(1));
+                })
+                .then((result) => {
+                    return expect(result > 0).to.eventually.equal(true);
+                });
         });
 
     });
 
     describe('getApplications', () => {
 
-        it('should return an array of need-objects', (done) => {
-            expect(2).to.equal(2);
-            done();
+        it('should return an array of need-objects', () => {
+            getApplications(user)
+                .then((applications) => {
+                    return Promise.resolve(applications.length);
+                })
+                .then((length) => {
+                    return expect(length).to.eventually.equal(2);
+                });
         });
 
-        it('should return an empty array if there are no applications', (done) => {
-            expect(2).to.equal(2);
-            done();
+        it('should return an empty array if there are no applications', () => {
+            getApplications(noMatchUser)
+                .then((applications) => {
+                    return Promise.resolve(applications.length);
+                })
+                .then((length) => {
+                    return expect(length).to.eventually.equal(0);
+                });
         });
 
-        it('should return an array with one object if there is one match', (done) => {
-            expect(2).to.equal(2);
-            done();
+        it('should return an array with one object if there is one match', () => {
+            getApplications(oneMatchUser)
+                .then((applications) => {
+                    return Promise.resolve(applications.length);
+                })
+                .then((length) => {
+                    return expect(length).to.eventually.equal(1);
+                });
         });
-
-        it('should return an array of need-objects the user has applied for', (done) => {
-            expect(2).to.equal(2);
-            done();
-        });
-
     });
 });
