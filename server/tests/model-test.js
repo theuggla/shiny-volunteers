@@ -44,7 +44,7 @@ describe('Models', () => {
 
         });
 
-        it('should require a title', () => {
+        it('should require a title', (done) => {
             let needData = {
                 contact: '44',
                 description: '44',
@@ -59,7 +59,7 @@ describe('Models', () => {
                 });
         });
 
-        it('should require a description', () => {
+        it('should require a description', (done) => {
             let needData = {
                 contact: '44',
                 title: '44',
