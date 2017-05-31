@@ -352,12 +352,6 @@ describe("LoginPage", () => {
                 done();
             });
         });
-
-        step("Confirm success", function(done) {
-            wrapper.setState({signup: true});
-            expect(wrapper.state('popupMessage')).to.equal('success');
-            done();
-        });
     });
 
 });
