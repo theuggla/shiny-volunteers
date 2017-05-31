@@ -37,7 +37,10 @@ describe('Models', () => {
 
             let need = new Need(needData);
 
-            done();
+            need.save()
+                .catch((error) => {
+                    return done();
+                });
 
         });
 
@@ -207,7 +210,7 @@ describe('Models', () => {
         });
 
         it('should take a facebook id', () => {
-            let temptwo = {facebook: {email: 'temptwo@test.com', id: 'test'}};
+            let temptwo = {facebook: {email: 'temptwo@test.com', id: 'testtwo'}};
 
             let first = new Volunteer(temptwo);
 
