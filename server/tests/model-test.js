@@ -28,7 +28,7 @@ describe('Models', () => {
 
     describe('Need', () => {
 
-        it('should require a creator', () => {
+        it('should require a creator', (done) => {
             let needData = {
                 contact: '44',
                 description: '44',
@@ -92,7 +92,7 @@ describe('Models', () => {
 
             org.save()
                 .then((savedorg) => {
-                    return Promise.resolve(expect(savedorg).profile.property).to.equal(44);
+                    return Promise.resolve(expect(savedorg.profile.property).to.equal(44));
                 })
                 .then((result) => {
                     return expect(result).to.equal(true);
@@ -207,13 +207,13 @@ describe('Models', () => {
         });
 
         it('should take a facebook id', () => {
-            let tempOne = {facebook: {email: 'temp@test.com', id: 'test'}};
+            let temptwo = {facebook: {email: 'temptwo@test.com', id: 'test'}};
 
-            let first = new Volunteer(tempOne);
+            let first = new Volunteer(temptwo);
 
             first.save()
                 .then((user) => {
-                    return expect(user.facebook.id).to.equal(tempOne.facebook.id);
+                    return expect(user.facebook.id).to.equal(temptwo.facebook.id);
                 });
         });
     });
