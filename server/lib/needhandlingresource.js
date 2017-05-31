@@ -83,7 +83,7 @@ function getMatchesBySkills(skills, query) {
  */
 function addNeed(data) {
     return new Promise((resolve, reject) => {
-        data.expiryDate = new Date(data.expiryDate);
+        if (data.expiryDate) data.expiryDate = new Date(data.expiryDate);
 
         let newNeed = new Need(data);
 

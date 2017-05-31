@@ -2,8 +2,13 @@
  * Tests for the organization handling-resource.
  */
 
-let expect = require('chai').expect;
-let sinon = require('sinon');
+require('mocha');
+
+let chai = require('chai');
+let chaiAsPromised = require('chai-as-promised');
+chai.use(chaiAsPromised);
+let expect = chai.expect;
+
 let addNeed = require('../lib/organizationhandlingresource').addNeed;
 let getNeeds = require('../lib/organizationhandlingresource').getNeeds;
 let removeNeed = require('../lib/organizationhandlingresource').removeNeed;

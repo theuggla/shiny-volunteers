@@ -8,7 +8,6 @@ let chai = require('chai');
 let chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 let expect = chai.expect;
-let sinon = require('sinon');
 
 let db = require('./test-db');
 if (!db.isConnected) db.connect();
@@ -19,10 +18,7 @@ let updateApplications = require('../lib/volunteerhandlingresource').updateAppli
 let getApplications = require('../lib/volunteerhandlingresource').getApplications;
 
 let addNeed = require('../lib/needhandlingresource').addNeed;
-let getNeeds = require('../lib/needhandlingresource').getNeeds;
-let removeNeed = require('../lib/needhandlingresource').removeNeed;
-let updateApplicants = require('../lib/needhandlingresource').updateApplicants;
-let cleanOutNeeds = require('../lib/needhandlingresource').cleanOutNeeds;
+
 let Need = require('../models/Need');
 let User = require('../models/Volunteer');
 
@@ -194,7 +190,7 @@ describe('volunteer handling module', () => {
         it('should add the user to the need\'s applicants', () => {
             Need.find({title: 'addapplicant'})
                 .then((need) => {
-                    return updateApplicants(user._id, need._id);
+                    return updateApplications(user._id, need._id);
                 })
                 .then(() => {
                     return Need.find({title: 'addapplicant'});

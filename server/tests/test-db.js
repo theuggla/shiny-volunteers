@@ -2,7 +2,7 @@
  * A database for testing purposes.
  */
 let mongoose = require('mongoose');
-let isConnected = true;
+let isConnected = false;
 
 /**
  * Connects to the database.

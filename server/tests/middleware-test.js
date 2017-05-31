@@ -2,7 +2,15 @@
  * Unit tests of the middleware.
  */
 
-let expect = require('chai').expect;
+require('mocha');
+
+let chai = require('chai');
+let chaiAsPromised = require('chai-as-promised');
+chai.use(chaiAsPromised);
+let expect = chai.expect;
+
+let sinon = require('sinon');
+
 let checkIfAuthorized = require('../middleware/middleware').checkIfAuthorized;
 let validateLoginForm = require('../middleware/middleware').validateLoginForm;
 let isDatabaseConnected = require('../middleware/middleware').isDatabaseConnected;
@@ -11,60 +19,66 @@ describe('Middleware-tests', () => {
 
     describe('checkIfAuthorized', () => {
 
+
+        let req = {headers: {}};
+        let res = {};
+        let next = sinon.spy();
+
         it('should call next if there is no authorization header', (done) => {
-            expect(2).to.equal(2);
+            checkIfAuthorized(req, res, next);
+            expect(next.callCount).to.equal(1);
             done();
         });
 
-        it('should call next if token is not valid', (done) => {
-            expect(2).to.equal(2);
-            done();
-        });
-
-        it('should call next if token does not exist', (done) => {
-            expect(2).to.equal(2);
-            done();
-        });
-
-        it('should return the user if the user matches a token', (done) => {
-            expect(2).to.equal(2);
-            done();
-        });
     });
 
     describe('validateLoginForm', () => {
+        let mainstatus;
+        let mainsummary;
+        let mainerrors;
+
+        let req = {body: {}};
+        let res = {status: function(stat) {return {summary: {}, errors: {}, send: function(response) {mainstatus = stat; mainsummary = response.summary; mainerrors = response.errors;}}}};
+        let next = sinon.spy();
 
         it('should reject if there is no email', (done) => {
-            expect(2).to.equal(2);
+            validateLoginForm(req, res, next);
+            expect(mainstatus).to.equal(400);
+            expect(mainerrors.email).to.equal('Please provide an email address.');
             done();
         });
 
         it('should reject if email is not a string', (done) => {
-            expect(2).to.equal(2);
+            req.body.email = 22;
+
+            validateLoginForm(req, res, next);
+            expect(mainstatus).to.equal(400);
+            expect(mainerrors.email).to.equal('Please provide an email address.');
             done();
         });
 
         it('should reject if email is not valid', (done) => {
-            expect(2).to.equal(2);
+            req.body.email = 'snabela';
+
+            validateLoginForm(req, res, next);
+            expect(mainstatus).to.equal(400);
+            expect(mainerrors.email).to.equal('Please provide an email address.');
             done();
         });
 
         it('should reject if there is no password', (done) => {
-            expect(2).to.equal(2);
+            validateLoginForm(req, res, next);
+            expect(mainstatus).to.equal(400);
+            expect(mainerrors.password).to.equal('Please provide a password.');
             done();
         });
 
         it('should reject if password is not a string', (done) => {
-            expect(2).to.equal(2);
-            done();
-        });
+            req.body.password = 22;
 
-    });
-
-    describe('isDatabaseConnected', () => {
-
-        it('should call next when database is connected', (done) => {
-            expect(2).to.equal(2);
+            validateLoginForm(req, res, next);
+            expect(mainstatus).to.equal(400);
+            expect(mainerrors.password).to.equal('Please provide a password.');
             done();
         });
 
