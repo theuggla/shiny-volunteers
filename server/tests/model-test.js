@@ -93,22 +93,6 @@ describe('Models', () => {
         });
     });
 
-    describe('Organization', () => {
-        it('should take a profile', () => {
-            let profile = {thing: 44};
-
-            let org = new Organization(profile);
-
-            org.save()
-                .then((savedorg) => {
-                    return Promise.resolve(expect(savedorg.profile.thing).to.equal(44));
-                })
-                .then((result) => {
-                    return expect(result).to.equal(true);
-                });
-        });
-    });
-
     describe('TempUser', () => {
         it('should reject if email is not unique', () => {
             let tempOne = {info: {email: 'temp@test.com'}};
