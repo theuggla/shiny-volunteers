@@ -11,7 +11,7 @@ let expect = chai.expect;
 let sinon = require('sinon');
 
 let db = require('./test-db');
-db.connect();
+if (!db.isConnected) db.connect();
 
 let getMatches = require('../lib/volunteerhandlingresource').getMatches;
 let updateProfile = require('../lib/volunteerhandlingresource').updateProfile;
@@ -126,7 +126,10 @@ describe('volunteer handling module', () => {
     describe('getMatches', () => {
 
         it('should return an array of need-objects', () => {
-            return expect(Array.isArray(getMatches(user))).to.eventually.equal(true);
+            getMatches(user)
+                .then((matches) => {
+                    return expect(Array.isArray(matches)).to.equal(true);
+                });
         });
 
         it('should not return needs that the user has already applied for', () => {

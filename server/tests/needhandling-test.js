@@ -9,7 +9,7 @@ let expect = chai.expect;
 let sinon = require('sinon');
 
 let db = require('./test-db');
-db.connect();
+if (!db.isConnected) db.connect();
 
 let addNeed = require('../lib/needhandlingresource').addNeed;
 let getNeeds = require('../lib/needhandlingresource').getNeeds;
